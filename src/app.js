@@ -2,6 +2,7 @@ const http= require('http');
 const express = require('express')
 const session = require('express-session');
 const bodyParser = require('body-parser');
+const passport = require('passport')
 
 const app = express();
 const views = require('./routes/views');
@@ -17,6 +18,20 @@ app.use(session({
     resave: 'false',
     saveUninitialized: 'true'
   }));
+
+  app.get('/auth/spotify', passport.authenticate('spotify'), function(req, res) {
+    // The request will be redirected to spotify for authentication, so this
+    // function will not be called.
+  });
+  
+  app.get(
+    '/auth/spotify/callback',
+    passport.authenticate('spotify', { failureRedirect: '/login' }),
+    function(req, res) {
+      // Successful authentication, redirect home.
+      res.redirect('/');
+    }
+  );
   
 
 app.use(function(req, res, next) {
