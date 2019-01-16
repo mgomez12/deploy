@@ -4,7 +4,7 @@ const router = express.Router();
 
 // public endpoints
 router.get('/', function(req, res, next) {
-  res.sendFile('index.html', { root: 'src/views' });
+  res.sendFile('login.html', { root: 'src/views' });
 });
 
 router.get('/u/profile', function(req, res) {

@@ -1,1 +1,26 @@
 @import url('https://fonts.googleapis.com/css?family=Raleway:500,500i,800');
+
+.center-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 100vh;
+}
+
+#center-button {
+    position: fixed;
+    background: rgba(71, 55, 41, 0.5);
+    color: #f1f1f1;
+    width: 100%;
+    padding: 20px;
+}
+
+#background-video {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%; 
+    min-height: 100%;
+  }
