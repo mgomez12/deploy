@@ -38,6 +38,11 @@ app.get(
   }
 );
   
+app.get('/logout', function(req, res) {
+  req.logout();
+  res.redirect('/');
+});
+
 app.use('/', views);
 app.use('/api', api)
 app.use('/static', express.static('public'));

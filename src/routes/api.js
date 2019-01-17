@@ -13,6 +13,7 @@ router.get('/user', function(req, res) {
       res.send(user);
     });
   });
+  
 
 router.get('/whoami', function(req, res) {
 

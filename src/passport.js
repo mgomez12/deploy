@@ -19,7 +19,8 @@ passport.use(
             const user = new User({
               name: profile.displayName,
               _id: profile.id,
-              token: accessToken
+              access_token: accessToken,
+              refresh_token: refreshToken
             });
       
             user.save(function(err) {
@@ -28,7 +29,8 @@ passport.use(
               return done(err, user);
             });
           } else {
-            user.token = accessToken;
+            user.access_token = accessToken;
+            user.refresh_token = refreshToken;
             user.save();
             return done(err, user);
           }
