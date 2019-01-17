@@ -6,7 +6,7 @@ const UserModelSchema = new mongoose.Schema ({
   name        	: String,
   _id           : String,
   top_artist   	: String,
-  accesst_token         : String,
+  access_token         : String,
   refresh_token : String
 });
 
