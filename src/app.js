@@ -2,7 +2,8 @@ const http= require('http');
 const express = require('express')
 const session = require('express-session');
 const bodyParser = require('body-parser');
-const passport = require('./passport')
+const passport = require('./passport');
+const db = require('./db');
 
 
 const views = require('./routes/views');
@@ -22,7 +23,8 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get('/auth/spotify', passport.authenticate('spotify'), function(req, res) {
+app.get('/auth/spotify', passport.authenticate('spotify', { scope:['user-read-private']}),
+ function(req, res) {
   // The request will be redirected to spotify for authentication, so this
   // function will not be called.
 });
@@ -32,11 +34,12 @@ app.get(
   passport.authenticate('spotify', { failureRedirect: '/login' }),
   function(req, res) {
     // Successful authentication, redirect home.
-    res.redirect('/');
+    res.redirect('/u/profile?' + req.user._id);
   }
 );
   
 app.use('/', views);
+app.use('/api', api)
 app.use('/static', express.static('public'));
 app.use(function(req, res, next) {
   const err = new Error('Not Found');

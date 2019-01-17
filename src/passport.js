@@ -1,5 +1,6 @@
 const passport = require('passport');
 const SpotifyStrategy = require('passport-spotify').Strategy;
+const User = require('./models/user')
 
 passport.use(
     new SpotifyStrategy(
@@ -9,13 +10,27 @@ passport.use(
         callbackURL: 'http://localhost:3000/auth/spotify/callback'
       },
       function(accessToken, refreshToken, expires_in, profile, done) {
-        return done(err, user)
-        User.findOrCreate({ spotifyId: profile.id }, function(err, user) {
-          return done(err, user);
+        User.findOne({
+          '_id': profile.id
+        }, function(err, user) {
+          if (err) return done(err);
+      
+          if (!user) {
+            const user = new User({
+              name: profile.displayName,
+              _id: profile.id
+            });
+      
+            user.save(function(err) {
+              if (err) console.log(err);
+      
+              return done(err, user);
+            });
+          } else {
+            return done(err, user);
+          }
         });
-      }
-    )
-  );
+      }));
 
 passport.serializeUser(function(user, done) {
   done(null, user);
