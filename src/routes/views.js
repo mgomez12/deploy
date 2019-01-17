@@ -7,6 +7,10 @@ router.get('/', function(req, res, next) {
   res.sendFile('login.html', { root: 'src/views' });
 });
 
+router.get('/song', function(req, res, next) {
+  res.sendFile('song.html', { root: 'src/views' });
+});
+
 router.get('/index', function(req, res, next) {
   res.sendFile('index.html', { root: 'src/views' });
 });
