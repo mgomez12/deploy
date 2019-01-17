@@ -9,10 +9,15 @@ function formatParams(params) {
   }
   
   // params is given as a JSON
-  function get(endpoint, params, successCallback, failureCallback) {
+  function get(endpoint, params, successCallback, failureCallback, header) {
     const xhr = new XMLHttpRequest();
     const fullPath = endpoint + '?' + formatParams(params);
     xhr.open('GET', fullPath, true);
+    if (header){
+      header.map( (valueArray) => {
+        xhr.setRequestHeader(valueArray[0], valueArray[1]);
+      })
+    }
     xhr.onload = function(err) {
       if (xhr.readyState === 4) {
         if (xhr.status === 200) {
