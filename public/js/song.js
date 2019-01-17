@@ -1,8 +1,7 @@
 function main() {
     const profileId = window.location.search.substring(1);
-    console.log("hi")
     get('/api/user', {'_id': profileId}, function(profileUser) {
-        console.log("fuck")
+        console.log("fuck");
       renderSongData(profileUser);
       console.log(profileUser.name);
     });
