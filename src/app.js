@@ -23,7 +23,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get('/auth/spotify', passport.authenticate('spotify', { scope:['user-read-private']}),
+app.get('/auth/spotify', passport.authenticate('spotify', { scope:['user-read-private', 'user-top-read']}),
  function(req, res) {
   // The request will be redirected to spotify for authentication, so this
   // function will not be called.
