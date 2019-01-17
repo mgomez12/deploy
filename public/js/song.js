@@ -1,24 +1,24 @@
 function main() {
-    const profileId = window.location.search.substring(1);
-    console.log("hi")
-    get('/api/user', {'_id': profileId}, function(profileUser) {
-        console.log("fuck")
-      renderSongData(profileUser);
+    console.log("hi");
+    const trackId = window.location.search.substring(1);
+    get('/api/whoami', {}, function(profileUser) {
+        console.log("fuck");
+      renderSongData(profileUser,trackId);
       console.log(profileUser.name);
     });
   }
   
-function renderSongData(profile) {
-
+function renderSongData(profile,trackId) {
+    var BASE_URL = "https://api.spotify.com/v1/tracks/";
+    var link = BASE_URL + trackId;
+    console.log(link);
     var artistHeader = [['Authorization', 'Bearer ' + profile.access_token]];
-    get('https://api.spotify.com/v1/tracks/11dFghVXANMlKmJXsNCbNl', {}, function(songData) {
-
-        console.log(songData.items);
+    get(link, {}, function(songData) {
 
         // rendering song image
         const songContainer = document.getElementById('song-image');
         const songImage = document.createElement('img');
-        songImage.className = "ui medium rounded image";
+        songImage.className = "ui centered medium rounded image";
         songImage.src = songData.album.images[0].url; // need to fill this out
         songContainer.appendChild(songImage);
 

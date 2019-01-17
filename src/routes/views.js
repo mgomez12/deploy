@@ -11,6 +11,10 @@ router.get('/song', function(req, res, next) {
   res.sendFile('song.html', { root: 'src/views' });
 });
 
+router.get('/album', function(req, res, next) {
+  res.sendFile('album.html', { root: 'src/views' });
+});
+
 router.get('/index', function(req, res, next) {
   res.sendFile('index.html', { root: 'src/views' });
 });
