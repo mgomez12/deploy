@@ -1,8 +1,16 @@
 function main() {
-    //const profileId = window.location.search.substring(1);
-    get("https://api.spotify.com/v1/tracks/11dFghVXANMlKmJXsNCbNl", {}, function(songData) {
-      renderSongData(songData);
-    });
+    get('/api/whoami', {}, function(user) {
+        console.log(user);
+        var link = {
+            url: 'https://api.spotify.com/v1/tracks/11dFghVXANMlKmJXsNCbNl?market=ES',
+            headers: { 'Authorization': 'Bearer ' + user.access_token },
+            json: true
+          };
+        console.log(link);
+        get(link, {}, function(songData) {
+            renderSongData(songData);
+          });
+      });
   }
   
   function renderSongData(user) {
