@@ -14,6 +14,7 @@ function main() {
   }
   
   function renderSongData(user) {
+      
     // rendering song image
     const songContainer = document.getElementById('song-image');
     const songImage = document.createElement('img');
