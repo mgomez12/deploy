@@ -4,11 +4,13 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const passport = require('./passport');
 const db = require('./db');
+const path = require('path');
+const socketio = require('socket.io');
 
 
-const views = require('./routes/views');
 const api = require('./routes/api');
 const app = express();
+const publicPath = path.resolve(__dirname, '..', 'socket/dist');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -37,15 +39,16 @@ app.get(
     res.redirect('/u/profile?' + req.user._id);
   }
 );
+
   
 app.get('/logout', function(req, res) {
   req.logout();
   res.redirect('/');
 });
 
-app.use('/', views);
 app.use('/api', api)
-app.use('/static', express.static('public'));
+app.use(express.static(publicPath));
+
 app.use(function(req, res, next) {
   const err = new Error('Not Found');
   err.status = 404;
@@ -61,9 +64,14 @@ app.use(function(err, req, res, next) {
   });
 });
 
+
 // port config
 const port = 3000; // config variable
 const server = http.Server(app);
+
+const io = socketio(server);
+app.set('socketio', io);
+
 server.listen(port, function() {
   console.log('Server running on port: ' + port);
 });

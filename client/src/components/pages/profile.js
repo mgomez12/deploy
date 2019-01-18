@@ -1,12 +1,28 @@
-function main() {
-    const profileId = window.location.search.substring(1);
+import React, { Component } from 'react';
+import "../../public/css/styles.css"
+
+class Profile extends Component {
+	constructor(props) {
+        super(props);
+
+        this.state = {
+            name: null,
+            latestPost: null,
+            id: null,
+        };
+    }
+
+    componentDidMount() {
+        this.getProfile(this.props.match.params.user);
+        document.title = "Profile Page";
+  
     get('/api/user', {'_id': profileId}, function(profileUser) {
       renderUserData(profileUser);
       console.log(profileUser.name);
     });
   }
 
-function renderUserData(profile) {
+ renderUserData(profile) {
     const nameDiv = document.getElementById('name');
     nameDiv.innerText = profile.name;
 
@@ -24,5 +40,9 @@ function renderUserData(profile) {
     
 }
 
+    render() {
 
-main();
+    }
+
+}
+export default Profile;
