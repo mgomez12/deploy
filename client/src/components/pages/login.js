@@ -23,9 +23,7 @@ class Login extends Component {
             <Header size="huge" id="color-white">
                 <i>groove</i>
             </Header>
-            <Link to={"/api/auth/spotify"}>
-            <Button size='mini'>Login with Spotify</Button>
-            </Link>
+            <Button size='mini' href='/auth/spotify'>Login with Spotify</Button>
         </div>
         </div>
         )
