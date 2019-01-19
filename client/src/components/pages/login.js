@@ -12,6 +12,9 @@ class Login extends Component {
         };
     }
 
+    componentDidMount() {
+        
+    }
 
     render() {
         return (
@@ -27,10 +30,6 @@ class Login extends Component {
         </div>
         </div>
         )
-    }
-
-    login() {
-        this.context.router.push('/api/auth');
     }
 }
 export default Login;

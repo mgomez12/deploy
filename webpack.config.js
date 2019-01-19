@@ -24,6 +24,14 @@ module.exports = {
         loader: 'file-loader'
       },
       {
+        test: /\.(png|svg|jpg|gif)$/,
+        use: [
+          {
+            loader: 'url-loader'
+          }
+        ]
+      },
+      {
         test: /\.(scss|css)$/,
         use: [
           {
@@ -46,7 +54,9 @@ module.exports = {
     proxy: {
       '/api': 'http://localhost:3000',
       '/auth': 'http://localhost:3000',
-      '/logout': 'http://localhost:3000'
+      '/logout': 'http://localhost:3000',
+      '/login': 'http://localhost:3000',
+      '/u/profile': 'http://localhost:3000'
     }
   }
 };

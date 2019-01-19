@@ -6,11 +6,13 @@ const passport = require('./passport');
 const db = require('./db');
 const path = require('path');
 const socketio = require('socket.io');
+const request = require('request');
+const User = require('./models/user')
 
 
 const api = require('./routes/api');
 const app = express();
-const publicPath = path.resolve(__dirname, '..', 'socket/dist');
+const publicPath = path.resolve(__dirname, '..', 'client/dist');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -25,6 +27,14 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.get(['/u/profile/:user'], function (req, res) {
+  res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
+});
+
+app.get(['/login'], function (req, res) {
+  res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
+});
+
 app.get('/auth/spotify', passport.authenticate('spotify', { scope:['user-read-private', 'user-top-read']}),
  function(req, res) {
   // The request will be redirected to spotify for authentication, so this
@@ -36,7 +46,22 @@ app.get(
   passport.authenticate('spotify', { failureRedirect: '/login' }),
   function(req, res) {
     // Successful authentication, redirect home.
-    res.redirect('/u/profile?' + req.user._id);
+    var options = {
+      url: 'https://api.spotify.com/v1/me/top/tracks',
+      headers: {'Authorization': "Bearer " + req.user.access_token
+      }
+    };
+    console.log(options.headers)
+    
+    request(options, (err, res, body) => {
+      tracks = JSON.parse(body);
+      console.log(req.user._id)
+      User.findOne({_id: req.user._id}, (profile)=> {
+        profile.top_songs = tracks.items;
+        profile.save();
+      })
+    })
+    res.redirect('http://localhost:5000/');
   }
 );
 
@@ -75,3 +100,7 @@ app.set('socketio', io);
 server.listen(port, function() {
   console.log('Server running on port: ' + port);
 });
+
+
+
+

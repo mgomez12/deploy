@@ -9,7 +9,7 @@ function formatParams(params) {
   }
   
   // params is given as a JSON
-  export function get(endpoint, params, successCallback, failureCallback, header) {
+  function get(endpoint, params, successCallback, failureCallback, header) {
     const xhr = new XMLHttpRequest();
     const fullPath = endpoint + '?' + formatParams(params);
     xhr.open('GET', fullPath, true);
@@ -35,7 +35,7 @@ function formatParams(params) {
     xhr.send(null);
   }
   
-  export function post(endpoint, params, successCallback, failureCallback) {
+  function post(endpoint, params, successCallback, failureCallback) {
     const xhr = new XMLHttpRequest();
     xhr.open('POST', endpoint, true);
     xhr.setRequestHeader('Content-type', 'application/json');

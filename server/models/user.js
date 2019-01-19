@@ -7,7 +7,8 @@ const UserModelSchema = new mongoose.Schema ({
   _id           : String,
   top_artist   	: String,
   access_token  : String,
-  refresh_token : String
+  refresh_token : String,
+  top_songs     : Object,
 });
 
 // compile model from schema
