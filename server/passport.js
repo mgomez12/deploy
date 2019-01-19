@@ -20,7 +20,8 @@ passport.use(
               name: profile.displayName,
               _id: profile.id,
               access_token: accessToken,
-              refresh_token: refreshToken
+              refresh_token: refreshToken,
+              top_songs: {}
             });
       
             user.save(function(err) {

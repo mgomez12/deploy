@@ -51,12 +51,11 @@ app.get(
       headers: {'Authorization': "Bearer " + req.user.access_token
       }
     };
-    console.log(options.headers)
     
     request(options, (err, res, body) => {
       tracks = JSON.parse(body);
       console.log(req.user._id)
-      User.findOne({_id: req.user._id}, (profile)=> {
+      User.findOne({_id: req.user._id}, (err, profile)=> {
         profile.top_songs = tracks.items;
         profile.save();
       })

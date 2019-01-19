@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import "../../public/css/styles.css"
 import io from 'socket.io-client';
-import { Image, Container} from 'semantic-ui-react';
+import { Image, Container } from 'semantic-ui-react';
 import nick_pic from "../../public/assets/nick.jpg";
-import {get} from "../modules/api.js";
+import { get } from "../modules/api.js";
 
 class Profile extends Component {
     constructor(props) {
@@ -13,49 +13,52 @@ class Profile extends Component {
         this.isUpdated = false;
 
         this.state = {
-            userInfo: this.props.userInfo,
-            top_songs: 'top songs: ',
-            latestPost: null,
-            id: null,
+            userInfo: null
         };
-    
+
     }
 
     renderUserData(profile) {
-        let songs = this.top_songs
-        var artistHeader = [['Authorization', 'Bearer ' + profile.access_token]];
-        get('https://api.spotify.com/v1/me/top/tracks', {'limit': '10'}, function(songJson) {
-            
-            songJson.items.map( (songInfo) => {
-                songs += songInfo.name + ", "
-            })
-            console.log(songs);
-        }, null, artistHeader);
-        this.setState({
-            top_songs: songs
-        })
-        this.isUpdated = true;
-        
+
     }
 
     componentDidMount() {
-        this.renderUserData(this.state.userInfo);
-  }
+        this.getProfile(this.props.match.params.user);
+    }
 
-  render() {
-      console.log(this.state.userInfo)
-    if (this.isUpdated) {
+    getProfile(id) {
+        fetch('/api/user?_id=' + id).then(res => res.json())
+            .then((profile) => {
+                this.setState({
+                    userInfo: profile
+                })
+
+            })
+    }
+
+    render() {
+        let songs = '';
+        if (this.state.userInfo === null) {
+            songs = ' user info not loaded'
+        }
+        else {
+
+            console.log("top songs" + this.state.userInfo);
+            songs = 'Top songs: ';
+      this.state.userInfo.top_songs.map((song) => {
+          songs += song.name + ", "
+        }
+        ); }
+
         return (
+            <div>
+            {songs}
         <Container>
             <Image centered circular size='medium' src={nick_pic}/>
         </Container>
-        );
-        } else{
-        return(
-         <div></div>
-    )
+        </ div>
+        ) 
     }
-
+    
 }
-}
-export default Profile;
+        export default Profile;

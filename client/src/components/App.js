@@ -32,7 +32,7 @@ class App extends React.Component {
             
         <div>
             <Switch>
-            <Route path='/u/profile/:user' render = {() => <Profile userInfo={userInfo} />} />/>
+            <Route path='/u/profile/:user' component={Profile}/>
             <Route exact path ="/login" render = {() => <Login userInfo={userInfo} />} />
             <Route exact path="/" render = {() => <Main userInfo ={userInfo} />} />
             </Switch>
