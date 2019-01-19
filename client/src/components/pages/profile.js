@@ -3,14 +3,12 @@ import "../../public/css/styles.css"
 import io from 'socket.io-client';
 import { Image, Container } from 'semantic-ui-react';
 import nick_pic from "../../public/assets/nick.jpg";
-import { get } from "../modules/api.js";
 
 class Profile extends Component {
     constructor(props) {
         super(props);
 
         this.socket = io('http://localhost:3000');
-        this.isUpdated = false;
 
         this.state = {
             userInfo: null
@@ -38,7 +36,7 @@ class Profile extends Component {
 
     render() {
         let songs = '';
-        if (this.state.userInfo === null) {
+        if (this.state.userInfo.name === null) {
             songs = ' user info not loaded'
         }
         else {

@@ -5,14 +5,17 @@ import Profile from "./pages/Profile";
 import Root from "./Root";
 import Login from "./pages/Login";
 import Main from "./pages/Main"
-import { get } from "./modules/api"
+import Song from "./pages/Song";
 
 class App extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            userInfo: null
+            userInfo: {
+                name: null,
+                access_token: null
+            }
         };
     }
 
@@ -35,6 +38,7 @@ class App extends React.Component {
             <Route path='/u/profile/:user' component={Profile}/>
             <Route exact path ="/login" render = {() => <Login userInfo={userInfo} />} />
             <Route exact path="/" render = {() => <Main userInfo ={userInfo} />} />
+            <Route exact path="/song/:songid" render = {(props) => <Song {...props} token ={userInfo.access_token} />} />
             </Switch>
         </div>
         )

@@ -56,7 +56,8 @@ module.exports = {
       '/auth': 'http://localhost:3000',
       '/logout': 'http://localhost:3000',
       '/login': 'http://localhost:3000',
-      '/u/profile': 'http://localhost:3000'
+      '/u/profile': 'http://localhost:3000',
+      '/song': 'http://localhost:3000'
     }
   }
 };
