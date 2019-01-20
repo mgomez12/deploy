@@ -14,32 +14,23 @@ class App extends React.Component {
         super(props);
 
         this.state = {
-            userInfo: {
-                name: null,
-                access_token: null
-            }
+            userInfo: null
         };
     }
 
     componentWillMount () {
-        this.getUser()
+        this.getUser();
+        console.log(this.state.userInfo)
     }
 
-    updateUser = (info) => {
-        this.setState(
-            userInfo= info
-        )
-    }
   
     render() {
-        let userInfo = this.state.userInfo;
+        let userInfo = this.state.userInfo
+        if (userInfo == null) {
+            return(<div></div>)
+        }
         return (
-            
-        <div>
-            <Menu color='teal' inverted>
-                <Menu.Item name='profile' href='/u/profile/yy8gj7'/>
-                <Menu.Item name='song'/>
-            </Menu>
+            <div>
             <Switch>
             <Route path='/u/profile/:user' component={Profile}/>
             <Route exact path ="/login" render = {() => <Login userInfo={userInfo} />} />
@@ -58,18 +49,19 @@ class App extends React.Component {
     .then(
         userObj => {
             if (userObj._id !== undefined) {
-                this.setState({ 
-                    userInfo: userObj
-                });
                 console.log('set object')
-
+                this.setState({
+                    userInfo: userObj
+                })
             } else {
-                this.setState({ 
-                    userInfo: null
-                });
-                console.log('null object')
+                console.log('returned null user object')
+                this.setState({
+                    userInfo: {
+                    name: null,
+                    access_token: null
+                    }
+                })
             }
-            return userObj
         }
     )
     };
