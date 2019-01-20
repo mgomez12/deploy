@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+//import { Link } from 'react-router';
 import "../../public/css/styles.css"
 import io from 'socket.io-client';
 import { Segment, Header, Image, Container } from 'semantic-ui-react';
@@ -65,7 +66,7 @@ render() {
             {image}    
         </Container>
         <div>
-            <Header textAlign='center' size='large'>
+            <Header size='large'>
                 {name}
             </Header>
             <Header size='medium'>
@@ -76,7 +77,8 @@ render() {
            {tracks.map( track => {
                return(
                <Segment>
-                    {track.name}
+                   <a href={"/song/" + track.id}>{track.name}</a>
+                    
                </Segment>)
            })}
         </Segment.Group>
