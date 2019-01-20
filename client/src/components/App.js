@@ -14,7 +14,9 @@ class App extends React.Component {
         super(props);
 
         this.state = {
-            userInfo: null,
+            userInfo: {
+                access_token: null
+            },
             updated: false
         };
     }
@@ -33,9 +35,9 @@ class App extends React.Component {
             <Route path='/u/profile/:user' component={Profile}/>
             <Route exact path ="/login" component={Login} />} />
             <Route exact path="/" render = {() => <Main userInfo ={userInfo} />} />
-            <Route path="/song/:songid" render = {() => <Song token ={userInfo.access_token} />} />
+            <Route path="/song/:songid" render = {(props) => <Song {...props} token ={userInfo.access_token} />} />
             
-            <Route exact path="/album/:albumid" render = {() => <Album token ={userInfo.access_token} />}/>
+            <Route exact path="/album/:albumid" render = {(props) => <Album {...props} token ={userInfo.access_token} />}/>
             </Switch>
         </div>
         )
