@@ -4,7 +4,7 @@ import io from 'socket.io-client';
 import { Segment, Header, Image, Container } from 'semantic-ui-react';
 import nick_pic from "../../public/assets/nick.jpg";
 import {get} from "../modules/api";
-import NavBar from "../modules/navbar"
+import NavBar from "../modules/NavBar"
 
 class Album extends Component {
     constructor(props) {

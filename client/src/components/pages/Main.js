@@ -9,27 +9,22 @@ class Main extends Component {
         super(props);
     }
 
-    componentDidMount() {
+    componentDidUpdate() {
         console.log(this.props.userInfo)
+        if (this.props.UserInfo && !this.props.userInfo.name) {
+            console.log('main redirected')
+            this.props.history.push("/login")
+        }
     }
 
     render() {
-        if (this.props.userInfo == null) {
-            return (<Loader size='massive'/>)
-        }
-        else {
-            if(this.props.userInfo.name == null) {
-                this.redirect();
-            }
-
+        if (!this.props.userInfo) {
+            return <Loader size='massive'/>
         }
         return(<div>
             <NavBar/>
         </div>)
-    }
 
-    redirect() {
-        this.props.history.push("/login")
     }
 }
 
