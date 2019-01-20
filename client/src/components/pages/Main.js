@@ -16,8 +16,11 @@ class Main extends Component {
 
     render() {
         console.log(this.props.userInfo)
-        return(<div></div>)
+        return(
+            <div>
 
+            </div>
+        )
     }
 }
 
