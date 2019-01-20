@@ -10,10 +10,9 @@ class Main extends Component {
     }
 
     componentDidUpdate() {
-        console.log(this.props.userInfo)
-        if (this.props.UserInfo && !this.props.userInfo.name) {
-            console.log('main redirected')
-            this.props.history.push("/login")
+        if (this.props.UserInfo !== null && !this.props.userInfo.name) {
+            console.log('main redirected');
+            this.props.history.push("/login");
         }
     }
 
