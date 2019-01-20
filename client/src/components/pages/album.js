@@ -11,12 +11,15 @@ class Album extends Component {
 
         this.socket = io('http://localhost:3000');
         // will have to change server directory at some time
-        
         this.state = {
             albumInfo: null
         };
         this.gotAlbumInfo = false;
 
+    }
+    componentDidMount() {
+        this.renderAlbumData();
+        this.render()
     }
     componentDidUpdate() {
         if (this.props.token && !this.gotAlbumInfo) {
@@ -50,7 +53,6 @@ render() {
         for(let i  = 0; i < this.state.albumInfo.tracks.items.length; i++) {
             tracks.push(this.state.albumInfo.tracks.items[i]);
         }
-        console.log(tracks)
     }
 
     return(
@@ -59,7 +61,7 @@ render() {
             {image}    
         </Container>
         <div>
-            <Header size='large'>
+            <Header textAlign='center' size='large'>
                 {name}
             </Header>
             <Header size='medium'>
@@ -68,7 +70,6 @@ render() {
         </div>
         <Segment.Group>
            {tracks.map( track => {
-               {console.log(track.name)}
                return(
                <Segment>
                     {track.name}
