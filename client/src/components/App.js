@@ -1,6 +1,7 @@
 import React from "react";
 import "../public/css/app.css";
 import {Route, Switch, withRouter, Redirect } from "react-router-dom";
+import { Menu } from "semantic-ui-react"
 import Profile from "./pages/Profile";
 import Root from "./Root";
 import Login from "./pages/Login";
@@ -34,6 +35,10 @@ class App extends React.Component {
         return (
             
         <div>
+            <Menu color='teal' inverted>
+                <Menu.Item name='profile' href='/u/profile/yy8gj7'/>
+                <Menu.Item name='song'/>
+            </Menu>
             <Switch>
             <Route path='/u/profile/:user' component={Profile}/>
             <Route exact path ="/login" render = {() => <Login userInfo={userInfo} />} />

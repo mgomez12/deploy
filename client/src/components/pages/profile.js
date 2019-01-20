@@ -36,7 +36,7 @@ class Profile extends Component {
 
     render() {
         let songs = '';
-        if (this.state.userInfo.name === null) {
+        if (this.state.userInfo === null) {
             songs = ' user info not loaded'
         }
         else {
