@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import "../../public/css/styles.css"
 import io from 'socket.io-client';
-import { Header, Image, Container } from 'semantic-ui-react';
-import nick_pic from "../../public/assets/nick.jpg";
+import { Header, Image, Container, Menu } from 'semantic-ui-react';
 import {get} from "../modules/api";
 
 class Song extends Component {
@@ -12,10 +11,17 @@ class Song extends Component {
         this.socket = io('http://localhost:3000');
 
         this.state = {
-            songInfo: null
+            songInfo: null,
+            songid: null
         };
         this.gotSongInfo = false;
 
+    }
+    componentDidMount() {
+        const song = this.props.match.params.songid
+        this.setState({
+            songid: song
+        })
     }
     componentDidUpdate() {
         if (this.props.token && !this.gotSongInfo) {
@@ -28,7 +34,7 @@ class Song extends Component {
     const obj = this;
     var artistHeader = [['Authorization', 'Bearer ' + this.props.token]];
     console.log('token: ' + this.props.token)
-    get('https://api.spotify.com/v1/tracks/' + this.props.match.params.songid, {}, function(songData) {
+    get('https://api.spotify.com/v1/tracks/' + this.state.songid, {}, function(songData) {
 
         console.log('song data in get: ' + songData)
         obj.setState({
@@ -42,7 +48,7 @@ class Song extends Component {
 render() {
     let image, name, artist = '';
     if (this.state.songInfo) {
-        image = <Image centered size="medium" rounded src={this.state.songInfo.album.images[0].url}/>
+        image = <Image centered size="medium" src={this.state.songInfo.album.images[0].url}/>
         name = this.state.songInfo.name;
         artist =this.state.songInfo.artists[0].name;
     }

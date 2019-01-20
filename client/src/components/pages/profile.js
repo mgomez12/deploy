@@ -3,6 +3,7 @@ import "../../public/css/styles.css"
 import io from 'socket.io-client';
 import { Image, Container } from 'semantic-ui-react';
 import nick_pic from "../../public/assets/nick.jpg";
+import Navbar from "../modules/NavBar"
 
 class Profile extends Component {
     constructor(props) {
@@ -13,10 +14,6 @@ class Profile extends Component {
         this.state = {
             userInfo: null
         };
-
-    }
-
-    renderUserData(profile) {
 
     }
 
@@ -50,6 +47,7 @@ class Profile extends Component {
 
         return (
             <div>
+                <NavBar/>
             {songs}
         <Container>
             <Image centered circular size='medium' src={nick_pic}/>
