@@ -13,28 +13,26 @@ class App extends React.Component {
         super(props);
 
         this.state = {
-            userInfo: null
+            userInfo: null,
+            updated: false
         };
     }
 
-    componentWillMount () {
+    componentDidMount () {
         this.getUser();
         console.log(this.state.userInfo)
     }
 
   
     render() {
-        let userInfo = this.state.userInfo
-        if (userInfo == null) {
-            return(<div></div>)
-        }
+        let userInfo = this.state.userInfo;
         return (
             <div>
             <Switch>
             <Route path='/u/profile/:user' component={Profile}/>
-            <Route exact path ="/login" render = {() => <Login userInfo={userInfo} />} />
+            <Route exact path ="/login" component={Login} />} />
             <Route exact path="/" render = {() => <Main userInfo ={userInfo} />} />
-            <Route path="/song/:songid" render = {() => <Song  token ={userInfo.access_token} />} />
+            <Route path="/song/:songid" render = {() => <Song token ={userInfo.access_token} />} />
             </Switch>
         </div>
         )
@@ -49,7 +47,8 @@ class App extends React.Component {
             if (userObj._id !== undefined) {
                 console.log('set object')
                 this.setState({
-                    userInfo: userObj
+                    userInfo: userObj,
+                    updated: true
                 })
             } else {
                 console.log('returned null user object')
@@ -57,7 +56,8 @@ class App extends React.Component {
                     userInfo: {
                     name: null,
                     access_token: null
-                    }
+                    },
+                    updated: true
                 })
             }
         }

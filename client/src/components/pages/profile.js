@@ -3,7 +3,7 @@ import "../../public/css/styles.css"
 import io from 'socket.io-client';
 import { Image, Container } from 'semantic-ui-react';
 import nick_pic from "../../public/assets/nick.jpg";
-import Navbar from "../modules/NavBar"
+import NavBar from "../modules/NavBar";
 
 class Profile extends Component {
     constructor(props) {
