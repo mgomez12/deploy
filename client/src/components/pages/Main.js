@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import "../../public/css/styles.css";
 import {withRouter} from "react-router-dom";
 import NavBar from "../modules/NavBar"
+import { Loader } from "semantic-ui-react";
 
 class Main extends Component {
 	constructor(props) {
@@ -10,17 +11,25 @@ class Main extends Component {
 
     componentDidMount() {
         console.log(this.props.userInfo)
-        if (this.props.userInfo.name == null) {
-            console.log('main redirected')
-            this.props.history.push("/login")
-        }
     }
 
     render() {
-        
+        if (this.props.userInfo == null) {
+            return (<Loader size='massive'/>)
+        }
+        else {
+            if(this.props.userInfo.name == null) {
+                this.redirect();
+            }
+
+        }
         return(<div>
             <NavBar/>
         </div>)
+    }
+
+    redirect() {
+        this.props.history.push("/login")
     }
 }
 

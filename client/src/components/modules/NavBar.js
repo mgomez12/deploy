@@ -14,10 +14,14 @@ class NavBar extends Component{
     }
 
     render() {
-        return(<Menu color='teal' inverted>
-        <Menu.Item name='profile' href='/u/profile/yy8gj7'/>
-        <Menu.Item name='song'/>
-</Menu>)
+        return(
+        <Menu color='teal' inverted>
+            <Menu.Item icon='home' href="/"/>
+            <Menu.Item name='profile' href='/u/profile/yy8gj7'/>
+            <Menu.Item name='songs'/>
+            <Menu.Item name='search'/>
+            <Menu.Item name='logout' href="/logout" onClick={this.props.logout} position="right"/>
+        </Menu>)
 }
 }
 
