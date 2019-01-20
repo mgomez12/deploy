@@ -7,6 +7,7 @@ import Root from "./Root";
 import Login from "./pages/Login";
 import Main from "./pages/Main"
 import Song from "./pages/Song";
+import Album from "./pages/Album";
 
 class App extends React.Component {
     constructor(props) {
@@ -33,6 +34,8 @@ class App extends React.Component {
             <Route exact path ="/login" component={Login} />} />
             <Route exact path="/" render = {() => <Main userInfo ={userInfo} />} />
             <Route path="/song/:songid" render = {() => <Song token ={userInfo.access_token} />} />
+            
+            <Route exact path="/album/:albumid" render = {() => <Album token ={userInfo.access_token} />}/>
             </Switch>
         </div>
         )

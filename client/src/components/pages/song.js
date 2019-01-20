@@ -9,6 +9,7 @@ class Song extends Component {
         super(props);
 
         this.socket = io('http://localhost:3000');
+        // will have to change server directory at some time
 
         this.state = {
             songInfo: null,

@@ -26,7 +26,6 @@ class Main extends Component {
         return(<div>
             <NavBar/>
         </div>)
-
     }
 
     redirect() {
