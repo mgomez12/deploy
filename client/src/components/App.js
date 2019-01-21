@@ -32,11 +32,11 @@ class App extends React.Component {
         return (
             <div>
             <Switch>
-            <Route path='/u/profile/:user' component={Profile}/>
+            <Route path='/u/profile/:user' component={Profile} />} />
             <Route exact path ="/login" component={Login} />} />
             <Route exact path="/" render = {() => <Main userInfo ={userInfo} />} />
             <Route path="/song/:songid" render = {(props) => <Song {...props} token ={userInfo.access_token} />} />
-            
+            <Redirect from="/u/profile/me" to={"/u/profile/" + this.state.userInfo.name}/>
             <Route exact path="/album/:albumid" render = {(props) => <Album {...props} token ={userInfo.access_token} />}/>
             </Switch>
         </div>

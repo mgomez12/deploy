@@ -3,7 +3,7 @@ import "../../public/css/styles.css";
 import {withRouter} from "react-router-dom";
 import NavBar from "../modules/NavBar"
 import SuggestionBox from "../modules/SuggestionBox"
-import { Loader, Container, Grid, } from "semantic-ui-react";
+import { Loader, Container, Grid} from "semantic-ui-react";
 
 class Main extends Component {
 	constructor(props) {
@@ -26,7 +26,6 @@ class Main extends Component {
             <Container style={{padding: '5em'}}>
                 <Grid columns='2'>
                     <Grid.Column>
-                        <SuggestionBox/>
                     </Grid.Column>
                 </Grid>
             </Container>

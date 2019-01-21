@@ -23,12 +23,12 @@ class Profile extends Component {
 
     getProfile(id) {
         fetch('/api/user?_id=' + id).then(res => res.json())
-            .then((profile) => {
-                this.setState({
-                    userInfo: profile
-                })
-
+        .then((profile) => {
+            this.setState({
+                userInfo: profile
             })
+
+        })
     }
 
     render() {
