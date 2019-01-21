@@ -10,6 +10,8 @@ const UserModelSchema = new mongoose.Schema ({
   access_token  : String,
   refresh_token : String,
   top_songs     : Object,
+  suggestions_made: Array,
+  suggestions_received: Array
 });
 
 // compile model from schema
