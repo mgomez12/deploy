@@ -19,6 +19,7 @@ passport.use(
             const user = new User({
               name: profile.displayName,
               _id: profile.id,
+              image: '',
               access_token: accessToken,
               refresh_token: refreshToken,
               top_songs: {}

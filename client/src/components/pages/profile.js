@@ -14,11 +14,18 @@ class Profile extends Component {
         this.state = {
             userInfo: null
         };
+        this.gotProfileInfo = false;
 
     }
 
     componentDidMount() {
         this.getProfile(this.props.match.params.user);
+    }
+
+    componentDidUpdate() {
+        if (!this.gotProfileInfo) {
+        this.getProfile(this.props.match.params.user);
+        this.render() }
     }
 
     getProfile(id) {
@@ -27,21 +34,21 @@ class Profile extends Component {
             this.setState({
                 userInfo: profile
             })
-
+            this.gotProfileInfo = true;
         })
     }
 
     render() {
-        let songs = '';
-        if (this.state.userInfo === null) {
+        let songs, image = '';
+        if (!this.gotProfileInfo) {
             songs = ' user info not loaded'
         }
         else {
-
-            console.log("top songs" + this.state.userInfo);
+            console.log("top songs" + this.state.userInfo.images);
+            image = this.state.userInfo.images[0].url;
             songs = 'Top songs: ';
-      this.state.userInfo.top_songs.map((song) => {
-          songs += song.name + ", "
+            this.state.userInfo.top_songs.map((song) => {
+                songs += song.name + ", "
         }
         ); }
 
@@ -50,7 +57,7 @@ class Profile extends Component {
                 <NavBar/>
             {songs}
             <Container>
-                <Image centered circular size='medium' src={nick_pic}/>
+                <Image centered circular size='medium' src={image}/>
             </Container>
             </ div>
         ) 

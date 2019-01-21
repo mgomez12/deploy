@@ -54,17 +54,30 @@ app.get(
   passport.authenticate('spotify', { failureRedirect: '/login' }),
   function(req, res) {
     // Successful authentication, redirect home.
-    var options = {
+
+    var top = {
       url: 'https://api.spotify.com/v1/me/top/tracks',
-      headers: {'Authorization': "Bearer " + req.user.access_token
-      }
+      headers: {'Authorization': "Bearer " + req.user.access_token}
     };
-    
-    request(options, (err, res, body) => {
+    var prof = {
+      url: 'https://api.spotify.com/v1/users/' + req.user._id,
+      headers: {'Authorization': "Bearer " + req.user.access_token}
+    };
+
+    // request top material and save to databased
+    request(top, (err, res, body) => {
       tracks = JSON.parse(body);
       console.log(req.user._id)
       User.findOne({_id: req.user._id}, (err, profile)=> {
         profile.top_songs = tracks.items;
+        profile.save();
+      })
+    
+    // request image
+    request(prof, (err, res, body) => {
+      profInfo = JSON.parse(body);
+      User.findOne({_id: req.user._id}, (err, profile)=> {
+        profile.image = profInfo.images[0].url;
         profile.save();
       })
     })
