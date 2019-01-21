@@ -22,7 +22,9 @@ passport.use(
               image: '',
               access_token: accessToken,
               refresh_token: refreshToken,
-              top_songs: {}
+              top_songs: {},
+              suggestions_made: [],
+              suggestions_received: []
             });
       
             user.save(function(err) {
