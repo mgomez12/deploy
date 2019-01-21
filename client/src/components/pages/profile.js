@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import "../../public/css/styles.css"
 import io from 'socket.io-client';
-import { Image, Container, Input } from 'semantic-ui-react';
+import { Segment, Image, Container } from 'semantic-ui-react';
 import nick_pic from "../../public/assets/nick.jpg";
 import NavBar from "../modules/NavBar";
 
@@ -43,7 +43,7 @@ class Profile extends Component {
         let spotify_follower = 0;
         let fav_song_rn, top_songs, top_artists = {};
         if (!this.gotProfileInfo) {
-            songs = ' user info not loaded'
+            //do something here!
         }
         else {
             console.log("top songs" + this.state.userInfo.images);
