@@ -35,7 +35,7 @@ class SuggestionForm extends Component {
         return(
             
 <Input
-    action={{ color: 'teal', labelPosition: 'left', content: 'submit', onClick: this.submitSuggestion}}
+    action={{ color: 'teal', content: 'submit', onClick: this.submitSuggestion}}
     actionPosition='right'
     placeholder='Search...'
     onChange={this.handleChange}
