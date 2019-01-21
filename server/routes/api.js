@@ -35,6 +35,14 @@ router.post('/submitSuggestion', function(req, res) {
         time_sent: req.body.time
     })
     newSuggestion.save();
+    User.findOne({_id: req.body.sender}, (err, profile) => {
+        profile.suggestions_made.push(newSuggestion._id)
+        profile.save()
+    });
+    User.findOne({_id: req.body.receiver}, (err, profile) => {
+        profile.suggestions_received.push(newSuggestion._id)
+        profile.save()
+    });
     res.send({})
 })
 

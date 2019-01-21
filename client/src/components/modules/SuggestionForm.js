@@ -13,8 +13,6 @@ class SuggestionForm extends Component {
         this.socket = io('http://localhost:3000');
 
         this.state = {
-            sender: this.props.userId,
-            receiver: this.props.receiverId,
             track: ''
         };
         this.handleChange = this.handleChange.bind(this)
