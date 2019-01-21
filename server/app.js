@@ -78,7 +78,8 @@ app.get(
         profile.top_songs = tracks.items;
         profile.save();
       })
-
+    })
+    
     // request top artists and save to database
     request(top_artists, (err, res, body) => {
       artists = JSON.parse(body);
@@ -86,7 +87,8 @@ app.get(
         profile.top_artists = artists.items;
         profile.save();
       })
-    
+    })
+
     // request image and spotify follower number
     request(prof, (err, res, body) => {
       profInfo = JSON.parse(body);
@@ -135,7 +137,5 @@ app.set('socketio', io);
 server.listen(port, function() {
   console.log('Server running on port: ' + port);
 });
-
-
 
 
