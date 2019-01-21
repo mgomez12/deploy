@@ -55,29 +55,44 @@ app.get(
   function(req, res) {
     // Successful authentication, redirect home.
 
-    var top = {
-      url: 'https://api.spotify.com/v1/me/top/tracks',
+    var top_songs = {
+      url: 'https://api.spotify.com/v1/me/top/tracks?limit=50',
       headers: {'Authorization': "Bearer " + req.user.access_token}
     };
+
+    var top_artists = {
+      url: 'https://api.spotify.com/v1/me/top/artists?limit=50',
+      headers: {'Authorization': "Bearer " + req.user.access_token}
+    };
+
     var prof = {
       url: 'https://api.spotify.com/v1/users/' + req.user._id,
       headers: {'Authorization': "Bearer " + req.user.access_token}
     };
 
-    // request top material and save to databased
-    request(top, (err, res, body) => {
+    // request top songs and save to database
+    request(top_songs, (err, res, body) => {
       tracks = JSON.parse(body);
       console.log(req.user._id)
       User.findOne({_id: req.user._id}, (err, profile)=> {
         profile.top_songs = tracks.items;
         profile.save();
       })
+
+    // request top artists and save to database
+    request(top_artists, (err, res, body) => {
+      artists = JSON.parse(body);
+      User.findOne({_id: req.user._id}, (err, profile)=> {
+        profile.top_artists = artists.items;
+        profile.save();
+      })
     
-    // request image
+    // request image and spotify follower number
     request(prof, (err, res, body) => {
       profInfo = JSON.parse(body);
       User.findOne({_id: req.user._id}, (err, profile)=> {
         profile.image = profInfo.images[0].url;
+        profile.spotify_followers = profInfo.followers.total;
         profile.save();
       })
     })

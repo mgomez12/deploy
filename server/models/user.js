@@ -3,14 +3,18 @@ const mongoose = require('mongoose');
 
 // define a schema
 const UserModelSchema = new mongoose.Schema ({
-  name        	: String,
-  _id           : String,
-  top_artist   	: String,
-  image         : String,
-  access_token  : String,
-  refresh_token : String,
-  top_songs     : Object,
-  suggestions_made: Array,
+  name        	      : String,
+  _id                 : String,
+  image               : String,
+  descrip             : String,
+  fav_song_rn         : String,
+  spotify_followers   : Number,
+  friends             : Object,
+  access_token        : String,
+  refresh_token       : String,
+  top_songs           : Object,
+  top_artists         : Object,
+  suggestions_made    : Array,
   suggestions_received: Array
 });
 

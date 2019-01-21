@@ -39,27 +39,57 @@ class Profile extends Component {
     }
 
     render() {
-        let songs, image = '';
+        let image, description = '';
+        let spotify_follower = 0;
+        let fav_song_rn, top_songs, top_artists = {};
         if (!this.gotProfileInfo) {
             songs = ' user info not loaded'
         }
         else {
             console.log("top songs" + this.state.userInfo.images);
-            image = this.state.userInfo.images[0].url;
-            songs = 'Top songs: ';
-            this.state.userInfo.top_songs.map((song) => {
-                songs += song.name + ", "
+            image = this.state.userInfo.images;
+            description = this.state.userInfo.descrip;
+
+            spotify_follower = this.state.userInfo.spotify_followers;
+
+            fav_song_rn = this.state.userInfo.fav_song_rn;
+            top_songs = this.state.userInfo.top_songs;
+            top_artists = this.state.userInfo.top_artists;
+            
+
         }
-        ); }
 
         return (
-            <div>
-                <NavBar/>
-            {songs}
             <Container>
-                <Image centered circular size='medium' src={image}/>
+                <div>
+                <NavBar/>
+                <Container>
+                    <Image centered circular size='medium' src={image}/>
+                </Container>
+                <p>Spotify Followers: {spotify_follower}</p>
+                <Segment raised> My fav song rn: {fav_song_rn.name}</Segment>
+                </ div>
+                <Container>
+                    <Segment.Group>
+                        {top_songs.map( track => {
+                            return(
+                            <Segment>
+                                <a href={"/song/" + track.id}>{track.name}</a>
+                            </Segment>)
+                        })}
+                    </Segment.Group>
+                </Container>
+                <Container>
+                    <Segment.Group>
+                        {top_artists.map( artist => {
+                            return(
+                            <Segment>
+                                <a href={"/artist/" + artist.id}>{artist.name}</a>
+                            </Segment>)
+                        })}
+                    </Segment.Group>
+                </Container>
             </Container>
-            </ div>
         ) 
     }
     
