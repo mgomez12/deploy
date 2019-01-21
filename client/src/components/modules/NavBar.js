@@ -17,7 +17,7 @@ class NavBar extends Component{
         return(
         <Menu color='teal' inverted>
             <Menu.Item icon='home' href="/"/>
-            <Menu.Item name='profile' href='/u/profile/yy8gj7'/>
+            <Menu.Item name='profile' href='/u/profile/glabred'/>
             <Menu.Item name='songs' href='/song/2ZWlPOoWh0626oTaHrnl2a'/>
             <Menu.Item name='albums' href='/album/3mH6qwIy9crq0I9YQbOuDf'/>
             <Menu.Item>
