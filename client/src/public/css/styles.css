@@ -36,3 +36,26 @@
 #color-white {
     color: #f1f1f1;
 }
+
+section {
+    width: 100%;
+    display: table;
+    margin: 0;
+    max-width: none;
+}
+
+.headtitle{
+    height: 50px;
+    padding: 0 5%;
+}
+
+.mediumtitle{
+    height: 30px;
+    padding: 0 5%;
+}
+
+.artistlist{
+    height: 50px;
+    padding: 5% 7%;
+    text-align: center;
+}
