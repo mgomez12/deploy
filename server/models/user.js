@@ -7,7 +7,7 @@ const UserModelSchema = new mongoose.Schema ({
   _id                 : String,
   image               : String,
   descrip             : String,
-  fav_song_rn         : String,
+  fav_song_rn         : Object,
   spotify_followers   : Number,
   friends             : Object,
   access_token        : String,

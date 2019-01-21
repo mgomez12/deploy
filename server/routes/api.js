@@ -4,6 +4,7 @@ const connect = require('connect-ensure-login');
 
 // models
 const User = require('../models/user');
+const Suggestion = require('../models/suggestion')
 
 const router = express.Router();
 
@@ -24,5 +25,17 @@ else{
     res.send({});
 }
 });
+
+router.post('/submitSuggestion', function(req, res) {
+    connect.ensureLoggedIn();
+    const newSuggestion = Suggestion({
+        sender_id: req.body.sender,
+        receiver_id: req.body.receiver,
+        track_id: req.body.track,
+        time_sent: req.body.time
+    })
+    newSuggestion.save();
+    res.send({})
+})
 
 module.exports = router;

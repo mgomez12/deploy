@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import "../../public/css/styles.css"
 import io from 'socket.io-client';
-import { Image, Container } from 'semantic-ui-react';
+import { Image, Container, Input } from 'semantic-ui-react';
 import nick_pic from "../../public/assets/nick.jpg";
 import NavBar from "../modules/NavBar";
 
