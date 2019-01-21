@@ -27,7 +27,9 @@ passport.use(
               access_token: accessToken,
               refresh_token: refreshToken,
               top_songs: {},
-              top_artists: {}
+              top_artists: {},
+              suggestions_made: [],
+              suggestions_received: []
             });
       
             user.save(function(err) {
