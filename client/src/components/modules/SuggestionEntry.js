@@ -41,7 +41,7 @@ class SuggestionEntry extends Component {
             </Feed.Label>
             <Feed.Content>
                 <Feed.Summary >
-                    <Feed.User src={"/u/profile/" + this.state.senderInfo._id} style={{padding:'4px'}}>
+                    <Feed.User href={"/u/profile/" + this.state.senderInfo._id} style={{padding:'4px'}}>
                         {this.state.senderInfo.name}
                     </Feed.User>
                         suggested the song 
