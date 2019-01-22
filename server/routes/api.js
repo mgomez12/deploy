@@ -26,7 +26,18 @@ else{
 }
 });
 
-router.post('/submitSuggestion', function(req, res) {
+router.get("/suggestion", function(req, res) {
+    connect.ensureLoggedIn();
+    let returnArray = [];
+    console.log(req.query.receiver)
+    Suggestion.find( {receiver_id: req.query.receiver}, {limit: Number(req.query.limit)}, items => {
+        console.log(items)
+    });
+    
+    res.send(returnArray)
+})
+
+router.post('/suggestion', function(req, res) {
     connect.ensureLoggedIn();
     const newSuggestion = Suggestion({
         sender_id: req.body.sender,

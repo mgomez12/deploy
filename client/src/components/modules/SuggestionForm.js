@@ -28,7 +28,7 @@ class SuggestionForm extends Component {
 
     submitSuggestion() {
         console.log('submitted')
-        post('/api/submitSuggestion', {receiver: this.props.receiver._id, sender: this.props.sender._id, track: this.state.track, time: '0'})
+        post('/api/suggestion', {receiver: this.props.receiver._id, sender: this.props.sender._id, track: this.state.track, time: '0'})
 
     }
     render() {
