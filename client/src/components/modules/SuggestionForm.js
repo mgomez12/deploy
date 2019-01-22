@@ -37,13 +37,14 @@ class SuggestionForm extends Component {
             input: '',
             submitted: true
         })
+        const date = new Date()
         if (!this.props.isTrack) {
             console.log('submitted' + this.props.userId + this.state.input)
-            post('/api/suggestion', {receiver: this.state.input, sender: this.props.userId, track: this.props.track, time: '0'})
+            post('/api/suggestion', {receiver: this.state.input, sender: this.props.userId, track: this.props.track, time:date})
         }
         else {
         console.log('submitted' + this.props.userId + this.props.receiverId)
-        post('/api/suggestion', {receiver: this.props.receiverId, sender: this.props.userId, track: this.state.input, time: '0'})
+        post('/api/suggestion', {receiver: this.props.receiverId, sender: this.props.userId, track: this.state.input, time:date})
         }
     }
     render() {

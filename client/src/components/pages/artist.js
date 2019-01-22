@@ -3,7 +3,6 @@ import "../../public/css/styles.css"
 import io from 'socket.io-client';
 import { Segment, Header, Image, Container } from 'semantic-ui-react';
 import {get} from "../modules/api";
-import NavBar from "../modules/NavBar"
 
 class Artist extends Component {
     constructor(props) {
@@ -93,7 +92,6 @@ render() {
 
     return(
         <div>
-            <NavBar userInfo={this.props.userInfo}/>
         <Container>
 
         <section>

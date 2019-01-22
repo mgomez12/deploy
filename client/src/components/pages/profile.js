@@ -3,7 +3,6 @@ import "../../public/css/styles.css"
 import io from 'socket.io-client';
 import { Loader, Header, Grid, Segment, Image, Container } from 'semantic-ui-react';
 import default_profile from "../../public/assets/default_profile.png";
-import NavBar from "../modules/NavBar";
 import SuggestionForm from '../modules/SuggestionForm';
 
 class Profile extends Component {
@@ -115,7 +114,6 @@ class Profile extends Component {
         
         return (
             <div>
-                <NavBar userInfo={this.props.viewerInfo}/>
                 <Grid style={{padding:"10px"}}>
                     <Grid.Row columns={2} verticalAlign='middle'>  
                         <Grid.Column width='5' className='center-parent'>
@@ -136,7 +134,7 @@ class Profile extends Component {
                                 Description: {description}
                             </Header>
                         </Grid.Column>
-                        <Grid.Column style={{'text-align':'center'}}>
+                        <Grid.Column style={{'textAlign':'center'}}>
                             <Header as="h3">
                             Top Songs: 
                             </Header>
@@ -144,7 +142,7 @@ class Profile extends Component {
                                 {this.loadFavSongs()}
                             </Segment.Group>
                         </Grid.Column>
-                        <Grid.Column style={{'text-align':'center'}}>
+                        <Grid.Column style={{'textAlign':'center'}}>
                             <Header as="h3">
                             Top Artists:
                             </Header>

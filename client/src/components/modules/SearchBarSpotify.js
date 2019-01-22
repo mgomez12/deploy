@@ -2,11 +2,13 @@ import _ from 'lodash'
 import faker from 'faker'
 import io from 'socket.io-client';
 import React, { Component } from 'react'
-import { Search, Grid, Header, Segment } from 'semantic-ui-react'
-import {get} from "../modules/api";
+import {Redirect } from "react-router-dom";
+import { Form, Search, Grid, Header, Segment } from 'semantic-ui-react'
+import {get} from "./api";
 
 
-class SearchBar extends Component {
+
+class SearchBarSpotify extends Component {
     constructor(props) {
         super(props);
 
@@ -29,73 +31,78 @@ class SearchBar extends Component {
                 image: "https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=234005436790515&height=200&width=200&ext=1550675248&hash=AeQ2vzL0Qc9aF3s7"
             }]
         };
-        console.log(this.state.source);
+        
     }
 
   componentWillMount() {
     this.resetComponent()
   }
 
-  componentWillUpdate() {
-      this.updateSourceTracks();
-  }
-
   resetComponent = () => this.setState({ isLoading: false, results: [], value: '' })
 
-  handleResultSelect = (e, { result }) => this.setState({ value: result.title })
-
-  handleSearchChange = (e, { value }) => {
-    this.setState({ isLoading: true, value })
-    this.updateSourceTracks();
-
-    setTimeout(() => {
-      if (this.state.value.length < 1) return this.resetComponent()
-      const re = new RegExp(_.escapeRegExp(this.state.value), 'i')
-      const isMatch = result => re.test(result.title)
-      console.log("start")
-        
-      this.setState({
-        isLoading: false,
-        results: _.filter(this.state.source, isMatch),
-      })
-
-    }, 300)
+  handleResultSelect = (e, { result }) => {
+      
+      this.setState({ value: result.title })
+      console.log(result)
+      this.props.history.push('/song/' + result.key);
+      this.resetComponent();
   }
 
-  updateSourceTracks() {
+  handleSearchChange = (e, { value }) => {
+    this.setState({ isLoading: true, value: value })
+
+    setTimeout(() => {
+        this.updateSourceTracks(value);
+        this.render();
+    }, 300)
+
+  }
+
+  updateSourceTracks(value) {
+    if (value.length < 1) return this.resetComponent() 
     const obj = this;
     var artistHeader = [['Authorization', 'Bearer ' + this.props.userInfo.access_token]];
     console.log('token: ' + this.props.userInfo.access_token)
-    get('https://api.spotify.com/v1/search?q=' + this.state.value + '&type=track&market=US', null, function(searchData) {
+    get('https://api.spotify.com/v1/search?q=' + value + '&type=track&market=US&limit=5', null, function(searchData) {
 
         console.log('search data in get: ' + searchData.tracks.items[0].name)
         const compiled = searchData.tracks.items.map( track => {
             return(
                 {
+                    key: track.id,
                     title: track.name,
-                    image: track.album.images[0].url
+                    image: track.album.images[0].url,
+                    description: track.album.artists[0].name,
                 }
             );
         });
         console.log(compiled)
         obj.setState({
-            source: compiled
+            isLoading: false,
+            results: compiled
         })
     }, null, artistHeader);
+  }
+
+  onClickFunc(track) {
+    console.log("in onClickFunc")
+    ;
   }
 
   render() {
     const { isLoading, value, results } = this.state
 
     return (
-          <Search
-            loading={isLoading}
-            onResultSelect={this.handleResultSelect}
-            onSearchChange={_.debounce(this.handleSearchChange, 500, { leading: true })}
-            results={results}
-            value={value}
-          />
+        <div>
+                <Search
+                    loading={isLoading}
+                    onResultSelect={this.handleResultSelect}
+                    onSearchChange={_.debounce(this.handleSearchChange, 500, { leading: true })}
+                    results={results}
+                    value={value}
+                />
+        </div>
     )
   }
 }
-export default SearchBar;
+export default SearchBarSpotify;
