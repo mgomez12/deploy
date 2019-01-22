@@ -74,7 +74,7 @@ render() {
     let albums=[]
     let related=[]
     if (this.state.artistInfo && this.state.artisttoptracks && this.state.artistalbums && this.state.relatedartists) {
-        image = <Image className="objectfade" centered size="large" rounded src={this.state.artistInfo.images[0].url}/>
+        image = <Image className="objectfade" centered rounded src={this.state.artistInfo.images[0].url}/>
         artist = this.state.artistInfo.name;
         for(let i  = 0; i < this.state.artisttoptracks.tracks.length; i++) {
             console.log(this.state.artisttoptracks.tracks[i]);
@@ -93,18 +93,21 @@ render() {
 
     return(
         <div>
-            <NavBar/>
+            <NavBar userInfo={this.props.userInfo}/>
         <Container>
-        <Container className="center-text" id="artist-image">
-            {image}
-            <Header size='large' className="overlay">
-                <div className="text">
-                {artist}
-                </div>
-            </Header>    
+        <section className="wrap">
+        <Container>
+            {image}    
         </Container>
+            <div class="overlay">
+            <div className="text">
+                {artist}
+            </div>
+            </div>
+        </section>
+
         <section className="mediumtitle">
-            <Header size='medium'>
+            <Header size='large'>
                 {"Top Songs"}
             </Header>
         </section>
@@ -122,7 +125,7 @@ render() {
     <section className="mediumtitle">
     <div>
         <Container>
-            <Header size='medium'>
+            <Header size='large'>
                 {"Albums"}
             </Header>
         </Container>
@@ -140,7 +143,7 @@ render() {
     </div>
     </section>
     <section className="mediumtitle">
-            <Header size='medium'>
+            <Header size='large'>
                 {"Related Artists"}
             </Header>
         </section>
