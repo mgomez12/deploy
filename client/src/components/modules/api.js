@@ -11,7 +11,7 @@ function formatParams(params) {
   // params is given as a JSON
   export function get(endpoint, params, successCallback, failureCallback, header) {
     const xhr = new XMLHttpRequest();
-    const fullPath = endpoint + '?' + formatParams(params);
+    const fullPath = endpoint + (params!==null ? '?' + formatParams(params) : '')
     xhr.open('GET', fullPath, true);
     if (header){
       header.map( (valueArray) => {
@@ -38,7 +38,7 @@ function formatParams(params) {
   export function post(endpoint, params, successCallback, failureCallback) {
     const xhr = new XMLHttpRequest();
     xhr.open('POST', endpoint, true);
-    xhr.setRequestHeader('Content-type', 'application/json');
+    xhr.setRequestHeader('Content-type', 'application/json');   
     xhr.withCredentials = true;
     xhr.onload = function(err) {
       if (xhr.readyState === 4) {
