@@ -63,7 +63,7 @@ render() {
 
     return(
         <div>
-            <NavBar/>
+            <NavBar userInfo={this.props.userInfo}/>
     <Container>
         <Container className="center-text" id="album-image">
             {image}    

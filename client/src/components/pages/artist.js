@@ -93,7 +93,7 @@ render() {
 
     return(
         <div>
-            <NavBar/>
+            <NavBar userInfo={this.props.userInfo}/>
     <Container>
         <section>
         <Container className="center-text" id="artist-image">

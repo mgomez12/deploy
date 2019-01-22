@@ -33,12 +33,12 @@ class App extends React.Component {
         return (
             <div>
             <Switch>
-            <Route path='/u/profile/:user' render = {(props) => <Profile {...props} viewerInfo={userInfo} />} />
+            <Route path='/u/profile/:user' render = {(props) => <Profile {...props} userInfo ={userInfo} viewerInfo={userInfo} />} />
             <Route exact path ="/login" component={Login} />} />
             <Route exact path="/" render = {() => <Main userInfo ={userInfo} />} />
-            <Route path="/song/:songid" render = {(props) => <Song {...props} token ={userInfo.access_token} />} />
-            <Route exact path="/album/:albumid" render = {(props) => <Album {...props} token ={userInfo.access_token} />}/>
-            <Route exact path="/artist/:artistid" render = {(props) => <Artist {...props} token ={userInfo.access_token} />}/>
+            <Route path="/song/:songid" render = {(props) => <Song {...props} userInfo ={userInfo} token ={userInfo.access_token} />} />
+            <Route exact path="/album/:albumid" render = {(props) => <Album {...props} userInfo ={userInfo} token ={userInfo.access_token} />}/>
+            <Route exact path="/artist/:artistid" render = {(props) => <Artist {...props} userInfo ={userInfo} token ={userInfo.access_token} />}/>
             </Switch>
         </div>
         )

@@ -3,6 +3,7 @@ import "../../public/css/styles.css"
 import io from 'socket.io-client';
 import { Header, Image, Container, Menu } from 'semantic-ui-react';
 import {get} from "../modules/api";
+import NavBar from "../modules/NavBar";
 
 class Song extends Component {
     constructor(props) {
@@ -58,6 +59,7 @@ render() {
 
     return(
         <div>
+    <NavBar userInfo={this.props.userInfo}/>
     <Container className="center-screen">
         <Container className="center-text" id="song-image">
             {image}

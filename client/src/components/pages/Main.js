@@ -23,7 +23,7 @@ class Main extends Component {
         }
         console.log(this.props.userInfo.name)
         return(<div>
-            <NavBar/>
+            <NavBar userInfo={this.props.userInfo}/>
             <Container style={{padding: '5em'}}>
                 <Grid columns='2' stackable style={{height:'80vh'}}>
                     <Grid.Column>
