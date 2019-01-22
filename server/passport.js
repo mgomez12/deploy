@@ -13,6 +13,7 @@ passport.use(
         User.findOne({
           '_id': profile.id
         }, function(err, user) {
+          console.log(profile.photos)
           if (err) return done(err);
       
           if (!user) {
