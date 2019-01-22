@@ -15,12 +15,16 @@ class Album extends Component {
         // will have to change server directory at some time
         this.state = {
             albumInfo: null,
+            albumid: null
         };
         this.gotAlbumInfo = false;
 
     }
     componentDidMount() {
-        this.renderAlbumData();
+        const album = this.props.match.params.albumid
+        this.setState({
+            albumid: album
+        })
     }
     componentDidUpdate() {
         if (this.props.token && !this.gotAlbumInfo) {
@@ -33,7 +37,7 @@ class Album extends Component {
     const obj = this;
     var artistHeader = [['Authorization', 'Bearer ' + this.props.token]];
     console.log('token: ' + this.props.token)
-    get('https://api.spotify.com/v1/albums/' + this.props.match.params.albumid, {}, function(albumData) {
+    get('https://api.spotify.com/v1/albums/' + this.state.albumid, {}, function(albumData) {
 
         console.log('album data in get: ' + albumData)
         obj.setState({
