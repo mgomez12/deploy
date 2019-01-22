@@ -15,12 +15,16 @@ class Album extends Component {
         // will have to change server directory at some time
         this.state = {
             albumInfo: null,
+            albumid: null
         };
         this.gotAlbumInfo = false;
 
     }
     componentDidMount() {
-        this.renderAlbumData();
+        const album = this.props.match.params.albumid
+        this.setState({
+            albumid: album
+        })
     }
     componentDidUpdate() {
         if (this.props.token && !this.gotAlbumInfo) {
@@ -33,7 +37,7 @@ class Album extends Component {
     const obj = this;
     var artistHeader = [['Authorization', 'Bearer ' + this.props.token]];
     console.log('token: ' + this.props.token)
-    get('https://api.spotify.com/v1/albums/' + this.props.match.params.albumid, {}, function(albumData) {
+    get('https://api.spotify.com/v1/albums/' + this.state.albumid, {}, function(albumData) {
 
         console.log('album data in get: ' + albumData)
         obj.setState({
@@ -45,12 +49,13 @@ class Album extends Component {
 
     
 render() {
-    let image, name, artist = '';
+    let image, name, artist, artistid = '';
     let tracks = [];
     if (this.state.albumInfo) {
         image = <Image centered size="medium" rounded src={this.state.albumInfo.images[0].url}/>
         name = this.state.albumInfo.name;
         artist = this.state.albumInfo.artists[0].name;
+        artistid=this.state.albumInfo.artists[0].id
         for(let i  = 0; i < this.state.albumInfo.tracks.items.length; i++) {
             tracks.push(this.state.albumInfo.tracks.items[i]);
         }
@@ -68,7 +73,7 @@ render() {
                 {name}
             </Header>
             <Header size='medium'>
-                {artist}
+            <a href={"/artist/" + artistid}>{artist}</a>
             </Header>
         </div>
         <Segment.Group>

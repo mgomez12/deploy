@@ -47,11 +47,12 @@ class Song extends Component {
 
     
 render() {
-    let image, name, artist, audio = '';
+    let image, name, artist, audio, artistid = '';
     if (this.state.songInfo) {
         image = <Image centered size="medium" src={this.state.songInfo.album.images[0].url}/>
         name = this.state.songInfo.name;
         artist =this.state.songInfo.artists[0].name;
+        artistid=this.state.songInfo.artists[0].id;
         audio = <audio autoPlay src={this.state.songInfo.preview_url}/>;
     }
 
@@ -66,7 +67,7 @@ render() {
                 {name}
             </Header>
             <Header size='medium'>
-                {artist}
+            <a href={"/artist/" + artistid}>{artist}</a>
             </Header>
         </div>
     </Container>
