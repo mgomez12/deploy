@@ -74,7 +74,7 @@ render() {
     let albums=[]
     let related=[]
     if (this.state.artistInfo && this.state.artisttoptracks && this.state.artistalbums && this.state.relatedartists) {
-        image = <Image className="objectfade" centered rounded src={this.state.artistInfo.images[0].url}/>
+        image = <Image size="medium" centered rounded src={this.state.artistInfo.images[0].url}/>
         artist = this.state.artistInfo.name;
         for(let i  = 0; i < this.state.artisttoptracks.tracks.length; i++) {
             console.log(this.state.artisttoptracks.tracks[i]);
@@ -95,24 +95,26 @@ render() {
         <div>
             <NavBar userInfo={this.props.userInfo}/>
         <Container>
-        <section className="wrap">
+
+        <section>
         <Container>
             {image}    
         </Container>
-            <div class="overlay">
-            <div className="text">
-                {artist}
-            </div>
-            </div>
         </section>
-
+        <section>
+        <Container>
+        <Header size= "large">
+                {artist}
+        </Header>
+        </Container>
+        </section>
+        <div>
         <section className="mediumtitle">
             <Header size='large'>
                 {"Top Songs"}
             </Header>
         </section>
         <section className="artistlist">
-        <div>
            {toptracks.map( track => {
                {console.log(track.name)}
                return(
@@ -120,47 +122,49 @@ render() {
                     <a href={"/song/" + track.id}>{track.name}</a>
                </Segment>)
             })}
-        </div>
         </section>
-    <section className="mediumtitle">
-    <div>
-        <Container>
-            <Header size='large'>
-                {"Albums"}
-            </Header>
-        </Container>
-    </div>
-    </section>
-    <section className="artistlist">
-    <div>
-        {albums.map( album => {
-            {console.log(album.name)}
-            return(
-            <Segment floated="left">
-                <a href={"/album/" + album.id}>{album.name}</a>
-            </Segment>)
-        })}
-    </div>
-    </section>
-    <section className="mediumtitle">
-            <Header size='large'>
-                {"Related Artists"}
-            </Header>
+        </div>
+
+
+        <section className="mediumtitle">
+        <div>
+            <Container>
+                <Header size='large'>
+                    {"Albums"}
+                </Header>
+            </Container>
+        </div>
         </section>
         <section className="artistlist">
         <div>
-           {related.map( person => {
-               {console.log(person.name)}
-               return(
-               <Segment floated="left">
-                    <a href={"/artist/" + person.id}>{person.name}</a>
-               </Segment>)
-            })}
+            {albums.map( album => {
+                {console.log(album.name)}
+                return(
+                <Segment floated="left">
+                    <a href={"/album/" + album.id}>{album.name}</a>
+                </Segment>)
+         })}
         </div>
         </section>
-        </Container>
-    </div>)
-}
-}
+        <section className="mediumtitle">
+                <Header size='large'>
+                    {"Related Artists"}
+                </Header>
+            </section>
+            <section className="artistlist">
+            <div>
+            {related.map( person => {
+                {console.log(person.name)}
+                   return(
+                <Segment floated="left">
+                        <a href={"/artist/" + person.id}>{person.name}</a>
+                </Segment>)
+                })}
+            </div>
+            </section>
+            </Container>
+        </div>)
+    }
+    }
 
 export default Artist;
