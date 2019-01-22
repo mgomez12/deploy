@@ -3,6 +3,7 @@ import "../../public/css/styles.css";
 import {Link} from "react-router-dom"
 import { Loader, Feed, Image } from 'semantic-ui-react';
 import { get } from "./api"
+import default_profile from "../../public/assets/default_profile.png";
 
 class SuggestionEntry extends Component {
     constructor(props) {
@@ -36,7 +37,7 @@ class SuggestionEntry extends Component {
         }
         return(<Feed.Event >
             <Feed.Label>
-                <Image size='mini' circular src={this.state.senderInfo.image}/>
+                <Image size='mini' circular src={this.state.senderInfo.image == '' ? default_profile : this.state.senderInfo.image}/>
             </Feed.Label>
             <Feed.Content>
                 <Feed.Summary >
