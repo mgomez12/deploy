@@ -19,9 +19,17 @@ passport.use(
             const user = new User({
               name: profile.displayName,
               _id: profile.id,
+              image: '',
+              descrip: '',
+              fav_song_rn: {},
+              spotify_followers: 0,
+              friends: {},
               access_token: accessToken,
               refresh_token: refreshToken,
-              top_songs: {}
+              top_songs: {},
+              top_artists: {},
+              suggestions_made: [],
+              suggestions_received: []
             });
       
             user.save(function(err) {

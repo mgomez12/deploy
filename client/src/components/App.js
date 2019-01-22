@@ -33,7 +33,7 @@ class App extends React.Component {
         return (
             <div>
             <Switch>
-            <Route path='/u/profile/:user' component={Profile}/>
+            <Route path='/u/profile/:user' render = {(props) => <Profile {...props} viewerInfo={userInfo} />} />
             <Route exact path ="/login" component={Login} />} />
             <Route exact path="/" render = {() => <Main userInfo ={userInfo} />} />
             <Route path="/song/:songid" render = {(props) => <Song {...props} token ={userInfo.access_token} />} />

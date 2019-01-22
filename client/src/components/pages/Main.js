@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import "../../public/css/styles.css";
 import {withRouter} from "react-router-dom";
 import NavBar from "../modules/NavBar"
-import { Loader } from "semantic-ui-react";
+import SuggestionBox from "../modules/SuggestionBox"
+import { Loader, Container, Grid} from "semantic-ui-react";
 
 class Main extends Component {
 	constructor(props) {
@@ -17,11 +18,18 @@ class Main extends Component {
     }
 
     render() {
-        if (!this.props.userInfo) {
+        if (this.props.userInfo.name == undefined) {
             return <Loader size='massive'/>
         }
         return(<div>
             <NavBar/>
+            <Container style={{padding: '5em'}}>
+                <Grid columns='2'>
+                    <Grid.Column>
+                    </Grid.Column>
+                </Grid>
+            </Container>
+            
         </div>)
 
     }

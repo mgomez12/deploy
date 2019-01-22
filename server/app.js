@@ -6,7 +6,7 @@ const passport = require('./passport');
 const db = require('./db');
 const path = require('path');
 const socketio = require('socket.io');
-const request = require('request');
+const request = require('request-promise');
 const User = require('./models/user')
 
 
@@ -58,23 +58,42 @@ app.get(
   passport.authenticate('spotify', { failureRedirect: '/login' }),
   function(req, res) {
     // Successful authentication, redirect home.
-    var options = {
-      url: 'https://api.spotify.com/v1/me/top/tracks',
-      headers: {'Authorization': "Bearer " + req.user.access_token
-      }
+
+    var top_songs = {
+      url: 'https://api.spotify.com/v1/me/top/tracks?limit=50',
+      headers: {'Authorization': "Bearer " + req.user.access_token},
+      json: true
     };
+
+    var top_artists = {
+      url: 'https://api.spotify.com/v1/me/top/artists?limit=50',
+      headers: {'Authorization': "Bearer " + req.user.access_token},
+      json: true
+    };
+
+    var prof = {
+      url: 'https://api.spotify.com/v1/users/' + req.user._id,
+      headers: {'Authorization': "Bearer " + req.user.access_token},
+      json: true
+    };
+    let values= {
+      top_songs: request(top_songs),
+      top_artists: request(top_artists),
+      profInfo: request(prof)
+    }
+
     
-    request(options, (err, res, body) => {
-      tracks = JSON.parse(body);
-      console.log(req.user._id)
-      User.findOne({_id: req.user._id}, (err, profile)=> {
-        profile.top_songs = tracks.items;
-        profile.save();
-      })
+    // request top songs and save to database
+
+
+    User.findOne({_id: req.user._id}, (err, profile)=> {
+      values.top_songs.then(track => {profile.top_songs = track.items}).then(
+      values.top_artists.then(artist => {profile.top_artists = artist.items})).then(
+      values.profInfo.then(prof => {profile.spotify_followers = prof.followers.total})).then(
+      () => profile.save())
     })
     res.redirect('http://localhost:5000/');
-  }
-);
+  });
 
   
 app.get('/logout', function(req, res) {
@@ -111,7 +130,5 @@ app.set('socketio', io);
 server.listen(port, function() {
   console.log('Server running on port: ' + port);
 });
-
-
 
 

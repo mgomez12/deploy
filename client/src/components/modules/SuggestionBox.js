@@ -17,9 +17,13 @@ class SuggestionBox extends Component {
 
     render() {
         return (
-            <div>
-                <Suggestions/>
-        </div>
+            <Card header="Recent suggestions">
+                <Card.item>
+                    <Feed>
+                        
+                    </Feed>
+                </Card.item>
+            </Card>
         )
     }
 }
