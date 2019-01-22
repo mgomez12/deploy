@@ -28,8 +28,8 @@ class SuggestionBox extends Component {
         }
         
         return (
-            <Card>
-                <Card.Header>
+            <Card style={{height:"80%"}}>
+                <Card.Header as='h3' >
                     Recent Suggestions
                 </Card.Header>
                 <Card.Content style={{overflow:'scroll'}}>

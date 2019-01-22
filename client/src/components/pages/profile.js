@@ -136,7 +136,7 @@ class Profile extends Component {
                                 Description: {description}
                             </Header>
                         </Grid.Column>
-                        <Grid.Column style={{'text-align':'center'}}>
+                        <Grid.Column style={{'textAlign':'center'}}>
                             <Header as="h3">
                             Top Songs: 
                             </Header>
@@ -144,7 +144,7 @@ class Profile extends Component {
                                 {this.loadFavSongs()}
                             </Segment.Group>
                         </Grid.Column>
-                        <Grid.Column style={{'text-align':'center'}}>
+                        <Grid.Column style={{'textAlign':'center'}}>
                             <Header as="h3">
                             Top Artists:
                             </Header>

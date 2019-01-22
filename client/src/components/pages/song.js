@@ -71,6 +71,7 @@ render() {
             <Header size='medium'>
             <a href={"/artist/" + artistid}>{artist}</a>
             </Header>
+            <Header as='h4'>Suggest this song to someone!</Header>
             {this.gotSongInfo ?<SuggestionForm userId={this.props.userInfo._id} track={this.state.songid} isTrack={false}/>
             : <Loader active inline />}
         </div>
