@@ -13,14 +13,13 @@ passport.use(
         User.findOne({
           '_id': profile.id
         }, function(err, user) {
-          console.log(profile.photos)
           if (err) return done(err);
       
           if (!user) {
             const user = new User({
               name: profile.displayName,
               _id: profile.id,
-              image: '',
+              image: (profile.photos.length >0 ? profile.photos[0] : ''),
               descrip: '',
               fav_song_rn: {},
               spotify_followers: 0,
@@ -39,6 +38,8 @@ passport.use(
               return done(err, user);
             });
           } else {
+            user.name = profile.displayName,
+            user.image = (profile.photos.length >0 ? profile.photos[0] : '')
             user.access_token = accessToken;
             user.refresh_token = refreshToken;
             user.save();
