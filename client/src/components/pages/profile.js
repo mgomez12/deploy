@@ -51,7 +51,7 @@ class Profile extends Component {
 
     loadSuggestionBox() {
         if(this.gotProfileInfo) {
-            return (<SuggestionForm userId={this.props.viewerInfo._id} receiverId={this.state.userInfo._id}/>);
+            return (<SuggestionForm userId={this.props.viewerInfo._id} receiverId={this.state.userInfo._id} isTrack={true}/>);
         }
         else {
             <Loader active inline />
@@ -63,7 +63,7 @@ class Profile extends Component {
             return(
                 this.state.userInfo.top_artists.map( track => {
                 return(
-                <Segment key={track.id}>
+                <Segment className='center-parent' key={track.id}>
                     <a href={"/artist/" + track.id}>{track.name}</a>
                 </Segment>);
             })
@@ -81,7 +81,7 @@ class Profile extends Component {
             return(
                 this.state.userInfo.top_songs.map( song => {
                 return(
-                <Segment key={song.id}>
+                <Segment className='center-parent' key={song.id}>
                     <a href={"/song/" + song.id}>{song.name}</a>
                 </Segment>);
             })
@@ -95,9 +95,10 @@ class Profile extends Component {
     }
 
     render() {
-        let image, description = '';
+        let image, description, name= '';
         let spotify_follower = 0;
         if (this.gotProfileInfo) {
+            name = (this.state.userInfo.name)
             image = (this.state.userInfo.image !== '' ? this.state.userInfo.image : default_profile)
             description = this.state.userInfo.descrip;
 
@@ -115,31 +116,39 @@ class Profile extends Component {
         return (
             <div>
                 <NavBar userInfo={this.props.viewerInfo}/>
-                <Grid columns={2}>
-                    <Grid.Row>
-                        <Grid.Column>
-                            <Image circular size='small' src={image}/>
+                <Grid style={{padding:"10px"}}>
+                    <Grid.Row columns={2} verticalAlign='middle'>  
+                        <Grid.Column width='5' className='center-parent'>
+                            <Image circular className= 'center-parent' size='small' src={image}/>
+                            <Header as='h2'>{name}</Header>
                             <Header as="h5">Spotify Followers: {spotify_follower}</Header>
-                        </Grid.Column>
-                        <Grid.Column>
+                        </Grid.Column >
+                        <Grid.Column width='10'>
+                            <div className='center-parent'>
+                            <Header as='h4'>Suggest a song!</Header>
                             {this.loadSuggestionBox()}
+                            </div>
                         </Grid.Column>
                     </Grid.Row>
-                </Grid>
-                <Grid columns={3}>
-                    <Grid.Row>
+                    <Grid.Row columns={3}>
                         <Grid.Column>
                             <Header as="h2">
                                 Description: {description}
                             </Header>
                         </Grid.Column>
-                        <Grid.Column>
-                            <Segment.Group>
+                        <Grid.Column style={{'text-align':'center'}}>
+                            <Header as="h3">
+                            Top Songs: 
+                            </Header>
+                            <Segment.Group raised>
                                 {this.loadFavSongs()}
                             </Segment.Group>
                         </Grid.Column>
-                        <Grid.Column>
-                            <Segment.Group>
+                        <Grid.Column style={{'text-align':'center'}}>
+                            <Header as="h3">
+                            Top Artists:
+                            </Header>
+                            <Segment.Group raised>
                                 {this.loadFavArtists()}
                             </Segment.Group>
                         </Grid.Column>

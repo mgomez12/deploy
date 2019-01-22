@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import "../../public/css/styles.css"
 import io from 'socket.io-client';
-import { Header, Image, Container, Menu } from 'semantic-ui-react';
+import { Header, Image, Container, Loader } from 'semantic-ui-react';
 import {get} from "../modules/api";
 import NavBar from "../modules/NavBar";
+import SuggestionForm from "../modules/SuggestionForm"
 
 class Song extends Component {
     constructor(props) {
@@ -26,15 +27,15 @@ class Song extends Component {
         })
     }
     componentDidUpdate() {
-        if (this.props.token && !this.gotSongInfo) {
+        if (this.props.userInfo.access_token && !this.gotSongInfo) {
         this.renderSongData(); }
     }
 
   
   renderSongData() {
     const obj = this;
-    var artistHeader = [['Authorization', 'Bearer ' + this.props.token]];
-    console.log('token: ' + this.props.token)
+    var artistHeader = [['Authorization', 'Bearer ' + this.props.userInfo.access_token]];
+    console.log('token: ' + this.props.access_token)
     get('https://api.spotify.com/v1/tracks/' + this.state.songid, {}, function(songData) {
 
         console.log('song data in get: ' + songData)
@@ -70,6 +71,8 @@ render() {
             <Header size='medium'>
             <a href={"/artist/" + artistid}>{artist}</a>
             </Header>
+            {this.gotSongInfo ?<SuggestionForm userId={this.props.userInfo._id} track={this.state.songid} isTrack={false}/>
+            : <Loader active inline />}
         </div>
     </Container>
     {audio}

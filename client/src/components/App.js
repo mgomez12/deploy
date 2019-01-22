@@ -34,8 +34,13 @@ class App extends React.Component {
             <Switch>
             <Route path='/u/profile/:user' render = {(props) => <Profile {...props} userInfo ={userInfo} viewerInfo={userInfo} />} />
             <Route exact path ="/login" component={Login} />} />
+<<<<<<< HEAD
             <Route exact path="/" render = {(props) => <Main userInfo ={userInfo} />} />
             <Route path="/song/:songid" render = {(props) => <Song {...props} userInfo ={userInfo} token ={userInfo.access_token} />} />
+=======
+            <Route exact path="/" render = {() => <Main userInfo ={userInfo} />} />
+            <Route path="/song/:songid" render = {(props) => <Song {...props} userInfo ={userInfo}  />} />
+>>>>>>> 052d10f912a236def91b321da9bdd799b2350ba5
             <Route exact path="/album/:albumid" render = {(props) => <Album {...props} userInfo ={userInfo} token ={userInfo.access_token} />}/>
             <Route exact path="/artist/:artistid" render = {(props) => <Artist {...props} userInfo ={userInfo} token ={userInfo.access_token} />}/>
             

@@ -55,6 +55,17 @@ section {
     text-align: center;
 }
 
+.center-parent{
+    height: 100%;
+    text-align: center;
+    margin: auto;
+}
+
+.center-image{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
 .overlay {
     position: absolute;
     top: 0;
