@@ -9,16 +9,19 @@ class NavBar extends Component{
         super(props);
         console.log(this.props.userInfo)
         this.state = {
-            userInfo: null
         };
 
     }
 
     render() {
+        let idString = 'me'
+        if (this.props.userInfo !== null) {
+            idString = this.props.userInfo._id
+        }
         return(
         <Menu color='teal' inverted>
             <Menu.Item icon='home' href="/"/>
-            <Menu.Item name='profile' href='/u/profile/glabred'/>
+            <Menu.Item name='profile' href={'/u/profile/' + idString}/>
             <Menu.Item name='songs' href='/song/2ZWlPOoWh0626oTaHrnl2a'/>
             <Menu.Item name='albums' href='/album/3mH6qwIy9crq0I9YQbOuDf'/>
             <Menu.Item>

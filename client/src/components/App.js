@@ -1,7 +1,6 @@
 import React from "react";
 import "../public/css/app.css";
 import {Route, Switch, withRouter, Redirect } from "react-router-dom";
-import { Menu } from "semantic-ui-react"
 import Profile from "./pages/Profile";
 import Root from "./Root";
 import Login from "./pages/Login";
@@ -39,6 +38,7 @@ class App extends React.Component {
             <Route path="/song/:songid" render = {(props) => <Song {...props} userInfo ={userInfo} token ={userInfo.access_token} />} />
             <Route exact path="/album/:albumid" render = {(props) => <Album {...props} userInfo ={userInfo} token ={userInfo.access_token} />}/>
             <Route exact path="/artist/:artistid" render = {(props) => <Artist {...props} userInfo ={userInfo} token ={userInfo.access_token} />}/>
+            
             </Switch>
         </div>
         )

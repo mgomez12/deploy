@@ -27,8 +27,7 @@ class Song extends Component {
     }
     componentDidUpdate() {
         if (this.props.token && !this.gotSongInfo) {
-        this.renderSongData();
-        this.render() }
+        this.renderSongData(); }
     }
 
   

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import "../../public/css/styles.css";
-import { Button, Header, Card, Feed } from "semantic-ui-react";
-import { Link} from 'react-router-dom';
+import { Card, Feed, Loader } from "semantic-ui-react";
 import { get } from './api'
+import SuggestionEntry from './SuggestionEntry';
 
 class SuggestionBox extends Component {
 	constructor(props) {
@@ -14,25 +14,30 @@ class SuggestionBox extends Component {
     }
 
     componentDidMount() {
-        let sugg;
-        get('/api/suggestion', {receiver: this.props.user._id, limit:10}, (suggestionArray) => {
-            console.log(suggestionArray)
-            sugg = suggestionArray;
-        })
-        this.setState({
-            suggestions: sugg
+        get('/api/suggestion', {receiver: this.props.userInfo._id, limit:10}, (suggestionArray) => {
+            this.setState({
+                suggestions: suggestionArray
+            })
         })
     }
-
-
+        
     render() {
+
+        if (this.props.userInfo.access_token == null) {
+            return(<Loader size='massive'/>)
+        }
+        
         return (
             <Card>
                 <Card.Header>
                     Recent Suggestions
                 </Card.Header>
                 <Card.Content style={{overflow:'scroll'}}>
-                    {}
+                <Feed size='small' >
+                {this.state.suggestions.map( suggestion => {
+                    return <SuggestionEntry key={suggestion._id} userInfo={this.props.userInfo} sug={suggestion}/>
+                })}
+                </Feed>
                 </Card.Content>
             </Card>
         )

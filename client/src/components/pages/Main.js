@@ -18,7 +18,7 @@ class Main extends Component {
     }
 
     render() {
-        if (this.props.userInfo.name == undefined) {
+        if (this.props.userInfo.access_token == null) {
             return <Loader size='massive'/>
         }
         console.log(this.props.userInfo.name)
@@ -27,7 +27,7 @@ class Main extends Component {
             <Container style={{padding: '5em'}}>
                 <Grid columns='2' stackable style={{height:'80vh'}}>
                     <Grid.Column>
-                        <SuggestionBox user={this.props.userInfo}/>
+                        <SuggestionBox userInfo={this.props.userInfo}/>
                     </Grid.Column>
                 </Grid>
             </Container>

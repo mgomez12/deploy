@@ -10,7 +10,9 @@ const router = express.Router();
 
 router.get('/user', function(req, res) {
     User.findOne({ _id: req.query._id }, function(err, user) {
-        console.log(user);
+        if(err) {
+            console.log(err)
+        }
       res.send(user);
     });
   });
@@ -28,13 +30,16 @@ else{
 
 router.get("/suggestion", function(req, res) {
     connect.ensureLoggedIn();
-    let returnArray = [];
     console.log(req.query.receiver)
-    Suggestion.find( {receiver_id: req.query.receiver}, {limit: Number(req.query.limit)}, items => {
-        console.log(items)
+    Suggestion.find( {receiver_id: req.query.receiver}, null,
+         {sort: {time_sent: -1}, limit: Number(req.query.limit)}, (err, items) => {
+             if (err) {
+                 res.send(err)
+             }
+             console.log("sending" + items);
+        res.send(items);
     });
     
-    res.send(returnArray)
 })
 
 router.post('/suggestion', function(req, res) {

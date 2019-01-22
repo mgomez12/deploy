@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import "../../public/css/styles.css"
 import io from 'socket.io-client';
 import { Loader, Header, Grid, Segment, Image, Container } from 'semantic-ui-react';
+import default_profile from "../../public/assets/default_profile.png";
 import NavBar from "../modules/NavBar";
 import SuggestionForm from '../modules/SuggestionForm';
 
@@ -12,29 +13,37 @@ class Profile extends Component {
         this.socket = io('http://localhost:3000');
 
         this.state = {
-            userInfo: null
+            userInfo: null,
+            isRedirecting: false
         };
         this.gotProfileInfo = false;
 
     }
 
     componentDidMount() {
-        console.log("didMount")
-        this.getProfile(this.props.match.params.user);
+        if (this.props.match.params.user !== "me") {
+            this.getProfile(this.props.match.params.user); }
     }
 
     componentDidUpdate() {
-        console.log("didUpdate")
         if (!this.gotProfileInfo) {
-        this.getProfile(this.props.match.params.user);
-        this.render() }
+            if (this.props.match.params.user !== "me") {
+                this.getProfile(this.props.match.params.user); }
+
+            else if (!this.state.isRedirecting && this.props.viewerInfo.access_token !== null) {
+            this.props.history.push('/u/profile/' + this.props.viewerInfo._id)
+            this.state.isRedirecting = true;
+        }
+    }
     }
 
     getProfile(id) {
+
         fetch('/api/user?_id=' + id).then(res => res.json())
         .then((profile) => {
             this.setState({
-                userInfo: profile
+                userInfo: profile,
+                isRedirecting: false
             })
             this.gotProfileInfo = true;
         })
@@ -54,7 +63,7 @@ class Profile extends Component {
             return(
                 this.state.userInfo.top_artists.map( track => {
                 return(
-                <Segment>
+                <Segment key={track.id}>
                     <a href={"/artist/" + track.id}>{track.name}</a>
                 </Segment>);
             })
@@ -72,7 +81,7 @@ class Profile extends Component {
             return(
                 this.state.userInfo.top_songs.map( song => {
                 return(
-                <Segment>
+                <Segment key={song.id}>
                     <a href={"/song/" + song.id}>{song.name}</a>
                 </Segment>);
             })
@@ -89,21 +98,23 @@ class Profile extends Component {
         let image, description = '';
         let spotify_follower = 0;
         if (this.gotProfileInfo) {
-            console.log("top songs" + this.state.userInfo.top_songs[0].name);
-            image = this.state.userInfo.image;
-            console.log("image: " + image)
+            image = (this.state.userInfo.image !== '' ? this.state.userInfo.image : default_profile)
             description = this.state.userInfo.descrip;
 
             spotify_follower = this.state.userInfo.spotify_followers;
 
-            console.log(this.state.userInfo.fav_song_rn);
             
             //<Segment raised> My fav song rn: {fav_song_rn.name}</Segment>
+        }
+        if (this.state.isRedirecting) {
+            return (
+                <Loader size='massive'></Loader>
+            )
         }
         
         return (
             <div>
-                <NavBar userInfo={this.props.userInfo}/>
+                <NavBar userInfo={this.props.viewerInfo}/>
                 <Grid columns={2}>
                     <Grid.Row>
                         <Grid.Column>

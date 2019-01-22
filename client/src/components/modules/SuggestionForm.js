@@ -36,7 +36,6 @@ class SuggestionForm extends Component {
             
 <Input
     action={{ color: 'teal', content: 'submit', onClick: this.submitSuggestion}}
-    actionPosition='right'
     placeholder='Search...'
     onChange={this.handleChange}
   />
