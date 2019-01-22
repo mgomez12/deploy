@@ -74,7 +74,7 @@ render() {
     let albums=[]
     let related=[]
     if (this.state.artistInfo && this.state.artisttoptracks && this.state.artistalbums && this.state.relatedartists) {
-        image = <Image centered size="medium" rounded src={this.state.artistInfo.images[0].url}/>
+        image = <Image className="objectfade" centered rounded src={this.state.artistInfo.images[0].url}/>
         artist = this.state.artistInfo.name;
         for(let i  = 0; i < this.state.artisttoptracks.tracks.length; i++) {
             console.log(this.state.artisttoptracks.tracks[i]);
@@ -94,23 +94,24 @@ render() {
     return(
         <div>
             <NavBar userInfo={this.props.userInfo}/>
-    <Container>
-        <section>
-        <Container className="center-text" id="artist-image">
+        <Container>
+        <section className="wrap">
+        <Container>
             {image}    
         </Container>
-        </section>
-        <section class="headtitle">
-            <Header size='large'>
+            <div class="overlay">
+            <div className="text">
                 {artist}
-            </Header>
+            </div>
+            </div>
         </section>
-        <section class="mediumtitle">
-            <Header size='medium'>
+
+        <section className="mediumtitle">
+            <Header size='large'>
                 {"Top Songs"}
             </Header>
         </section>
-        <section class="artistlist">
+        <section className="artistlist">
         <div>
            {toptracks.map( track => {
                {console.log(track.name)}
@@ -121,16 +122,16 @@ render() {
             })}
         </div>
         </section>
-    <section class="mediumtitle">
+    <section className="mediumtitle">
     <div>
         <Container>
-            <Header size='medium'>
+            <Header size='large'>
                 {"Albums"}
             </Header>
         </Container>
     </div>
     </section>
-    <section class="artistlist">
+    <section className="artistlist">
     <div>
         {albums.map( album => {
             {console.log(album.name)}
@@ -141,12 +142,12 @@ render() {
         })}
     </div>
     </section>
-    <section class="mediumtitle">
-            <Header size='medium'>
+    <section className="mediumtitle">
+            <Header size='large'>
                 {"Related Artists"}
             </Header>
         </section>
-        <section class="artistlist">
+        <section className="artistlist">
         <div>
            {related.map( person => {
                {console.log(person.name)}
@@ -156,8 +157,8 @@ render() {
                </Segment>)
             })}
         </div>
-    </section>
-    </Container>
+        </section>
+        </Container>
     </div>)
 }
 }
