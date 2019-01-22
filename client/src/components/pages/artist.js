@@ -102,8 +102,8 @@ render() {
            {toptracks.map( track => {
                {console.log(track.name)}
                return(
-               <Segment floated="left">
-                    {track.name}
+               <Segment compact>
+                    <a href={"/song/" + track.id}>{track.name}</a>
                </Segment>)
             })}
         </div>
@@ -122,8 +122,8 @@ render() {
         {albums.map( album => {
             {console.log(album.name)}
             return(
-            <Segment floated="left">
-                {album.name}
+            <Segment compact>
+                <a href={"/album/" + album.id}>{album.name}</a>
             </Segment>)
         })}
     </div>

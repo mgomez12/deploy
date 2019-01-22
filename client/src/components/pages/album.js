@@ -61,6 +61,8 @@ render() {
     }
 
     return(
+        <div>
+            <NavBar/>
     <Container>
         <Container className="center-text" id="album-image">
             {image}    
@@ -82,7 +84,7 @@ render() {
                </Segment>)
            })}
         </Segment.Group>
-    </Container>)
+    </Container></div>)
 }
 }
 
