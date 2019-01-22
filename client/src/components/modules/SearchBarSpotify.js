@@ -4,11 +4,11 @@ import io from 'socket.io-client';
 import React, { Component } from 'react'
 import {Redirect } from "react-router-dom";
 import { Form, Search, Grid, Header, Segment } from 'semantic-ui-react'
-import {get} from "../modules/api";
+import {get} from "./api";
 
 
 
-class SearchBar extends Component {
+class SearchBarSpotify extends Component {
     constructor(props) {
         super(props);
 
@@ -48,18 +48,7 @@ class SearchBar extends Component {
   }
 
   handleSearchChange = (e, { value }) => {
-    var promise = new Promise(() => {
-        console.log("in promise")
-        return;
-    });
     this.setState({ isLoading: true, value: value })
-    promise.then( () => {
-        console.log("ok")
-        console.log("value: " + value)
-        console.log(this.state.value)
-    });
-
-
 
     setTimeout(() => {
         this.updateSourceTracks(value);
@@ -79,7 +68,7 @@ class SearchBar extends Component {
         const compiled = searchData.tracks.items.map( track => {
             return(
                 {
-                    id: track.id,
+                    key: track.id,
                     title: track.name,
                     image: track.album.images[0].url,
                     description: track.album.artists[0].name,
@@ -115,4 +104,4 @@ class SearchBar extends Component {
     )
   }
 }
-export default SearchBar;
+export default SearchBarSpotify;
