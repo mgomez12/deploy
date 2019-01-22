@@ -16,7 +16,8 @@ class Artist extends Component {
             artistInfo: null,
             artistid: null,
             artisttoptracks: null,
-            artistalbums: null
+            artistalbums: null,
+            relatedartists: null
         };
         this.gotArtistInfo = false;
 
@@ -55,8 +56,15 @@ class Artist extends Component {
             artistalbums: artistData
         })
     }, null, artistHeader);
+    get('https://api.spotify.com/v1/artists/' + this.props.match.params.artistid + "/related-artists", {}, function(artistData) {
+
+    console.log('artist related artist data in get: ' + artistData)
+    obj.setState({
+        relatedartists: artistData
+    })
+    }, null, artistHeader);
     this.gotArtistInfo=true
-}
+    }
 
 
     
@@ -64,7 +72,8 @@ render() {
     let image, artist = '';
     let toptracks=[]
     let albums=[]
-    if (this.state.artistInfo && this.state.artisttoptracks && this.state.artistalbums) {
+    let related=[]
+    if (this.state.artistInfo && this.state.artisttoptracks && this.state.artistalbums && this.state.relatedartists) {
         image = <Image centered size="medium" rounded src={this.state.artistInfo.images[0].url}/>
         artist = this.state.artistInfo.name;
         for(let i  = 0; i < this.state.artisttoptracks.tracks.length; i++) {
@@ -74,6 +83,10 @@ render() {
         for(let i  = 0; i < this.state.artistalbums.items.length; i++) {
             console.log(this.state.artistalbums.items[i]);
            albums.push(this.state.artistalbums.items[i]);
+        }
+        for(let i  = 0; i < this.state.relatedartists.artists.length; i++) {
+            console.log(this.state.relatedartists.artists[i]);
+           related.push(this.state.relatedartists.artists[i]);
         }
     console.log(albums)
     }
@@ -102,7 +115,7 @@ render() {
            {toptracks.map( track => {
                {console.log(track.name)}
                return(
-               <Segment compact>
+               <Segment floated="left">
                     <a href={"/song/" + track.id}>{track.name}</a>
                </Segment>)
             })}
@@ -122,11 +135,27 @@ render() {
         {albums.map( album => {
             {console.log(album.name)}
             return(
-            <Segment compact>
+            <Segment floated="left">
                 <a href={"/album/" + album.id}>{album.name}</a>
             </Segment>)
         })}
     </div>
+    </section>
+    <section class="mediumtitle">
+            <Header size='medium'>
+                {"Related Artists"}
+            </Header>
+        </section>
+        <section class="artistlist">
+        <div>
+           {related.map( person => {
+               {console.log(person.name)}
+               return(
+               <Segment floated="left">
+                    <a href={"/artist/" + person.id}>{person.name}</a>
+               </Segment>)
+            })}
+        </div>
     </section>
     </Container>
     </div>)
