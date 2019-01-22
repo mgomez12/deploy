@@ -11,7 +11,7 @@ class Main extends Component {
     }
 
     componentDidUpdate() {
-        if (this.props.UserInfo !== null && !this.props.userInfo.name) {
+        if (this.props.userInfo !== null && !this.props.userInfo.name) {
             console.log('main redirected');
             this.props.history.push("/login");
         }
@@ -21,11 +21,13 @@ class Main extends Component {
         if (this.props.userInfo.name == undefined) {
             return <Loader size='massive'/>
         }
+        console.log(this.props.userInfo.name)
         return(<div>
             <NavBar/>
             <Container style={{padding: '5em'}}>
-                <Grid columns='2'>
+                <Grid columns='2' stackable style={{height:'80vh'}}>
                     <Grid.Column>
+                        <SuggestionBox user={this.props.userInfo}/>
                     </Grid.Column>
                 </Grid>
             </Container>
