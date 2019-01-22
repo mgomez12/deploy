@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import "../../public/css/styles.css"
 import io from 'socket.io-client';
 import { Loader, Header, Grid, Segment, Image, Container } from 'semantic-ui-react';
-import nick_pic from "../../public/assets/nick.jpg";
 import NavBar from "../modules/NavBar";
 import SuggestionForm from '../modules/SuggestionForm';
 
@@ -43,7 +42,7 @@ class Profile extends Component {
 
     loadSuggestionBox() {
         if(this.gotProfileInfo) {
-            return (<SuggestionForm userId={this.props.viewerInfo._id} recieverId={this.state.userInfo._id}/>);
+            return (<SuggestionForm userId={this.props.viewerInfo._id} receiverId={this.state.userInfo._id}/>);
         }
         else {
             <Loader active inline />
@@ -103,10 +102,8 @@ class Profile extends Component {
         }
         
         return (
-            <Container>
-                <div>
-                    <NavBar/>
-                </div>
+            <div>
+                <NavBar userInfo={this.props.userInfo}/>
                 <Grid columns={2}>
                     <Grid.Row>
                         <Grid.Column>
@@ -137,9 +134,9 @@ class Profile extends Component {
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
-            </Container>
+            </div>
         ) 
     }
     
 }
-        export default Profile;
+export default Profile;
