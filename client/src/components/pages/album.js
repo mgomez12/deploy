@@ -49,12 +49,13 @@ class Album extends Component {
 
     
 render() {
-    let image, name, artist = '';
+    let image, name, artist, artistid = '';
     let tracks = [];
     if (this.state.albumInfo) {
         image = <Image centered size="medium" rounded src={this.state.albumInfo.images[0].url}/>
         name = this.state.albumInfo.name;
         artist = this.state.albumInfo.artists[0].name;
+        artistid=this.state.albumInfo.artists[0].id
         for(let i  = 0; i < this.state.albumInfo.tracks.items.length; i++) {
             tracks.push(this.state.albumInfo.tracks.items[i]);
         }
@@ -72,7 +73,7 @@ render() {
                 {name}
             </Header>
             <Header size='medium'>
-                {artist}
+            <a href={"/artist/" + artistid}>{artist}</a>
             </Header>
         </div>
         <Segment.Group>
