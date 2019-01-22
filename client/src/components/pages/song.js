@@ -59,7 +59,6 @@ render() {
 
     return(
         <div>
-    <NavBar userInfo={this.props.userInfo}/>
     <Container className="center-screen">
         <Container className="center-text" id="song-image">
             {image}

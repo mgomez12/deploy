@@ -115,7 +115,6 @@ class Profile extends Component {
         
         return (
             <div>
-                <NavBar userInfo={this.props.viewerInfo}/>
                 <Grid style={{padding:"10px"}}>
                     <Grid.Row columns={2} verticalAlign='middle'>  
                         <Grid.Column width='5' className='center-parent'>

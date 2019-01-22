@@ -93,7 +93,6 @@ render() {
 
     return(
         <div>
-            <NavBar userInfo={this.props.userInfo}/>
         <Container>
         <section className="wrap">
         <Container>

@@ -8,6 +8,7 @@ import Main from "./pages/Main"
 import Song from "./pages/Song";
 import Album from "./pages/Album";
 import Artist from "./pages/Artist";
+import NavBar from "./modules/NavBar"
 
 class App extends React.Component {
     constructor(props) {
@@ -32,8 +33,13 @@ class App extends React.Component {
         return (
             <div>
             <Switch>
+                <Route exact path ='/login' render={() => ''}/>
+                <Route exact path = '/' render={() => ''}/>
+                <Route path='/' render = {(props) => <NavBar {...props} userInfo={userInfo}/>}/>
+            </Switch>
+            <Switch>
             <Route path='/u/profile/:user' render = {(props) => <Profile {...props} userInfo ={userInfo} viewerInfo={userInfo} />} />
-            <Route exact path ="/login" component={Login} />} />
+            <Route exact path ="/login" component={Login} />
             <Route exact path="/" render = {() => <Main userInfo ={userInfo} />} />
             <Route path="/song/:songid" render = {(props) => <Song {...props} userInfo ={userInfo}  />} />
             <Route exact path="/album/:albumid" render = {(props) => <Album {...props} userInfo ={userInfo} token ={userInfo.access_token} />}/>
