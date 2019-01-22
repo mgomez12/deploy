@@ -3,7 +3,6 @@ import "../../public/css/styles.css"
 import io from 'socket.io-client';
 import { Header, Image, Container, Loader } from 'semantic-ui-react';
 import {get} from "../modules/api";
-import NavBar from "../modules/NavBar";
 import SuggestionForm from "../modules/SuggestionForm"
 
 class Song extends Component {
@@ -26,9 +25,15 @@ class Song extends Component {
             songid: song
         })
     }
+
     componentDidUpdate() {
-        if (this.props.userInfo.access_token && !this.gotSongInfo) {
+        if (this.state.songid !== this.props.match.params.songid) {
+            this.componentDidMount()
+            this.gotSongInfo = false;
+        }
+        if ((!this.gotSongInfo && this.props.userInfo.access_token)) {
         this.renderSongData(); }
+        
     }
 
   
@@ -36,7 +41,7 @@ class Song extends Component {
     const obj = this;
     var artistHeader = [['Authorization', 'Bearer ' + this.props.userInfo.access_token]];
     console.log('token: ' + this.props.access_token)
-    get('https://api.spotify.com/v1/tracks/' + this.state.songid, {}, function(songData) {
+    get('https://api.spotify.com/v1/tracks/' + this.props.match.params.songid, {}, function(songData) {
 
         console.log('song data in get: ' + songData)
         obj.setState({
@@ -71,7 +76,7 @@ render() {
             <a href={"/artist/" + artistid}>{artist}</a>
             </Header>
             <Header as='h4'>Suggest this song to someone!</Header>
-            {this.gotSongInfo ?<SuggestionForm userId={this.props.userInfo._id} track={this.state.songid} isTrack={false}/>
+            {this.gotSongInfo ?<SuggestionForm userId={this.props.userInfo._id} track={this.props.match.params.songid} isTrack={false}/>
             : <Loader active inline />}
         </div>
     </Container>
