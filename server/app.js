@@ -22,6 +22,7 @@ app.use(bodyParser.json());
 app.use(session({
     secret: 'session-secret',
     resave: 'false',
+    store: 'connect-mongo',
     saveUninitialized: 'true'
   }));
 
