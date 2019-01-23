@@ -1,9 +1,7 @@
 import _ from 'lodash'
-import faker from 'faker'
 import io from 'socket.io-client';
 import React, { Component } from 'react'
-import {Redirect } from "react-router-dom";
-import { Form, Search, Grid, Header, Segment } from 'semantic-ui-react'
+import { Search} from 'semantic-ui-react'
 import {get} from "./api";
 
 
@@ -15,12 +13,6 @@ class SearchBarUser extends Component {
         this.socket = io('http://localhost:3000');
 
 
-        // this.source = _.times(5, () => ({
-        //     title: faker.company.companyName(),
-        //     description: faker.company.catchPhrase(),
-        //     image: faker.internet.avatar(),
-        //     price: faker.finance.amount(0, 100, 2, '$'),
-        //   }))
         
         this.state = {
             isLoading: false,
