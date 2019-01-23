@@ -81,12 +81,16 @@ router.post('/suggestion', function(req, res) {
             res.send({status: 'fail'});
         }
         else {
-        receiverProfile.suggestions_received.push(newSuggestion._id)
-        receiverProfile.save() 
-        User.findOne({_id: req.body.sender}, (err, senderProfile) => {
-            senderProfile.suggestions_made.push(newSuggestion._id)
-            senderProfile.save()
-        });
+            receiverProfile.suggestions_received.push(newSuggestion._id)
+            receiverProfile.save() 
+
+            if (req.body.sender !== 'anonymous') {
+                User.findOne({_id: req.body.sender}, (err, senderProfile) => {
+                    senderProfile.suggestions_made.push(newSuggestion._id)
+                    senderProfile.save()
+                    });
+            }
+
         newSuggestion.save();
         res.send({status: 'success'});}
     });

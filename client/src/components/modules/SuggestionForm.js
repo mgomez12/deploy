@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import "../../public/css/styles.css"
 import io from 'socket.io-client';
-import { Message, Input, Loader } from 'semantic-ui-react';
+import { Message, Input, Loader, Checkbox } from 'semantic-ui-react';
 import { post } from "./api"
 
 class SuggestionForm extends Component {
@@ -13,10 +13,12 @@ class SuggestionForm extends Component {
         this.state = {
             input: '',
             submitted: false,
-            response: null
+            response: null,
+            anonymous: false
         };
         this.handleChange = this.handleChange.bind(this)
         this.submitSuggestion = this.submitSuggestion.bind(this)
+        this.checkboxChange = this.checkboxChange.bind(this)
 
     }
 
@@ -32,6 +34,17 @@ class SuggestionForm extends Component {
         })
     }
 
+    checkboxChange(event, data) {
+        console.log(data)
+        if (data.checked == null) {
+            return
+        }
+        this.setState({
+            anonymous: data.checked
+        })
+       
+    }
+
     submitSuggestion() {
         this.setState({
             input: '',
@@ -41,7 +54,7 @@ class SuggestionForm extends Component {
         const date = new Date()
         if (!this.props.isTrack) {
             console.log('submitted' + this.props.userId + this.state.input)
-            post('/api/suggestion', {receiver: this.state.input, sender: this.props.userId, track: this.props.track, time:date},
+            post('/api/suggestion', {receiver: this.state.input, sender: (this.state.anonymous? 'anonymous' : this.props.userId), track: this.props.track, time:date},
             (response) => {
                 console.log(response);
                 if (response.status =='success') {
@@ -57,7 +70,7 @@ class SuggestionForm extends Component {
         }
         else {
         console.log('submitted' + this.props.userId + this.props.receiverId)
-        post('/api/suggestion', {receiver: this.props.receiverId, sender: this.props.userId, track: this.state.input, time:date})
+        post('/api/suggestion', {receiver: this.props.receiverId, sender: (this.state.anonymous? 'anonymous' : this.props.userId), track: this.state.input, time:date})
         }
     }
     render() {
@@ -77,15 +90,19 @@ class SuggestionForm extends Component {
         else {
             banner=''
         }
-        return(<div style={{display:'inline-block'}}>
-<Input
-    action={{ color: 'teal', content: 'submit', onClick: this.submitSuggestion}}
-    placeholder={this.props.isTrack? "Type in track id..." : "Type in user id..."}
-    value={this.state.input}
-    onChange={this.handleChange}
-  />
-  {banner}
-  </div>
+        return(
+            <React.Fragment>
+            <div style={{display:'inline-block'}}>
+            <Input
+                action={{ color: 'teal', content: 'submit', onClick: this.submitSuggestion}}
+                placeholder={this.props.isTrack? "Type in track id..." : "Type in user id..."}
+                value={this.state.input}
+                onChange={this.handleChange}
+            />
+            {banner}
+            </div>
+            <Checkbox toggle label='Submit anonymously' onClick={this.checkboxChange}/>
+            </React.Fragment>
         )
     }
 }
