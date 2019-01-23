@@ -1,2 +1,4 @@
 node_modules/
 client/src/public/assets/goodguy
+client/dist/
+!client/dist/index.html
