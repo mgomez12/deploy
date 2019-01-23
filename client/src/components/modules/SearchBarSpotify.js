@@ -88,6 +88,7 @@ class SearchBarSpotify extends Component {
         <div>
                 <Search
                     loading={isLoading}
+                    placeholder='Search for a song...'
                     onResultSelect={this.handleResultSelect}
                     onSearchChange={_.debounce(this.handleSearchChange, 500, { leading: true })}
                     results={results}
