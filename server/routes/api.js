@@ -56,10 +56,14 @@ router.post('/suggestion', function(req, res) {
         profile.save()
     });
     User.findOne({_id: req.body.receiver}, (err, profile) => {
+        if (!profile) {
+            res.send({status: 'fail'});
+        }
+        else {
         profile.suggestions_received.push(newSuggestion._id)
-        profile.save()
+        profile.save() 
+        res.send({status: 'success'});}
     });
-    res.send({})
 })
 
 router.post('/friend', function(req, res) {

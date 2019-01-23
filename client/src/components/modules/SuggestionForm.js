@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import "../../public/css/styles.css"
 import io from 'socket.io-client';
-import { Message, Input } from 'semantic-ui-react';
+import { Message, Input, Loader } from 'semantic-ui-react';
 import { post } from "./api"
 
 class SuggestionForm extends Component {
@@ -12,7 +12,8 @@ class SuggestionForm extends Component {
 
         this.state = {
             input: '',
-            submitted: false
+            submitted: false,
+            response: null
         };
         this.handleChange = this.handleChange.bind(this)
         this.submitSuggestion = this.submitSuggestion.bind(this)
@@ -23,7 +24,6 @@ class SuggestionForm extends Component {
         if (this.state.input == '') {
             this.setState({
                 input: event.target.value,
-                submitted: false
             })
             return
         }
@@ -35,12 +35,25 @@ class SuggestionForm extends Component {
     submitSuggestion() {
         this.setState({
             input: '',
-            submitted: true
+            submitted: true,
+            response: null
         })
         const date = new Date()
         if (!this.props.isTrack) {
             console.log('submitted' + this.props.userId + this.state.input)
-            post('/api/suggestion', {receiver: this.state.input, sender: this.props.userId, track: this.props.track, time:date})
+            post('/api/suggestion', {receiver: this.state.input, sender: this.props.userId, track: this.props.track, time:date},
+            (response) => {
+                console.log(response);
+                if (response.status =='success') {
+                    this.setState({
+                        response: true
+                    })
+                    return
+                }
+                this.setState({
+                    response: false
+                })
+            })
         }
         else {
         console.log('submitted' + this.props.userId + this.props.receiverId)
@@ -48,6 +61,22 @@ class SuggestionForm extends Component {
         }
     }
     render() {
+        let banner;
+        if (this.state.submitted) {
+            console.log(this.state.response)
+            if (this.state.response == null) {
+                banner=<Message compact ><Loader active size='medium'/></Message>
+            }
+            else if (this.state.response) {
+                banner=<Message compact positive><Message.Header>Submitted!</Message.Header></Message>
+            }
+            else {
+                banner=<Message compact negative><Message.Header>Failed!</Message.Header></Message>
+            }
+        }
+        else {
+            banner=''
+        }
         return(<div style={{display:'inline-block'}}>
 <Input
     action={{ color: 'teal', content: 'submit', onClick: this.submitSuggestion}}
@@ -55,7 +84,7 @@ class SuggestionForm extends Component {
     value={this.state.input}
     onChange={this.handleChange}
   />
-  {this.state.submitted ? <Message compact positive><Message.Header>Submitted!</Message.Header></Message> : ''}
+  {banner}
   </div>
         )
     }
