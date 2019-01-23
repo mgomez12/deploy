@@ -4,11 +4,12 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 require('dotenv').config();
 const passport = require('./passport');
-const db = require('./db');
+const db = require('./db')
 const path = require('path');
 const socketio = require('socket.io');
 const request = require('request-promise');
 const User = require('./models/user')
+const MongoStore = require('connect-mongo')(session);
 
 
 const api = require('./routes/api');
@@ -18,11 +19,14 @@ const publicPath = path.resolve(__dirname, '..', 'client/dist');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+var sessionStore = new MongoStore({
+  mongooseConnection: db
+});
 
 app.use(session({
     secret: 'session-secret',
     resave: 'false',
-    store: 'connect-mongo',
+    store: sessionStore,
     saveUninitialized: 'true'
   }));
 
