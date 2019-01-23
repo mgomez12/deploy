@@ -36,6 +36,7 @@ class DashCard extends Component {
                 <Image src={this.props.userInfo.image}/>
                 <Card.Content>
                     <Card.Header> {this.props.userInfo.name} </Card.Header>
+                    <Card.Description> {this.props.userInfo.top_songs[0].name}</Card.Description>
                 </Card.Content>
                 <Card.Content extra>
                     <a>
