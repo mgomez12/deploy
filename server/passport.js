@@ -7,7 +7,7 @@ passport.use(
       {
         clientID: process.env.clientID,
         clientSecret: process.env.clientSecret,
-        callbackURL: 'http://localhost:3000/auth/spotify/callback'
+        callbackURL: '/auth/spotify/callback'
       },
       function(accessToken, refreshToken, expires_in, profile, done) {
         User.findOne({
