@@ -60,7 +60,8 @@ module.exports = {
       '/song': 'http://localhost:3000',
       '/album': 'http://localhost:3000',
       '/artist': 'http://localhost:3000',
-      '/error': 'http://localhost:3000'
+      '/error': 'http://localhost:3000',
+      '/': 'http://localhost:3000'
     }
   }
 };

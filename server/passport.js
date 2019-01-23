@@ -5,8 +5,8 @@ const User = require('./models/user')
 passport.use(
     new SpotifyStrategy(
       {
-        clientID: 'd3f7342d0ec24baf94ede9f2ead6eaeb',
-        clientSecret: '47b3c6d4d21345e3aca87fea698f42b8',
+        clientID: process.env.clientID,
+        clientSecret: process.env.clientSecret,
         callbackURL: 'http://localhost:3000/auth/spotify/callback'
       },
       function(accessToken, refreshToken, expires_in, profile, done) {

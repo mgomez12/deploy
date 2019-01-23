@@ -2,6 +2,7 @@ const http= require('http');
 const express = require('express')
 const session = require('express-session');
 const bodyParser = require('body-parser');
+require('dotenv').config();
 const passport = require('./passport');
 const db = require('./db');
 const path = require('path');
@@ -96,7 +97,7 @@ app.get(
       values.profInfo.then(prof => {profile.spotify_followers = prof.followers.total})).then(
       () => profile.save())
     })
-    res.redirect('http://localhost:5000/');
+    res.redirect('/');
   });
 
   
@@ -131,7 +132,7 @@ const server = http.Server(app);
 const io = socketio(server);
 app.set('socketio', io);
 
-server.listen(port, function() {
+server.listen(process.env.PORT || port, function() {
   console.log('Server running on port: ' + port);
 });
 
