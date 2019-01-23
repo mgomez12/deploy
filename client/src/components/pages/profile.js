@@ -5,6 +5,7 @@ import { Loader, Header, Grid, Segment, Image, Container } from 'semantic-ui-rea
 import default_profile from "../../public/assets/default_profile.png";
 import NavBar from "../modules/NavBar";
 import SuggestionForm from '../modules/SuggestionForm';
+import FriendForm from '../modules/FriendForm';
 
 class Profile extends Component {
     constructor(props) {
@@ -52,6 +53,15 @@ class Profile extends Component {
     loadSuggestionBox() {
         if(this.gotProfileInfo) {
             return (<SuggestionForm userId={this.props.viewerInfo._id} receiverId={this.state.userInfo._id} isTrack={true}/>);
+        }
+        else {
+            <Loader active inline />
+        }
+    }
+
+    loadFriendBox() {
+        if(this.gotProfileInfo) {
+            return (<FriendForm userId={this.props.viewerInfo._id} receiverId={this.state.userInfo._id} viewerInfo={this.props.viewerInfo}/>);
         }
         else {
             <Loader active inline />
@@ -131,6 +141,10 @@ class Profile extends Component {
                     </Grid.Row>
                     <Grid.Row columns={3}>
                         <Grid.Column>
+                            <div className='center-parent'>
+                                <Header as='h4'>Follow user!</Header>
+                                {this.loadFriendBox()}
+                            </div>
                             <Header as="h2">
                                 Description: {description}
                             </Header>

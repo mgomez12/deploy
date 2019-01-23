@@ -1,25 +1,40 @@
 import React, { Component } from "react";
 import "../../public/css/styles.css";
-import { Button, Header } from "semantic-ui-react";
+import { Segment, Loader, Button, Header, Card } from "semantic-ui-react";
 import { Link} from 'react-router-dom';
+import DashCard from "../modules/DashCard"
 
 class Dash extends Component {
 	constructor(props) {
         super(props);
 
         this.state = {
+            results: this.props.userInfo.friends
         };
+        this.gotDashInfo = false;
     }
 
     componentDidMount() {
         
     }
 
+    loadCards() {
+            return(
+                this.state.results.map( friend => {
+                return(
+                    <DashCard userInfo={this.props.userInfo}/>
+                );
+            })
+            );
+    }
+
     render() {
         return (
             <div>
-
-        </div>
+                <Card.Group>
+                    {this.loadCards()}
+                </Card.Group>
+            </div>
         )
     }
 }

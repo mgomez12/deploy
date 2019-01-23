@@ -3,6 +3,7 @@ import "../../public/css/styles.css";
 import {withRouter} from "react-router-dom";
 import NavBar from "../modules/NavBar"
 import SuggestionBox from "../modules/SuggestionBox"
+import Dash from "../modules/Dash"
 import { Loader, Container, Grid} from "semantic-ui-react";
 
 class Main extends Component {
@@ -28,6 +29,9 @@ class Main extends Component {
                 <Grid columns='2' stackable style={{height:'80vh'}}>
                     <Grid.Column>
                         <SuggestionBox userInfo={this.props.userInfo}/>
+                    </Grid.Column>
+                    <Grid.Column>
+                        <Dash userInfo={this.props.userInfo}/>
                     </Grid.Column>
                 </Grid>
             </Container>

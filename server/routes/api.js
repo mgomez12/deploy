@@ -62,4 +62,18 @@ router.post('/suggestion', function(req, res) {
     res.send({})
 })
 
+router.post('/friend', function(req, res) {
+    connect.ensureLoggedIn();
+
+    User.findOne({_id: req.body.sender}, (err, profile) => {
+        profile.friends.push(req.body.receiver)
+        profile.save()
+    });
+    User.findOne({_id: req.body.receiver}, (err, profile) => {
+        profile.friends.push(req.body.sender)
+        profile.save()
+    });
+    res.send({})
+})
+
 module.exports = router;
