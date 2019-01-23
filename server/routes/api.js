@@ -17,6 +17,15 @@ router.get('/user', function(req, res) {
     });
   });
   
+router.get('/allusers', function(req, res) {
+    User.find({}, function(err, users) {
+        if(err) {
+            console.log("hello")
+            console.log(err)
+        }
+        res.send(users);
+    });
+});
 
 router.get('/whoami', function(req, res) {
 

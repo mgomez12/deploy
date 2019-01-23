@@ -5,6 +5,7 @@ import NavBar from "../modules/NavBar"
 import SuggestionBox from "../modules/SuggestionBox"
 import Dash from "../modules/Dash"
 import { Loader, Container, Grid} from "semantic-ui-react";
+import SearchBarUser from '../modules/SearchBarUser';
 
 class Main extends Component {
 	constructor(props) {
@@ -31,6 +32,7 @@ class Main extends Component {
                         <SuggestionBox userInfo={this.props.userInfo}/>
                     </Grid.Column>
                     <Grid.Column>
+                        <SearchBarUser history={this.props.history}/>
                         <Dash userInfo={this.props.userInfo}/>
                     </Grid.Column>
                 </Grid>

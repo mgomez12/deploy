@@ -1,9 +1,9 @@
 import _ from 'lodash'
 import io from 'socket.io-client';
 import React, { Component } from 'react'
-import { Search} from 'semantic-ui-react'
+import { Search } from 'semantic-ui-react'
 import {get} from "./api";
-
+import default_profile from "../../public/assets/default_profile.png";
 
 
 class SearchBarUser extends Component {
@@ -12,72 +12,72 @@ class SearchBarUser extends Component {
 
         this.socket = io('http://localhost:3000');
 
-
-        
         this.state = {
             isLoading: false,
             results: [],
             value: '',
-            source: [{
-                title: "Jeffrey Chen",
-                image: "https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=234005436790515&height=200&width=200&ext=1550675248&hash=AeQ2vzL0Qc9aF3s7"
-            }]
+            source: []
         };
+
+        this.gotUsers=false;
         
     }
 
   componentWillMount() {
+    this.getUsers()
     this.resetComponent()
   }
 
   resetComponent = () => this.setState({ isLoading: false, results: [], value: '' })
 
+  getUsers() {
+    fetch('/api/allusers').then(res => res.json())
+    .then((users) => {
+        console.log(users)
+        this.setState({
+            source: users.map( user => {
+                var userImage = user.image;
+                if(user.image=="") {
+                    userImage= default_profile;
+                }
+                return(
+                    {
+                        key: user._id,
+                        title: user.name,
+                        image: userImage,
+                        description: user.top_songs[0].name
+                    }
+                )
+            }),
+        })
+        console.log(this.state.source)
+        this.gotUsers = true;
+    })
+}
+
   handleResultSelect = (e, { result }) => {
       
       this.setState({ value: result.title })
       console.log(result)
-      
+      console.log(result.key)
+      this.props.history.push('/u/profile/' + result.key);
+      this.resetComponent();
   }
 
   handleSearchChange = (e, { value }) => {
-    this.setState({ isLoading: true, value: value })
+    this.setState({ isLoading: true, value })
 
     setTimeout(() => {
-        this.updateSourceUsers(value);
-        this.render();
+      if (this.state.value.length < 1) return this.resetComponent()
+
+      const re = new RegExp(_.escapeRegExp(this.state.value), 'i')
+      const isMatch = result => re.test(result.title)
+
+      this.setState({
+        isLoading: false,
+        results: _.filter(this.state.source, isMatch),
+      })
     }, 300)
-
-  }
-
-  updateSourceUsers(value) {
-    if (value.length < 1) return this.resetComponent() 
-    const obj = this;
-    var artistHeader = [['Authorization', 'Bearer ' + this.props.userInfo.access_token]];
-    console.log('token: ' + this.props.userInfo.access_token)
-    get('https://api.spotify.com/v1/search?q=' + value + '&type=track&market=US&limit=5', null, function(searchData) {
-
-        console.log('search data in get: ' + searchData.tracks.items[0].name)
-        const compiled = searchData.tracks.items.map( track => {
-            return(
-                {
-                    key: track.id,
-                    title: track.name,
-                    image: track.album.images[0].url,
-                    description: track.album.artists[0].name,
-                }
-            );
-        });
-        console.log(compiled)
-        obj.setState({
-            isLoading: false,
-            results: compiled
-        })
-    }, null, artistHeader);
-  }
-
-  onClickFunc(track) {
-    console.log("in onClickFunc")
-    ;
   }
 
   render() {
@@ -87,6 +87,7 @@ class SearchBarUser extends Component {
         <div>
                 <Search
                     loading={isLoading}
+                    placeholder='Search for a user...'
                     onResultSelect={this.handleResultSelect}
                     onSearchChange={_.debounce(this.handleSearchChange, 500, { leading: true })}
                     results={results}

@@ -9,7 +9,8 @@ import Song from "./pages/Song";
 import Album from "./pages/Album";
 import Artist from "./pages/Artist";
 import NavBar from "./modules/NavBar";
-import ErrorPage from "./pages/error"
+import ErrorPage from "./pages/error";
+import DefaultProfileImage from "./modules/DefaultProfileImage";
 
 class App extends React.Component {
     constructor(props) {
@@ -39,6 +40,7 @@ class App extends React.Component {
                 <Route path='/' render = {(props) => <NavBar {...props} userInfo={userInfo}/>}/>
             </Switch>
             <Switch>
+            <Route exact path='/defaultprofileimage' render = {() => <DefaultProfileImage/>} />
             <Route path='/u/profile/:user' render = {(props) => <Profile {...props} userInfo ={userInfo} viewerInfo={userInfo} />} />
             <Route exact path ="/login" component={Login} />
             <Route exact path="/" render = {() => <Main userInfo ={userInfo} />} />

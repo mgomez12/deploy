@@ -76,11 +76,6 @@ class SearchBarSpotify extends Component {
     }, null, artistHeader);
   }
 
-  onClickFunc(track) {
-    console.log("in onClickFunc")
-    ;
-  }
-
   render() {
     const { isLoading, value, results } = this.state
 

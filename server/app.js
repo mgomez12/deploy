@@ -57,6 +57,10 @@ app.get(['/artist/:artistid'], function (req, res) {
   res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
 });
 
+app.get(['/defaultprofileimage'], function (req, res) {
+  res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
+});
+
 app.get('/auth/spotify', passport.authenticate('spotify', { scope:['user-read-private', 'user-top-read']}),
  function(req, res) {
   // The request will be redirected to spotify for authentication, so this

@@ -13,26 +13,20 @@ class FriendForm extends Component {
         this.state = {
             added: false
         };
-        console.log("receiver: "+  this.props.receiverId)
-        console.log("viewer: "+  this.props.userId)
-        const recieverId = this.props.recieverId;
-        console.log("viewerInfo: "+  this.props.viewerInfo.friends)
-        console.log(this.props.viewerInfo.friends.includes(this.props.recieverId))
-        if(!this.props.viewerInfo.friends.includes(this.props.recieverId)) {
-              console.log(this.props.viewerInfo.friends)
-              console.log(this.props.recieverId)
-              this.setState({
-                  added: true
-              })
-          }
+
         this.addFriend = this.addFriend.bind(this)
 
     }
     componentDidMount() {
+        this.areFriends();
         console.log(this.props.viewerInfo.friends)
 
     }
     componentDidUpdate() {
+        this.areFriends();
+    }
+    
+    areFriends() {
         if(this.props.viewerInfo.friends.includes(this.props.recieverId)) {
             console.log("are friends")
             this.setState({
