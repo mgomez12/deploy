@@ -8,7 +8,8 @@ import Main from "./pages/Main"
 import Song from "./pages/Song";
 import Album from "./pages/Album";
 import Artist from "./pages/Artist";
-import NavBar from "./modules/NavBar"
+import NavBar from "./modules/NavBar";
+import ErrorPage from "./pages/error"
 
 class App extends React.Component {
     constructor(props) {
@@ -44,7 +45,7 @@ class App extends React.Component {
             <Route path="/song/:songid" render = {(props) => <Song {...props} userInfo ={userInfo}  />} />
             <Route exact path="/album/:albumid" render = {(props) => <Album {...props} userInfo ={userInfo} token ={userInfo.access_token} />}/>
             <Route exact path="/artist/:artistid" render = {(props) => <Artist {...props} userInfo ={userInfo} token ={userInfo.access_token} />}/>
-            
+            <Route path="/error" component={ErrorPage} />
             </Switch>
         </div>
         )
