@@ -10,20 +10,25 @@
         <link rel="stylesheet" href="/static/css/styles.css">
     </head>
     <body>
-        <div class="ui container center-screen">
-            <div class="ui container center-text" id="song-image">
+        <div class="ui container">
+            <div class="ui container center-text" id="album-image">
                 <!-- song image inserted here -->
             </div>
             <div>
-                <div id="song-title">
+                <div id="album-title">
                     <!-- title inserted here -->
                 </div>
-                <div id="song-artist">
+                <div id="album-artist">
                     <!-- artist inserted here -->
                 </div>
             </div>
+            <div class="ui segment" id="album-tracks">
+            </div>
+
         </div>
     </body>
     <script src="/static/js/api.js"></script>
-    <script src="/static/js/song.js"></script>
+    <script src="https://sdk.scdn.co/spotify-player.js"></script>
+    <script src="/static/js/sdk.js"></script>
+    <script src="/static/js/album.js"></script>
 </html>
