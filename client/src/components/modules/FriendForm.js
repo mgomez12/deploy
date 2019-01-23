@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import "../../public/css/styles.css"
 import io from 'socket.io-client';
 import { Message, Button } from 'semantic-ui-react';
-import { post } from "./api"
+import { post, get } from "./api"
 
 class FriendForm extends Component {
     constructor(props) {
@@ -34,7 +34,6 @@ class FriendForm extends Component {
             })
         }
           console.log(this.props.viewerInfo.friends)
-          this.render();
     }
 
     addFriend() {
@@ -42,6 +41,7 @@ class FriendForm extends Component {
             added: true
         })
         post('/api/friend', {receiver: this.props.receiverId, sender: this.props.userId})
+        get('/api/updateUser', {}, response => {console.log(response)});
     }
     render() {
         return(
