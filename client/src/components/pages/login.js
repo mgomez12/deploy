@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "../../public/css/styles.css";
 import { Button, Header } from "semantic-ui-react";
 import { Link} from 'react-router-dom';
-import introVid from '../../public/assets/goodguy.mp4';
+import introVid from 'goodguy.mp4';
 
 class Login extends Component {
 	constructor(props) {

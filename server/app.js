@@ -14,7 +14,7 @@ const MongoStore = require('connect-mongo')(session);
 
 const api = require('./routes/api');
 const app = express();
-const publicPath = path.resolve(__dirname, '..', 'client/dist');
+const publicPath = path.resolve(__dirname, '..', '/client/dist');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
