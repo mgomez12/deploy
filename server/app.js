@@ -35,6 +35,10 @@ app.get(['/login'], function (req, res) {
   res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
 });
 
+app.get(['/error'], function (req, res) {
+  res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
+});
+
 app.get(['/song/:songid'], function (req, res) {
   res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
 });

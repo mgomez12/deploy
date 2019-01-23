@@ -100,3 +100,8 @@ section {
     text-align: center;
   }
 
+.topsongs{
+    background-color: #00b5ad;
+    background-position: center; 
+    position: relative;;
+}

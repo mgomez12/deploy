@@ -3,7 +3,6 @@ import "../../public/css/styles.css"
 import io from 'socket.io-client';
 import { Loader, Header, Grid, Segment, Image, Container } from 'semantic-ui-react';
 import default_profile from "../../public/assets/default_profile.png";
-import NavBar from "../modules/NavBar";
 import SuggestionForm from '../modules/SuggestionForm';
 import FriendForm from '../modules/FriendForm';
 

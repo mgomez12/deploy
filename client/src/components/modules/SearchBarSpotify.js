@@ -44,8 +44,8 @@ class SearchBarSpotify extends Component {
       
       this.setState({ value: result.title })
       console.log(result)
-      this.props.history.push('/song/' + result.key)
-      
+      this.props.history.push('/song/' + result.key);
+      this.resetComponent();
   }
 
   handleSearchChange = (e, { value }) => {
