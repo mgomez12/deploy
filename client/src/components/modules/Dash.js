@@ -19,13 +19,13 @@ class Dash extends Component {
     }
 
     loadCards() {
+        return(
+            this.state.results.map( friend => {
             return(
-                this.state.results.map( friend => {
-                return(
-                    <DashCard userInfo={this.props.userInfo}/>
-                );
-            })
+                <DashCard friendId={friend}/>
             );
+        })
+        );
     }
 
     render() {
