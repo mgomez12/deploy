@@ -37,6 +37,23 @@ else{
 }
 });
 
+router.get('/updateUser', function(req, res) {
+    if(req.isAuthenticated()) {
+        console.log('searching for user')
+        User.findOne({ _id: req.user._id}, function(err, user) {
+            if(err) {
+                console.log(err)
+                res.send(err)
+            }
+            else {
+                console.log('logging in updated user')
+                req.logOut();
+                req.login(user, (err) => {console.log(err)});
+                res.send(req.user);
+            }
+    })
+}})
+
 router.get("/suggestion", function(req, res) {
     connect.ensureLoggedIn();
     console.log(req.query.receiver)
@@ -59,18 +76,18 @@ router.post('/suggestion', function(req, res) {
         track_id: req.body.track,
         time_sent: req.body.time
     })
-    newSuggestion.save();
-    User.findOne({_id: req.body.sender}, (err, profile) => {
-        profile.suggestions_made.push(newSuggestion._id)
-        profile.save()
-    });
-    User.findOne({_id: req.body.receiver}, (err, profile) => {
-        if (!profile) {
+    User.findOne({_id: req.body.receiver}, (err, receiverProfile) => {
+        if (!receiverProfile) {
             res.send({status: 'fail'});
         }
         else {
-        profile.suggestions_received.push(newSuggestion._id)
-        profile.save() 
+        receiverProfile.suggestions_received.push(newSuggestion._id)
+        receiverProfile.save() 
+        User.findOne({_id: req.body.sender}, (err, senderProfile) => {
+            senderProfile.suggestions_made.push(newSuggestion._id)
+            senderProfile.save()
+        });
+        newSuggestion.save();
         res.send({status: 'success'});}
     });
 })
