@@ -22,12 +22,9 @@ class FriendForm extends Component {
         console.log(this.props.viewerInfo.friends)
 
     }
-    componentDidUpdate() {
-        this.areFriends();
-    }
-    
     areFriends() {
-        if(this.props.viewerInfo.friends.includes(this.props.recieverId)) {
+        console.log("in are friends")
+        if(this.props.viewerInfo.friends.includes(this.props.receiverId)) {
             console.log("are friends")
             this.setState({
                 added: true
