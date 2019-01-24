@@ -44,9 +44,7 @@ class SearchBarUser extends Component {
                     {
                         key: user._id,
                         title: user.name,
-                        image: userImage,
-                        description: user.top_songs[0].name
-                    }
+                        image: userImage                    }
                 )
             }),
         })
@@ -92,6 +90,7 @@ class SearchBarUser extends Component {
                     onSearchChange={_.debounce(this.handleSearchChange, 500, { leading: true })}
                     results={results}
                     value={value}
+                    style={{padding:'10px'}}
                 />
         </div>
     )

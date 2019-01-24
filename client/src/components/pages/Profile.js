@@ -60,7 +60,6 @@ class Profile extends Component {
 
     loadFriendBox() {
         if(this.gotProfileInfo) {
-            console.log()
             return (<FriendForm userId={this.props.viewerInfo._id} receiverId={this.state.userInfo._id} viewerInfo={this.props.viewerInfo}/>);
         }
         else {

@@ -9,7 +9,6 @@ class Dash extends Component {
         super(props);
 
         this.state = {
-            results: this.props.userInfo.friends
         };
         this.gotDashInfo = false;
     }
@@ -19,19 +18,16 @@ class Dash extends Component {
     }
 
     loadCards() {
+        console.log(this.props.userInfo.friends)
             return(
-                this.state.results.map( friend => {
-                return(
-                    <DashCard userInfo={this.props.userInfo}/>
-                );
-            })
+                this.props.userInfo.friends.map( friend => <DashCard key = {friend} userInfo={friend}/>)
             );
     }
 
     render() {
         return (
             <div>
-                <Card.Group>
+                <Card.Group itemsPerRow="4">
                     {this.loadCards()}
                 </Card.Group>
             </div>
