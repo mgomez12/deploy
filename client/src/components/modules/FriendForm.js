@@ -18,16 +18,16 @@ class FriendForm extends Component {
 
     }
     componentDidMount() {
+        this.resetComponent
         this.areFriends();
         console.log(this.props.viewerInfo.friends)
 
     }
-    componentDidUpdate() {
-        this.areFriends();
-    }
-    
+
+    resetComponent = () => this.setState({ added: false })
+
     areFriends() {
-        if(this.props.viewerInfo.friends.includes(this.props.recieverId)) {
+        if(this.props.viewerInfo.friends.includes(this.props.receiverId)) {
             console.log("are friends")
             this.setState({
                 added: true
@@ -46,7 +46,6 @@ class FriendForm extends Component {
     render() {
         return(
         <div style={{display:'inline-block'}}>
-
             {this.state.added ? <Message compact positive><Message.Header>Friend Added!</Message.Header></Message> :
             <Button
                 color='teal'
