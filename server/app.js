@@ -20,117 +20,138 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 var sessionStore = new MongoStore({
-  mongooseConnection: db
+ mongooseConnection: db
 });
 
 app.use(session({
-    secret: 'session-secret',
-    resave: 'false',
-    store: sessionStore,
-    saveUninitialized: 'true'
-  }));
+   secret: 'session-secret',
+   resave: 'false',
+   store: sessionStore,
+   saveUninitialized: 'true'
+ }));
 
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.get(['/u/profile/:user'], function (req, res) {
-  res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
+ res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
 });
 
 app.get(['/login'], function (req, res) {
-  res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
+ res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
 });
 
 app.get(['/error'], function (req, res) {
-  res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
+ res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
 });
 
 app.get(['/song/:songid'], function (req, res) {
-  res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
+ res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
 });
 
 app.get(['/album/:albumid'], function (req, res) {
-  res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
+ res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
 });
 
 app.get(['/artist/:artistid'], function (req, res) {
-  res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
+ res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
 });
 
 app.get(['/defaultprofileimage'], function (req, res) {
-  res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
-});
-
-app.get('/auth/spotify', passport.authenticate('spotify', { scope:['user-read-private', 'user-top-read']}),
- function(req, res) {
-  // The request will be redirected to spotify for authentication, so this
-  // function will not be called.
+ res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
 });
 
 app.get(
-  '/auth/spotify/callback',
-  passport.authenticate('spotify', { failureRedirect: '/login' }),
-  function(req, res) {
-    // Successful authentication, redirect home.
-
-    var top_songs = {
-      url: 'https://api.spotify.com/v1/me/top/tracks?limit=50',
-      headers: {'Authorization': "Bearer " + req.user.access_token},
-      json: true
-    };
-
-    var top_artists = {
-      url: 'https://api.spotify.com/v1/me/top/artists?limit=50',
-      headers: {'Authorization': "Bearer " + req.user.access_token},
-      json: true
-    };
-
-    var prof = {
-      url: 'https://api.spotify.com/v1/users/' + req.user._id,
-      headers: {'Authorization': "Bearer " + req.user.access_token},
-      json: true
-    };
-    let values= {
-      top_songs: request(top_songs),
-      top_artists: request(top_artists),
-      profInfo: request(prof)
-    }
-
-    
-    // request top songs and save to database
+ '/auth/spotify',
+ passport.authenticate('spotify', {
+   scope: ['user-read-recently-played', 'user-top-read', 'app-remote-control', 'streaming', 'user-modify-playback-state', 'playlist-modify-public', 'user-read-currently-playing'],
+   showDialog: true
+ }),
+ function(req, res) {
+   // The request will be redirected to spotify for authentication, so this
+   // function will not be called.
+ }
+);
 
 
-    User.findOne({_id: req.user._id}, (err, profile)=> {
-      values.top_songs.then(track => {profile.top_songs = track.items}).then(
-      values.top_artists.then(artist => {profile.top_artists = artist.items})).then(
-      values.profInfo.then(prof => {profile.spotify_followers = prof.followers.total})).then(
-      () => profile.save())
-    })
-    res.redirect('/');
-  });
+app.get(
+ '/auth/spotify/callback',
+ passport.authenticate('spotify', { failureRedirect: '/login' }),
+ function(req, res) {
+   // Successful authentication, redirect home.
+
+   var top_songs = {
+     url: 'https://api.spotify.com/v1/me/top/tracks?limit=50',
+     headers: {'Authorization': "Bearer " + req.user.access_token},
+     json: true
+   };
+
+   var top_artists = {
+     url: 'https://api.spotify.com/v1/me/top/artists?limit=50',
+     headers: {'Authorization': "Bearer " + req.user.access_token},
+     json: true
+   };
+
+   var prof = {
+     url: 'https://api.spotify.com/v1/users/' + req.user._id,
+     headers: {'Authorization': "Bearer " + req.user.access_token},
+     json: true
+   };
+
+   var recently_played = {
+     url: 'https://api.spotify.com/v1/me/player/recently-played',
+     headers: {'Authorization': "Bearer " + req.user.access_token},
+     json: true
+   }
+
+   let values= {
+     top_songs: request(top_songs),
+     top_artists: request(top_artists),
+     profInfo: request(prof),
+     recently_played: request(recently_played)
+   }
 
   
-app.get('/logout', function(req, res) {
-  req.logout();
-  res.redirect('/');
+   // request top songs and save to database
+
+
+   User.findOne({_id: req.user._id}, (err, profile)=> {
+     values.top_songs.then(track => {profile.top_songs = track.items}).then(
+     values.top_artists.then(artist => {profile.top_artists = artist.items})).then(
+     values.profInfo.then(prof => {
+       console.log(prof.followers.total)
+       profile.spotify_followers = prof.followers.total
+      })).then(
+     values.recently_played.then(tracks => {
+       console.log(tracks.items)
+       profile.recently_played = tracks.items
+      })).then(
+     () => profile.save())
+   })
+   res.redirect('/');
+ });
+
+ app.get('/logout', function(req, res) {
+ req.logout();
+ res.redirect('/');
 });
 
 app.use('/api', api)
 app.use(express.static(publicPath));
 
 app.use(function(req, res, next) {
-  const err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+ const err = new Error('Not Found');
+ err.status = 404;
+ next(err);
 });
 
 // route error handler
 app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
-  res.send({
-    status: err.status,
-    message: err.message,
-  });
+ res.status(err.status || 500);
+ res.send({
+   status: err.status,
+   message: err.message,
+ });
 });
 
 
@@ -142,7 +163,7 @@ const io = socketio(server);
 app.set('socketio', io);
 
 server.listen(process.env.PORT || port, function() {
-  console.log('Server running on port: ' + port);
+ console.log('Server running on port: ' + port);
 });
 
 

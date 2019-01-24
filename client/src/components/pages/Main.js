@@ -23,7 +23,6 @@ class Main extends Component {
         if (this.props.userInfo.access_token == null) {
             return <Loader size='massive'/>
         }
-        console.log(this.props.userInfo.name)
         return(<div>
             <NavBar history={this.props.history} userInfo={this.props.userInfo}/>
             <Container style={{padding: '5em'}}>

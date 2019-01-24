@@ -26,7 +26,6 @@ class App extends React.Component {
 
     componentDidMount () {
         this.getUser();
-        console.log(this.state.userInfo)
     }
 
   
