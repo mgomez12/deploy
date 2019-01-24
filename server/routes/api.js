@@ -98,21 +98,16 @@ router.post('/suggestion', function(req, res) {
 
 router.post('/friend', function(req, res) {
     connect.ensureLoggedIn();
-    if(req.user.friends.includes(req.body.receiver)) {
-        res.send({status: 'fail'});
-    }
-    else {
-        User.findOne({_id: req.body.sender}, (err, profile) => {
-            profile.friends.push(req.body.receiver)
-            profile.save()
-        });
-        User.findOne({_id: req.body.receiver}, (err, profile) => {
-            profile.friends.push(req.body.sender)
-            profile.save()
-        });
-        res.send({})
-    }
 
+    User.findOne({_id: req.body.sender}, (err, profile) => {
+        profile.friends.push(req.body.receiver)
+        profile.save()
+    });
+    User.findOne({_id: req.body.receiver}, (err, profile) => {
+        profile.friends.push(req.body.sender)
+        profile.save()
+    });
+    res.send({})
 })
 
 module.exports = router;
