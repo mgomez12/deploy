@@ -101,8 +101,7 @@ class SuggestionForm extends Component {
             />
             {banner}
             </div>
-            <br/>
-            <Checkbox style={{padding:'8px'}} toggle label='Submit anonymously' onClick={this.checkboxChange}/>
+            <Checkbox toggle label='Submit anonymously' onClick={this.checkboxChange}/>
             </React.Fragment>
         )
     }
