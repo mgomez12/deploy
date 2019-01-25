@@ -21,15 +21,16 @@ class Dash extends Component {
         console.log(this.props.userInfo.friends)
             return(
                 this.props.userInfo.friends.map( friend => <DashCard key = {friend} userInfo={this.props.userInfo} cardUserInfo={friend}/>)
-            );
+            );  
     }
 
     render() {
         return (
             <div>
+                {this.props.userInfo.friends.length == 0 ? <Header as='h3' style={{color:'gray'}}>You currently don't have any friends. Follow friends to see their cards!</Header>:
                 <Card.Group itemsPerRow="4">
                     {this.loadCards()}
-                </Card.Group>
+                </Card.Group>}
             </div>
         )
     }

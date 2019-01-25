@@ -104,7 +104,7 @@ router.post('/friend', function(req, res) {
         else {
         profile.friends.push(req.body.receiver)
         profile.save()
-        global.io.emit('notification_' + req.body.sender, "" + req.body.sender + " started following you!")
+        global.io.emit('notification_' + req.body.receiver, "" + req.body.sender + " started following you!")
         }
     });
     res.send({})
