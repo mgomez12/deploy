@@ -62,7 +62,6 @@ router.get("/suggestion", function(req, res) {
              if (err) {
                  res.send(err)
              }
-             console.log("sending" + items);
         res.send(items);
     });
     
@@ -98,10 +97,15 @@ router.post('/suggestion', function(req, res) {
 
 router.post('/friend', function(req, res) {
     connect.ensureLoggedIn();
-
     User.findOne({_id: req.body.sender}, (err, profile) => {
+        if (err) {
+            console.log(err);
+        }
+        else {
         profile.friends.push(req.body.receiver)
         profile.save()
+        global.io.emit('notification_' + req.body.sender, "" + req.body.sender + " started following you!")
+        }
     });
     res.send({})
 })

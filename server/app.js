@@ -11,13 +11,19 @@ const request = require('request-promise');
 const User = require('./models/user')
 const MongoStore = require('connect-mongo')(session);
 
-
-const api = require('./routes/api');
 const app = express();
 const publicPath = path.resolve(__dirname, '..', 'client/dist');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+const port = 3000; // config variable
+const server = http.Server(app);
+
+global.io = socketio(server);
+app.set('socketio', global.io);
+
+const api = require('./routes/api');
 
 var sessionStore = new MongoStore({
  mongooseConnection: db
@@ -168,11 +174,10 @@ app.use(function(err, req, res, next) {
 
 
 // port config
-const port = 3000; // config variable
-const server = http.Server(app);
 
-const io = socketio(server);
-app.set('socketio', io);
+global.io.on('connection', function (socket) {
+  console.log('client connected');
+});
 
 server.listen(process.env.PORT || port, function() {
  console.log('Server running on port: ' + port);

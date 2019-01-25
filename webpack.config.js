@@ -61,7 +61,8 @@ module.exports = {
       '/album': 'http://localhost:3000',
       '/artist': 'http://localhost:3000',
       '/error': 'http://localhost:3000',
-      '/': 'http://localhost:3000'
+      '/': 'http://localhost:3000',
+      '/socket.io': 'http://localhost:3000'
     }
   }
 };
