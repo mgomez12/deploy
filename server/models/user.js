@@ -16,7 +16,9 @@ const UserModelSchema = new mongoose.Schema ({
  top_artists         : Object,
  suggestions_made    : Array,
  suggestions_received: Array,
- recently_played     : Array
+ recently_played_tracks: Array,
+ recently_played_artists: Array,
+ recent_genres        : Array
 });
 
 // compile model from schema

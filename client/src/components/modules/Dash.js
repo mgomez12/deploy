@@ -20,7 +20,7 @@ class Dash extends Component {
     loadCards() {
         console.log(this.props.userInfo.friends)
             return(
-                this.props.userInfo.friends.map( friend => <DashCard key = {friend} userInfo={friend}/>)
+                this.props.userInfo.friends.map( friend => <DashCard key = {friend} userInfo={this.props.userInfo} cardUserInfo={friend}/>)
             );
     }
 

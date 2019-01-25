@@ -103,10 +103,6 @@ router.post('/friend', function(req, res) {
         profile.friends.push(req.body.receiver)
         profile.save()
     });
-    User.findOne({_id: req.body.receiver}, (err, profile) => {
-        profile.friends.push(req.body.sender)
-        profile.save()
-    });
     res.send({})
 })
 

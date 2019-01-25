@@ -30,7 +30,9 @@ passport.use(
              top_artists: {},
              suggestions_made: [],
              suggestions_received: [],
-             recently_played: ["hello"]
+             recently_played_tracks: [],
+             recently_played_artists: [],
+             recent_genres: []
            });
     
            user.save(function(err) {

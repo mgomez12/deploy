@@ -81,13 +81,13 @@ app.get(
    // Successful authentication, redirect home.
 
    var top_songs = {
-     url: 'https://api.spotify.com/v1/me/top/tracks?limit=50',
+     url: 'https://api.spotify.com/v1/me/top/tracks?limit=20',
      headers: {'Authorization': "Bearer " + req.user.access_token},
      json: true
    };
 
    var top_artists = {
-     url: 'https://api.spotify.com/v1/me/top/artists?limit=50',
+     url: 'https://api.spotify.com/v1/me/top/artists?limit=20',
      headers: {'Authorization': "Bearer " + req.user.access_token},
      json: true
    };
@@ -99,7 +99,7 @@ app.get(
    };
 
    var recently_played = {
-     url: 'https://api.spotify.com/v1/me/player/recently-played',
+     url: 'https://api.spotify.com/v1/me/player/recently-played?type=track&limit=50',
      headers: {'Authorization': "Bearer " + req.user.access_token},
      json: true
    }
@@ -118,15 +118,27 @@ app.get(
    User.findOne({_id: req.user._id}, (err, profile)=> {
      values.top_songs.then(track => {profile.top_songs = track.items}).then(
      values.top_artists.then(artist => {profile.top_artists = artist.items})).then(
-     values.profInfo.then(prof => {
-       console.log(prof.followers.total)
-       profile.spotify_followers = prof.followers.total
-      })).then(
+     values.profInfo.then(prof => {profile.spotify_followers = prof.followers.total})).then(
      values.recently_played.then(tracks => {
-       console.log(tracks.items)
-       profile.recently_played = tracks.items
-      })).then(
-     () => profile.save())
+        const recent_tracks = tracks.items.map(song => {
+          console.log(song.track.id);
+          return(
+            song.track.id
+          );
+        })
+        profile.recently_played_tracks = recent_tracks.filter(function(item, index){
+          return recent_tracks.indexOf(item) >= index;
+        });
+        const recent_artists = [];
+        tracks.items.map(song => {
+          song.track.artists.map( artist => {
+            recent_artists.push(artist.id)
+          })
+        })
+        profile.recently_played_artists = recent_artists.filter(function(item, index){
+          return recent_artists.indexOf(item) >= index;
+        });
+      })).then(() => profile.save())
    })
    res.redirect('/');
  });
