@@ -43,7 +43,9 @@ class DashCard extends Component {
                 <Image src={this.state.friendInfo.image !== '' ? this.state.friendInfo.image : default_profile}/>
                 <Card.Content>
                     <Card.Header> {this.state.friendInfo.name} </Card.Header>
-                    <ListenSimilarites cardUserInfo={this.state.friendInfo} viewerInfo={this.props.userInfo}/>
+                    <Card.Description>
+                        <ListenSimilarites cardUserInfo={this.state.friendInfo} viewerInfo={this.props.userInfo}/>
+                    </Card.Description>
                 </Card.Content>
                 <Card.Content extra>
                     <a>

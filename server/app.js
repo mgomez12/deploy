@@ -116,12 +116,12 @@ app.get(
 
 
    User.findOne({_id: req.user._id}, (err, profile)=> {
-     values.top_songs.then(track => {profile.top_songs = track.items}).then(
-     values.top_artists.then(artist => {profile.top_artists = artist.items})).then(
-     values.profInfo.then(prof => {profile.spotify_followers = prof.followers.total})).then(
-     values.recently_played.then(tracks => {
-        const recent_tracks = tracks.items.map(song => {
-          console.log(song.track.id);
+     values.top_songs
+     .then(track => {profile.top_songs = track.items})
+     .then(() => {return values.top_artists}).then(artist => {profile.top_artists = artist.items})
+      .then(() => {return values.profInfo}).then(prof => {profile.spotify_followers = prof.followers.total})
+        .then( () => {return values.recently_played}).then(tracks => {
+        var recent_tracks = tracks.items.map(song => {
           return(
             song.track.id
           );
@@ -129,7 +129,7 @@ app.get(
         profile.recently_played_tracks = recent_tracks.filter(function(item, index){
           return recent_tracks.indexOf(item) >= index;
         });
-        const recent_artists = [];
+        var recent_artists = [];
         tracks.items.map(song => {
           song.track.artists.map( artist => {
             recent_artists.push(artist.id)
@@ -138,8 +138,26 @@ app.get(
         profile.recently_played_artists = recent_artists.filter(function(item, index){
           return recent_artists.indexOf(item) >= index;
         });
-      })).then(() => profile.save())
+      })
+      .then(() => { return Promise.all(
+        profile.recently_played_artists.map(artistId => {
+        return request({url: 'https://api.spotify.com/v1/artists/' + artistId , headers: {'Authorization': "Bearer " + req.user.access_token}, json: true})
+        })).then( artists => {
+          console.log("no error")
+          var recent_genres = [];
+          artists.map( artist => {
+            artist.genres.map( genre => {
+              recent_genres.push(genre)
+            })
+          })
+          profile.recent_genres = recent_genres.filter(function(item, index){
+            return recent_genres.indexOf(item) >= index;
+          });
+        })})
+      .then(() => profile.save())
    })
+
+
    res.redirect('/');
  });
 
