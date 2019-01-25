@@ -14,7 +14,6 @@ class NavBar extends Component{
 
     render() {
         let idString = 'me'
-        console.log(this.props.userInfo.recently_played)
         if (this.props.userInfo.access_token !== null) {
             idString = this.props.userInfo._id
         }

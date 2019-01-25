@@ -4,6 +4,10 @@ import io from 'socket.io-client';
 import { Header, Image, Container, Loader } from 'semantic-ui-react';
 import {get} from "../modules/api";
 import SuggestionForm from "../modules/SuggestionForm"
+import AddComment from "../modules/SongComments/AddComment"
+import SongComment from "../modules/SongComments/SongComments"
+
+
 
 class Song extends Component {
     constructor(props) {
@@ -40,7 +44,7 @@ class Song extends Component {
   renderSongData() {
     const obj = this;
     var artistHeader = [['Authorization', 'Bearer ' + this.props.userInfo.access_token]];
-    console.log('token: ' + this.props.access_token)
+    console.log('token: ' + this.props.userInfo.access_token)
     get('https://api.spotify.com/v1/tracks/' + this.props.match.params.songid, {}, function(songData) {
 
         console.log('song data in get: ' + songData)
@@ -53,13 +57,19 @@ class Song extends Component {
 
     
 render() {
-    let image, name, artist, audio, artistid = '';
+    let image, name, artist, audio, artistid, songId, userId= '';
     if (this.state.songInfo) {
         image = <Image centered size="medium" src={this.state.songInfo.album.images[0].url}/>
         name = this.state.songInfo.name;
         artist =this.state.songInfo.artists[0].name;
         artistid=this.state.songInfo.artists[0].id;
         audio = <audio autoPlay src={this.state.songInfo.preview_url}/>;
+        songId = this.state.songInfo.id
+        console.log(songId)
+        userId = this.props.userInfo._id
+        console.log(userId)
+
+
     }
 
     return(
@@ -78,6 +88,12 @@ render() {
             <Header as='h4'>Suggest this song to someone!</Header>
             {this.gotSongInfo ?<SuggestionForm userId={this.props.userInfo._id} track={this.props.match.params.songid} isTrack={false}/>
             : <Loader active inline />}
+        </div>
+        <div>
+            <AddComment songId={songId} userId={userId}>{songId + userId}</AddComment>
+            <div>
+                <SongComment songId={songId}/>
+            </div>
         </div>
     </Container>
     {audio}

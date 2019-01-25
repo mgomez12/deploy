@@ -10,7 +10,6 @@ import Album from "./pages/Album";
 import Artist from "./pages/Artist";
 import NavBar from "./modules/NavBar";
 import {Message} from "semantic-ui-react";
-import DefaultProfileImage from "./modules/DefaultProfileImage";
 import io from "socket.io-client";
 
 class App extends React.Component {

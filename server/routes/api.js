@@ -131,15 +131,13 @@ router.get('/friend', function(req, res) {
     });
   });
 
-  // needs work for love and comment...
-  router.post('/song_info', function(req, res) {
+  router.post('/song_info_comment', function(req, res) {
     connect.ensureLoggedIn();
-    Friend.findOne({ id: req.query.id }, function(err, song) {
+    SongComment.findOne({ id: req.query.id }, function(err, song) {
         if(err) {
             const newSongComment = SongComment({
                 id: req.query.id,
                 comment: [req.body.comment],
-                love: req.body.love
             })
         }
         else {
@@ -149,6 +147,7 @@ router.get('/friend', function(req, res) {
       res.send(song);
     });
   });
+
   
 
 module.exports = router;
