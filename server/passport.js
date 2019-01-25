@@ -32,6 +32,7 @@ passport.use(
              suggestions_received: [],
              recently_played_tracks: [],
              recently_played_artists: [],
+             related_artists: [],
              recent_genres: []
            });
     

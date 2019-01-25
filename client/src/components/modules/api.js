@@ -56,4 +56,10 @@ function formatParams(params) {
     };
     xhr.send(JSON.stringify(params));
   }
+  // params is given as a JSON
+    export function get2(endpoint, params, headers) {
+      const fullPath = endpoint + "?" + formatParams(params);
+      return fetch(fullPath, {headers: headers}).then(res => res.json());
+    }
+
   

@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import _ from 'lodash'
 import "../../public/css/styles.css"
 import io from 'socket.io-client';
-import { Header, Message, Button } from 'semantic-ui-react';
-import { post, get } from "./api"
+import { Loader, Header, Message, Button } from 'semantic-ui-react';
+import { post, get, get2 } from "./api"
 import { loadavg } from 'os';
 
 class ListenSimilarites extends Component {
@@ -14,8 +14,11 @@ class ListenSimilarites extends Component {
         //props: viewerInfo, cardUserInfo
         this.state = {
             artistsInCommon: [],
-            songsInCommon : []
+            songsInCommon : [],
+            loaded: false
         }
+        this.loadArtists = this.loadArtists.bind(this)
+        this.loadSongs = this.loadSongs.bind(this)
 
     }
     componentDidMount() {
@@ -24,45 +27,58 @@ class ListenSimilarites extends Component {
 
     loadMatches() {
         const obj = this;
-        var header = [['Authorization', 'Bearer ' + this.props.viewerInfo.access_token]];
-
+        var header = {
+            Authorization: 'Bearer ' + this.props.viewerInfo.access_token
+        }
+        console.log(this.props.viewerInfo)
+        console.log(this.props.cardUserInfo)
         const intersect_songs = _.intersection(this.props.viewerInfo.recently_played_tracks, this.props.cardUserInfo.recently_played_tracks);
         const intersect_artists = _.intersection(this.props.viewerInfo.recently_played_artists, this.props.cardUserInfo.recently_played_artists);
+        console.log(intersect_artists)
+        const artists = [];
 
-        const artists = intersect_artists.map(artistId => {
-            get('https://api.spotify.com/v1/artists/' + artistId, {}, function(artistData) {
-                return artistData;
-            }, null, header);
-        })
+        Promise.all(intersect_artists.map(artistId => {
+            return get2('https://api.spotify.com/v1/artists/' + artistId, {}, header);
+        })).then( artists => {
+            console.log(artists)
+            this.setState({
+            artistsInCommon: artists
+        })})
 
-        const songs = intersect_songs.map(songId => {
-            get('https://api.spotify.com/v1/tracks/' + songId, {}, function(songData) {
-                return songData;
-            }, null, header);
-        })
-        this.setState({
-            artistsInCommon: artists,
+        Promise.all(intersect_songs.map(songId => {
+            return get2('https://api.spotify.com/v1/tracks/' + songId, {}, header);
+        })).then( songs => {
+            console.log(songs)
+            this.setState({
             songsInCommon: songs
+        })})
+
+        this.setState({
+            loaded: true
         })
+
         console.log(this.state.artistsInCommon)
         console.log(this.state.songsInCommon)
     }
 
     loadArtists() {
+        console.log("in load:")
+
         if (this.state.artistsInCommon.length > 0) {
             return this.state.artistsInCommon.map( artist => {
+                console.log("load: " + artist)
                 return(
-                    <Header>
+                    <div>
                         {artist.name}
-                    </Header>
+                    </div>
                 ) 
             })
         }
         else {
             return(
-                <Header>
+                <div>
                     No artist in common :(
-                </Header>
+                </div>
             )
         }
 
@@ -72,27 +88,41 @@ class ListenSimilarites extends Component {
         if (this.state.songsInCommon.length > 0) {
             return this.state.songsInCommon.map( song => {
                 return(
-                    <Header>
+                    <div>
                         {song.name}
-                    </Header>
+                    </div>
                 ) 
             })
         }
         else {
             return(
-                <Header>
+                <div>
                     No songs in common :(
-                </Header>
+                </div>
             )
         }
 
     }
 
     render() {
+        if(!this.state.loaded) {
+            return(
+                <Loader/>
+            )
+        }
+        console.log("render")
+        console.log(this.state.artistsInCommon)
+        console.log("seperate")
+        console.log(this.state.songsInCommon)
         return(
             <div>
-                <Header> Artists in Common : {this.loadArtists}</Header>
-                <Header> Songs in Common: {this.loadSongs}</Header>
+                <div>
+                    You and {this.props.cardUserInfo.name} both listened to: {this.loadArtists()}
+                </div>
+                <div>
+                    You and {this.props.cardUserInfo.name} both listened to: {this.loadSongs()}
+                </div>
+
             </div>
         )
     }
