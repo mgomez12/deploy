@@ -5,6 +5,7 @@ const connect = require('connect-ensure-login');
 // models
 const User = require('../models/user');
 const Suggestion = require('../models/suggestion')
+const Friend = require('../models/friends');
 
 const router = express.Router();
 
@@ -109,5 +110,15 @@ router.post('/friend', function(req, res) {
     });
     res.send({})
 })
+
+router.get('/friend', function(req, res) {
+    Friend.findOne({ _id: req.query._id }, function(err, user) {
+        if(err) {
+            console.log(err)
+        }
+      res.send(user);
+    });
+  });
+  
 
 module.exports = router;
