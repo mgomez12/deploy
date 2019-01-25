@@ -1,6 +1,6 @@
 import React from "react";
 import "../public/css/app.css";
-import {Route, Switch, withRouter, Redirect } from "react-router-dom";
+import {Route, Switch } from "react-router-dom";
 import Profile from "./pages/Profile";
 import Root from "./Root";
 import Login from "./pages/Login";
@@ -9,8 +9,9 @@ import Song from "./pages/Song";
 import Album from "./pages/Album";
 import Artist from "./pages/Artist";
 import NavBar from "./modules/NavBar";
-import ErrorPage from "./pages/error";
+import {Message} from "semantic-ui-react";
 import DefaultProfileImage from "./modules/DefaultProfileImage";
+import io from "socket.io-client";
 
 class App extends React.Component {
     constructor(props) {
@@ -20,12 +21,28 @@ class App extends React.Component {
             userInfo: {
                 access_token: null
             },
+            message: '',
             updated: false
         };
+        this.socket = io();
     }
 
     componentDidMount () {
         this.getUser();
+    }
+
+    componentDidUpdate() {
+        if (this.state.updated) {
+            this.socket.on('notification_' + this.state.userInfo._id, notification => {
+                console.log('got notification')
+                this.setState({
+                    message: notification
+                })
+            })
+            this.setState({
+                updated: false
+            })
+        }
     }
 
   
@@ -47,6 +64,7 @@ class App extends React.Component {
             <Route exact path="/album/:albumid" render = {(props) => <Album {...props} userInfo ={userInfo} token ={userInfo.access_token} />}/>
             <Route exact path="/artist/:artistid" render = {(props) => <Artist {...props} userInfo ={userInfo} token ={userInfo.access_token} />}/>
             </Switch>
+            {(this.state.message === '' ? "" : <Message content={this.state.message}/>)}
         </div>
         )
     ;
