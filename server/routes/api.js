@@ -4,8 +4,9 @@ const connect = require('connect-ensure-login');
 
 // models
 const User = require('../models/user');
-const Suggestion = require('../models/suggestion')
+const Suggestion = require('../models/suggestion');
 const Friend = require('../models/friends');
+const SongComment = require('../models/songcomment');
 
 const router = express.Router();
 
@@ -117,6 +118,35 @@ router.get('/friend', function(req, res) {
             console.log(err)
         }
       res.send(user);
+    });
+  });
+
+  // note that it is req.query.id and not req.query._id
+  router.get('/song_info', function(req, res) {
+    Friend.findOne({ id: req.query.id }, function(err, song) {
+        if(err) {
+            console.log(err)
+        }
+      res.send(song);
+    });
+  });
+
+  // needs work for love and comment...
+  router.post('/song_info', function(req, res) {
+    connect.ensureLoggedIn();
+    Friend.findOne({ id: req.query.id }, function(err, song) {
+        if(err) {
+            const newSongComment = SongComment({
+                id: req.query.id,
+                comment: [req.body.comment],
+                love: req.body.love
+            })
+        }
+        else {
+            song.comment.push(req.body.comment);
+            song.save();
+        }
+      res.send(song);
     });
   });
   
