@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
 import "../../public/css/styles.css"
-import io from 'socket.io-client';
 import { Message, Input, Loader, Checkbox } from 'semantic-ui-react';
 import { post } from "./api"
 
 class SuggestionForm extends Component {
     constructor(props) {
         super(props);
-
-        this.socket = io('http://localhost:3000');
 
         this.state = {
             input: '',

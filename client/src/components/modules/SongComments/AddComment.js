@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash'
 import "../../../public/css/styles.css"
-import io from 'socket.io-client';
 import default_profile from "../../../public/assets/default_profile.png";
 import { Input, Loader, Comment, Icon, Message, Button } from 'semantic-ui-react';
 import { get, post } from "../api"
@@ -10,7 +9,6 @@ class AddComment extends Component {
     constructor(props) {
         super(props);
 
-        this.socket = io('http://localhost:3000');
 
         // user info and song id passed in 
         this.state = {

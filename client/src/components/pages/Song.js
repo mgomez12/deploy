@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import "../../public/css/styles.css"
-import io from 'socket.io-client';
 import { Header, Image, Container, Loader } from 'semantic-ui-react';
 import {get} from "../modules/api";
 import SuggestionForm from "../modules/SuggestionForm"
@@ -13,7 +12,6 @@ class Song extends Component {
     constructor(props) {
         super(props);
         // will have to change server directory at some time
-        this.socket = io('http://localhost:3000');
 
         this.state = {
             songInfo: null,

@@ -1,5 +1,4 @@
 import _ from 'lodash'
-import io from 'socket.io-client';
 import React, { Component } from 'react'
 import { Search } from 'semantic-ui-react'
 import {get} from "./api";
@@ -10,7 +9,6 @@ class SearchBarSpotify extends Component {
     constructor(props) {
         super(props);
 
-        this.socket = io('http://localhost:3000');
 
 
         

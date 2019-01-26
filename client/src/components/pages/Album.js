@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 //import { Link } from 'react-router';
 import "../../public/css/styles.css"
-import io from 'socket.io-client';
 import { Segment, Header, Image, Container } from 'semantic-ui-react';
 import nick_pic from "../../public/assets/nick.jpg";
 import {get} from "../modules/api";
@@ -10,7 +9,6 @@ class Album extends Component {
     constructor(props) {
         super(props);
 
-        this.socket = io('http://localhost:3000');
         // will have to change server directory at some time
         this.state = {
             albumInfo: null,
