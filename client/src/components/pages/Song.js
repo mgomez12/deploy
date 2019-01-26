@@ -12,9 +12,8 @@ import SongComment from "../modules/SongComments/SongComments"
 class Song extends Component {
     constructor(props) {
         super(props);
-
-        this.socket = io('http://localhost:3000');
         // will have to change server directory at some time
+        this.socket = io('http://localhost:3000');
 
         this.state = {
             songInfo: null,
@@ -90,10 +89,8 @@ render() {
             : <Loader active inline />}
         </div>
         <div>
-            <AddComment songId={songId} userId={userId}>{songId + userId}</AddComment>
-            <div>
-                <SongComment songId={songId}/>
-            </div>
+            <AddComment songId='2ZWlPOoWh0626oTaHrnl2a' userId='glabred'/>
+            <SongComment songId='2ZWlPOoWh0626oTaHrnl2a'/>
         </div>
     </Container>
     {audio}

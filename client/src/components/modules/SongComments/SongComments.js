@@ -23,36 +23,34 @@ class SongComment extends Component {
 
     }
     componentDidMount() {
-        this.getSongInfo(this.props.songId);
+        this.getCommentsArrayLength(this.props.songId);
     }
 
-    getSongInfo(id) {
-        fetch('/api/song?id=' + id).then(res => res.json())
-        .then((commentArray) => {
+    getCommentsArrayLength(id) {
+        fetch('/api/song_info_length?id=' + id ).then(res => res.json())
+        .then( (comments) => {this.getSongInfo(id,comments.length)})
+    }
+
+    getSongInfo(id, length) {
+        const randomNumber = _.random(0,length-1);
+        fetch('/api/song_info?id=' + id + "&random=" + randomNumber).then(res => res.json())
+        .then((comment) => {
             this.setState({
-                comments: commentArray
+                currentComment: comment
             })
-        }).then( () => {this.displayRandomComment()})
+            return comment
+        }).then( (comment) => {
+            console.log(comment)
+            this.displayRandomComment(comment)})
     }
 
 
-    displayRandomComment() {
-        if (this.state.comments.length > 0) {
-            this.setState({
-                commentsToDisplay: false
-            })
-        }
-        else {
-            var pickRandomComment = new Promise( () => {
-                const randomNumber = _.random(0,this.state.comments.length-1);
-                this.setState({
-                    currentComment: this.state.comments[randomNumber]
-                })
-                return this.state.currentComment;
-            }).then((comment) => {
-                const id = comment.userId;
-                return fetch('/api/user?_id=' + id)
-            }).then(res => res.json())
+    displayRandomComment(comment) {
+            console.log("hoe")
+            const id = comment.userId;
+            console.log(id)
+            fetch('/api/user?_id=' + id)
+            .then(res => res.json())
             .then((profile) => {
                 this.setState({
                     currentProfile: profile
@@ -62,13 +60,14 @@ class SongComment extends Component {
                     initialized: true,
                     commentsToDisplay: true
                 })
+                console.log("after promises")
             })
-        }
     }
 
     render() {
         var image, name, content, date = "";
         var loves = 0;
+        console.log("initialized: "+this.state.initialized)
         if (!this.state.commentsToDisplay) {
             return(
                 <div>
@@ -94,6 +93,7 @@ class SongComment extends Component {
             )
         }
         if(this.state.initialized) {
+            console.log("down here")
             name = this.state.currentProfile.name;
             image = (this.state.currentProfile.image !== '' ? this.state.currentProfile.image : default_profile);
             content = this.state.currentComment.content;

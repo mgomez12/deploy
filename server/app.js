@@ -194,7 +194,7 @@ app.use(function(err, req, res, next) {
 // port config
 
 global.io.on('connection', function (socket) {
-  console.log('client connected');
+  //console.log('client connected');
 });
 
 server.listen(process.env.PORT || port, function() {

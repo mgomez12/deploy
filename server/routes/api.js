@@ -149,28 +149,48 @@ router.get('/friend', function(req, res) {
 
   // note that it is req.query.id and not req.query._id
   router.get('/song_info', function(req, res) {
-    Friend.findOne({ id: req.query.id }, function(err, song) {
+    SongComment.findOne({ id: req.query.id }, function(err, song) {
         if(err) {
             console.log(err)
         }
-      res.send(song);
+        console.log("random: "+ req.query.random)
+        console.log("comment: "+song.comments[req.query.random])
+      res.send(song.comments[req.query.random]);
     });
   });
+
+    // note that it is req.query.id and not req.query._id
+    router.get('/song_info_length', function(req, res) {
+        SongComment.findOne({ id: req.query.id }, function(err, song) {
+            if(err) {
+                console.log(err)
+            }
+            console.log("length: " + song.comments.length)
+            res.send(song.comments);
+        });
+        });
 
   router.post('/song_info_comment', function(req, res) {
     connect.ensureLoggedIn();
     SongComment.findOne({ id: req.query.id }, function(err, song) {
         if(err) {
-            const newSongComment = SongComment({
-                id: req.query.id,
-                comment: [req.body.comment],
-            })
+            console.log(err);
         }
         else {
-            song.comment.push(req.body.comment);
-            song.save();
+            if(song) {
+                song.comments.push(req.body.comment);
+                song.save();
+            }
+            else {
+                const newSongComment = SongComment({
+                    id: req.query.id,
+                    comment: [],
+                })
+                newSongComment.comments.push(req.body.comment);
+                newSongComment.save();
+            }
         }
-      res.send(song);
+    res.send({status: 'success'});
     });
   });
 
