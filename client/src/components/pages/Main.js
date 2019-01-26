@@ -32,7 +32,7 @@ class Main extends Component {
                     </Grid.Column>
                     <Grid.Column>
                         <SearchBarUser history={this.props.history}/>
-                        <Dash userInfo={this.props.userInfo}/>
+                        <Dash userId={this.props.userInfo._id} friendCount ={this.props.userInfo.friends}/>
                     </Grid.Column>
                 </Grid>
             </Container>
