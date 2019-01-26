@@ -17,7 +17,7 @@ class Dash extends Component {
     }
 
     componentDidMount() {
-        fetch('/api/friend?_id=' + this.props.userId, {method: "GET"})
+        fetch('/api/friend?_id=' + this.props.userInfo._id, {method: "GET"})
         .then(res => res.json())
         .then( friendObj => {
             console.log(friendObj)
@@ -36,7 +36,7 @@ class Dash extends Component {
     render() {
         return (
             <div>
-                {this.props.friendCount == 0 ? <Header as='h3' style={{color:'gray'}}>You currently don't have any friends. Follow friends to see their cards!</Header>:
+                {this.props.userInfo.friends == 0 ? <Header as='h3' style={{color:'gray'}}>You currently don't have any friends. Follow friends to see their cards!</Header>:
                 <Card.Group itemsPerRow="4">
                     {this.loadCards()}
                 </Card.Group>}
