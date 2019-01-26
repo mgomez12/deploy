@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import "../../public/css/styles.css"
-import io from 'socket.io-client';
 import { Message, Button } from 'semantic-ui-react';
 import { get } from "./api"
 
@@ -8,7 +7,6 @@ class FriendForm extends Component {
     constructor(props) {
         super(props);
 
-        this.socket = io('http://localhost:3000');
 
         this.state = {
             added: null
@@ -19,12 +17,11 @@ class FriendForm extends Component {
     }
     componentDidMount() {
         this.areFriends();
-        console.log(this.props.viewerInfo.friends)
 
     }
     areFriends() {
         get('/api/friend', {_id: this.props.userId},(friendObj) => {
-            console.log(friendObj)
+            console.log(friendObj)  
             if(friendObj.friends.includes(this.props.receiverId)) {
                 console.log("are friends")
                 this.setState({
@@ -36,7 +33,7 @@ class FriendForm extends Component {
                     added: 'sent'
                 })
             }
-            else if (friendsObj.received_request_from.includes(this.props.receiverId)) {
+            else if (friendObj.received_request_from.includes(this.props.receiverId)) {
                 this.setState({
                     added: 'waiting'
                 })
@@ -45,9 +42,12 @@ class FriendForm extends Component {
     }
 
     addFriend() {
+        if (this.setState.added === 'waiting')
         this.setState({
             added: 'friends'
         })
+
+        else this.setState({added: 'sent'})
         fetch('/api/friend', {method: 'POST',
             body: JSON.stringify({
                 receiver: this.props.receiverId,

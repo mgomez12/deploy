@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import "../../public/css/styles.css"
-import io from 'socket.io-client';
 import { Loader, Header, Grid, Segment, Image, Container } from 'semantic-ui-react';
 import default_profile from "../../public/assets/default_profile.png";
 import SuggestionForm from '../modules/SuggestionForm';
@@ -10,7 +9,6 @@ class Profile extends Component {
     constructor(props) {
         super(props);
 
-        this.socket = io('http://localhost:3000');
 
         this.state = {
             userInfo: null,
