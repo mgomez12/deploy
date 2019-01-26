@@ -23,25 +23,50 @@ class SongComment extends Component {
 
     }
     componentDidMount() {
-        this.getCommentsArrayLength(this.props.songId);
+        this.getCommentsArrayLength(this.props.songId)
+        this.interval = setInterval(() =>  this.getCommentsArrayLength(this.props.songId), 2000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
 
     getCommentsArrayLength(id) {
-        fetch('/api/song_info_length?id=' + id ).then(res => res.json())
-        .then( (comments) => {this.getSongInfo(id,comments.length)})
+        fetch('/api/song_info_length?id=' + id ).then(res => {
+            console.log("res: "+res)
+            if(res) {
+                return res.json()
+            }
+            else {
+                console.log("in comments")
+                this.setState({
+                    commentsToDisplay: false
+                })
+            }
+        })
+        .then( (comments) => {this.getSongInfo(id, comments)})
     }
 
-    getSongInfo(id, length) {
-        const randomNumber = _.random(0,length-1);
-        fetch('/api/song_info?id=' + id + "&random=" + randomNumber).then(res => res.json())
-        .then((comment) => {
+    getSongInfo(id, comments) {
+        if(!comments) {
+            console.log("bruhsh: " + comments)
             this.setState({
-                currentComment: comment
+                commentsToDisplay: false
             })
-            return comment
-        }).then( (comment) => {
-            console.log(comment)
-            this.displayRandomComment(comment)})
+        }
+        else {
+            const length = comments.length;
+            const randomNumber = _.random(0,length-1);
+            fetch('/api/song_info?id=' + id + "&random=" + randomNumber).then(res => res.json())
+            .then((comment) => {
+                this.setState({
+                    currentComment: comment
+                })
+                return comment
+            }).then( (comment) => {
+                console.log(comment)
+                this.displayRandomComment(comment)})
+        }
     }
 
 
@@ -83,9 +108,7 @@ class SongComment extends Component {
                                         {loves} Loves!
                                     </div>
                                 </Comment.Metadata>
-                                <Comment.Text>
-                                    No comments to this song! Post one!
-                                </Comment.Text>
+                                <Comment.Text>No comments to this song! Post one!</Comment.Text>
                             </Comment.Content>
                         </Comment>
                     </Comment.Group>
@@ -100,22 +123,22 @@ class SongComment extends Component {
             loves = this.state.currentComment.loves;
         }
         return(
-            <Comment>
-                <Comment.Avatar as='a' src={image} />
-                <Comment.Content>
-                    <Comment.Author>{name}</Comment.Author>
-                    <Comment.Metadata>
-                        <div>Posted {date}</div>
-                        <div>
-                            <Icon name='heart' />
-                            {loves} Loves!
-                        </div>
-                    </Comment.Metadata>
-                    <Comment.Text>
-                        {content}
-                    </Comment.Text>
-                </Comment.Content>
-            </Comment>
+            <Comment.Group>
+                <Comment>
+                    <Comment.Avatar as='a' src={image} />
+                    <Comment.Content>
+                        <Comment.Author>{name}</Comment.Author>
+                        <Comment.Metadata>
+                            <div>Posted {date}</div>
+                            <div>
+                                <Icon name='heart' />
+                                {loves} Loves!
+                            </div>
+                        </Comment.Metadata>
+                        <Comment.Text>{content}</Comment.Text>
+                    </Comment.Content>
+                </Comment>
+            </Comment.Group>
         )
     }
 }
