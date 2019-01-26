@@ -112,7 +112,7 @@ router.post('/friend', function(req, res) {
                 })
             }
             else if (!friendObj.sent_request_to.includes(req.body.receiver)){
-                friendsObj.sent_request_to.push(req.body.receiver)
+                friendObj.sent_request_to.push(req.body.receiver)
             }
         friendObj.save()
         }
@@ -124,7 +124,7 @@ router.post('/friend', function(req, res) {
         }
         else {
             if (!friendObj.received_request_from.includes(req.body.sender)) {
-                friendsObj.received_request_from.push(req.body.sender)
+                friendObj.received_request_from.push(req.body.sender)
             }
             else if (friendObj.sent_request_to.includes(req.body.sender)){
                 friendObj.friends.push(req.body.sender)
