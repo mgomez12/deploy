@@ -11,13 +11,22 @@ class NavBar extends Component{
 
     }
 
+    stringNotification(notification) {
+        if (notification.type == 'sent') {
+            return <Message>{notification.sender + ' sent you a friend request'}</Message>
+        }
+        else {
+            return <Message>{notification.sender + ' confirmed your friend request'}</Message>
+        }
+    }
     render() {
         let idString = 'me'
         let notifications = []
         if (this.props.userInfo.access_token !== null) {
             idString = this.props.userInfo._id
-            notifications = this.props.userInfo._id.notifications
+            notifications = this.props.userInfo.notifications
         }
+        console.log(notifications)
         return(
         <Menu color='teal' inverted>
             <Menu.Item icon='home' href="/"/>
@@ -30,7 +39,7 @@ class NavBar extends Component{
             <Menu.Menu position="right">
                 <Dropdown item icon='bell'>
                     <Dropdown.Menu>
-                        <Message error header='Error' content='You must log-in to see all categories' />
+                        {notifications.map(this.stringNotification)}
                     </Dropdown.Menu>
                 </Dropdown>
             </Menu.Menu>
