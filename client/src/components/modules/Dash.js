@@ -9,25 +9,34 @@ class Dash extends Component {
         super(props);
 
         this.state = {
+            friends: {
+                friends: []
+            }
         };
         this.gotDashInfo = false;
     }
 
     componentDidMount() {
+        fetch('/api/friend?_id=' + this.props.userId, {method: "GET"})
+        .then(res => res.json())
+        .then( friendObj => {
+            console.log(friendObj)
+            this.setState({
+                friends: friendObj
+            })
+        })
         
     }
 
     loadCards() {
-        console.log(this.props.userInfo.friends)
-            return(
-                this.props.userInfo.friends.map( friend => <DashCard key = {friend} userInfo={this.props.userInfo} cardUserInfo={friend}/>)
-            );  
+        return this.state.friends.friends.map( friend => 
+            <DashCard key = {friend} userInfo={this.props.userInfo} cardUserInfo={friend}/>)
     }
 
     render() {
         return (
             <div>
-                {this.props.userInfo.friends.length == 0 ? <Header as='h3' style={{color:'gray'}}>You currently don't have any friends. Follow friends to see their cards!</Header>:
+                {this.props.friendCount == 0 ? <Header as='h3' style={{color:'gray'}}>You currently don't have any friends. Follow friends to see their cards!</Header>:
                 <Card.Group itemsPerRow="4">
                     {this.loadCards()}
                 </Card.Group>}

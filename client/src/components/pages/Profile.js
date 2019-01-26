@@ -60,7 +60,7 @@ class Profile extends Component {
 
     loadFriendBox() {
         if(this.gotProfileInfo) {
-            return (<FriendForm userId={this.props.viewerInfo._id} receiverId={this.state.userInfo._id} viewerInfo={this.props.viewerInfo}/>);
+            return (<FriendForm userId={this.props.viewerInfo._id} receiverId={this.state.userInfo._id} />);
         }
         else {
             <Loader active inline />

@@ -11,7 +11,7 @@ class FriendForm extends Component {
         this.socket = io('http://localhost:3000');
 
         this.state = {
-            added: false
+            added: null
         };
 
         this.addFriend = this.addFriend.bind(this)
@@ -23,19 +23,30 @@ class FriendForm extends Component {
 
     }
     areFriends() {
-        console.log("in are friends")
-        if(this.props.viewerInfo.friends.includes(this.props.receiverId)) {
-            console.log("are friends")
-            this.setState({
-                added: true
-            })
-        }
-          console.log(this.props.viewerInfo.friends)
+        get('/api/friend', {_id: this.props.userId},(friendObj) => {
+            console.log(friendObj)
+            if(friendObj.friends.includes(this.props.receiverId)) {
+                console.log("are friends")
+                this.setState({
+                    added: 'friends'
+                })
+            }
+            else if (friendObj.sent_request_to.includes(this.props.receiverId)) {
+                this.setState({
+                    added: 'sent'
+                })
+            }
+            else if (friendsObj.received_request_from.includes(this.props.receiverId)) {
+                this.setState({
+                    added: 'waiting'
+                })
+            }
+        })
     }
 
     addFriend() {
         this.setState({
-            added: true
+            added: 'friends'
         })
         fetch('/api/friend', {method: 'POST',
             body: JSON.stringify({
@@ -48,15 +59,33 @@ class FriendForm extends Component {
         })
     }
     render() {
+        let message = '';
+        status = this.state.added;
+        if (status == 'friends') {
+            message = <Message compact positive><Message.Header>Friend</Message.Header></Message>
+        }
+        else if (status == 'sent') {
+            message = <Message compact warning><Message.Header>Friend request sent!</Message.Header></Message>
+        }
+        else if (status == 'waiting') {
+            message =  <div><Message compact warning><Message.Header>Friend request received</Message.Header></Message>
+            <Button
+                color='teal'
+                content='Confirm'
+                onClick={this.addFriend}
+            /></div>
+        }
+        else {
+            message = <Button
+            color='teal'
+            content='Add Friend'
+            onClick={this.addFriend}
+        />
+        }
         return(
         <div style={{display:'inline-block'}}>
 
-            {this.state.added ? <Message compact positive><Message.Header>Friend Added!</Message.Header></Message> :
-            <Button
-                color='teal'
-                content='Follow'
-                onClick={this.addFriend}
-            />}
+            {message}
         </div>
         )
     }

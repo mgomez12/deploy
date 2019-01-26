@@ -46,6 +46,7 @@ class SuggestionForm extends Component {
     }
 
     submitSuggestion() {
+        const input = this.state.input
         this.setState({
             input: '',
             submitted: true,
@@ -53,8 +54,8 @@ class SuggestionForm extends Component {
         })
         const date = new Date()
         if (!this.props.isTrack) {
-            console.log('submitted' + this.props.userId + this.state.input)
-            post('/api/suggestion', {receiver: this.state.input, sender: (this.state.anonymous? 'anonymous' : this.props.userId), track: this.props.track, time:date},
+            console.log('submitted' + this.props.userId + input)
+            post('/api/suggestion', {receiver: input, sender: (this.state.anonymous? 'anonymous' : this.props.userId), track: this.props.track, time:date},
             (response) => {
                 console.log(response);
                 if (response.status =='success') {
@@ -70,7 +71,7 @@ class SuggestionForm extends Component {
         }
         else {
         console.log('submitted' + this.props.userId + this.props.receiverId)
-        post('/api/suggestion', {receiver: this.props.receiverId, sender: (this.state.anonymous? 'anonymous' : this.props.userId), track: this.state.input, time:date})
+        post('/api/suggestion', {receiver: this.props.receiverId, sender: (this.state.anonymous? 'anonymous' : this.props.userId), track: input, time:date})
         }
     }
     render() {

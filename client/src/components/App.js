@@ -9,7 +9,7 @@ import Song from "./pages/Song";
 import Album from "./pages/Album";
 import Artist from "./pages/Artist";
 import NavBar from "./modules/NavBar";
-import {Message} from "semantic-ui-react";
+import {Message, Segment, TransitionablePortal} from "semantic-ui-react";
 import io from "socket.io-client";
 
 class App extends React.Component {
@@ -21,7 +21,8 @@ class App extends React.Component {
                 access_token: null
             },
             message: '',
-            updated: false
+            updated: false,
+            startSocket: true
         };
         this.socket = io();
     }
@@ -31,16 +32,18 @@ class App extends React.Component {
     }
 
     componentDidUpdate() {
-        if (this.state.updated) {
+        if (this.state.startSocket && this.state.updated) {
+            console.log('starting socket')
             this.socket.on('notification_' + this.state.userInfo._id, notification => {
-                console.log('got notification')
+                console.log('got notification');
                 this.setState({
                     message: notification
                 })
+                this.getUser();
             })
             this.setState({
-                updated: false
-            })
+                startSocket: false
+            });
         }
     }
 
@@ -55,7 +58,6 @@ class App extends React.Component {
                 <Route path='/' render = {(props) => <NavBar {...props} userInfo={userInfo}/>}/>
             </Switch>
             <Switch>
-            <Route exact path='/defaultprofileimage' render = {() => <DefaultProfileImage/>} />
             <Route path='/u/profile/:user' render = {(props) => <Profile {...props} userInfo ={userInfo} viewerInfo={userInfo} />} />
             <Route exact path ="/login" component={Login} />
             <Route exact path="/" render = {() => <Main userInfo ={userInfo} />} />
@@ -63,25 +65,25 @@ class App extends React.Component {
             <Route exact path="/album/:albumid" render = {(props) => <Album {...props} userInfo ={userInfo} token ={userInfo.access_token} />}/>
             <Route exact path="/artist/:artistid" render = {(props) => <Artist {...props} userInfo ={userInfo} token ={userInfo.access_token} />}/>
             </Switch>
-            {(this.state.message === '' ? "" : <Message content={this.state.message}/>)}
+            <TransitionablePortal onClose={() => {this.setState({message: ''})}} open={ this.state.message === '' ? false : true}>
+                <Segment style={{left:'80%', position:'fixed', top:'80%', zIndex:'1000'}}>
+                {this.state.message}
+                </Segment></TransitionablePortal>
         </div>
         )
     ;
   }
-
-  getUser = () => {    
+  getUser = () => {
     fetch('/api/whoami')
     .then(res => res.json())
     .then(
         userObj => {
             if (userObj._id !== undefined) {
-                console.log('set object')
                 this.setState({
                     userInfo: userObj,
                     updated: true
                 })
             } else {
-                console.log('returned null user object')
                 this.setState({
                     userInfo: {
                     name: null,

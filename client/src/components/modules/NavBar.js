@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import "../../public/css/styles.css"
 import io from 'socket.io-client';
-import { Input, Image, Container, Menu } from 'semantic-ui-react';
+import { Dropdown, Message, Menu } from 'semantic-ui-react';
 import SearchBarSpotify from "./SearchBarSpotify"
 
 class NavBar extends Component{
@@ -14,8 +14,10 @@ class NavBar extends Component{
 
     render() {
         let idString = 'me'
+        let notifications = []
         if (this.props.userInfo.access_token !== null) {
             idString = this.props.userInfo._id
+            notifications = this.props.userInfo._id.notifications
         }
         return(
         <Menu color='teal' inverted>
@@ -26,7 +28,14 @@ class NavBar extends Component{
             <Menu.Item>
               <SearchBarSpotify history={this.props.history} userInfo={this.props.userInfo}/>
             </Menu.Item>
-            <Menu.Item name='logout' href="/logout" onClick={this.props.logout} position="right"/>
+            <Menu.Menu position="right">
+                <Dropdown item icon='bell'>
+                    <Dropdown.Menu>
+                        <Message error header='Error' content='You must log-in to see all categories' />
+                    </Dropdown.Menu>
+                </Dropdown>
+            </Menu.Menu>
+            <Menu.Item name='logout' href="/logout" onClick={this.props.logout}/>
         </Menu>)
 }
 }
