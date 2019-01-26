@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import "../../public/css/styles.css"
-import io from 'socket.io-client';
 import { Dropdown, Message, Menu } from 'semantic-ui-react';
 import SearchBarSpotify from "./SearchBarSpotify"
 

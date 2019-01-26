@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash'
 import "../../public/css/styles.css"
-import io from 'socket.io-client';
 import { Loader, Header, Message, Button } from 'semantic-ui-react';
 import { post, get, get2 } from "./api"
 import { loadavg } from 'os';
@@ -10,7 +9,6 @@ class ListenSimilarites extends Component {
     constructor(props) {
         super(props);
 
-        this.socket = io('http://localhost:3000');
         //props: viewerInfo, cardUserInfo
         this.state = {
             artistsInCommon: [],

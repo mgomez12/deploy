@@ -125,7 +125,9 @@ router.post('/friend', function(req, res) {
             console.log(err);
         }
         else {
+            let message = {}
             if (friendObj.sent_request_to.includes(req.body.sender)){
+                message = {sender: req.body.sender, type: 'friend'}
                 friendObj.friends.push(req.body.sender)
                 User.findOne({_id: req.body.receiver}, (err, user) => {
                     user.friends +=1;
@@ -135,9 +137,11 @@ router.post('/friend', function(req, res) {
                 friendObj.sent_request_to.splice(index, 1);
             }
             else if (!friendObj.received_request_from.includes(req.body.sender)) {
+                message = {sender: req.body.sender, type: 'sent'}
                 friendObj.received_request_from.push(req.body.sender)
             }
         friendObj.save()
+        global.io.emit('notification_' + req.body.receiver, message)
         }
     });
 })

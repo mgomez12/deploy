@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import "../../public/css/styles.css";
-import io from 'socket.io-client';
 import { post, get } from "./api"
 
 class SDK extends Component {

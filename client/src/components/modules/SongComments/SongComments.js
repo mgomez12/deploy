@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash'
 import "../../../public/css/styles.css"
-import io from 'socket.io-client';
 import default_profile from "../../../public/assets/default_profile.png";
 import { Comment, Icon, Message, Button } from 'semantic-ui-react';
 import { get } from "../api"
@@ -10,7 +9,6 @@ class SongComment extends Component {
     constructor(props) {
         super(props);
 
-        this.socket = io('http://localhost:3000');
 
         this.state = {
             comments: [],
