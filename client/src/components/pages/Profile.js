@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import "../../public/css/styles.css"
-import { Loader, Header, Grid, Segment, Image, Container } from 'semantic-ui-react';
+import { Loader, Header, Grid, Segment, Image, Container, Card } from 'semantic-ui-react';
 import default_profile from "../../public/assets/default_profile.png";
 import SuggestionForm from '../modules/SuggestionForm';
 import FriendForm from '../modules/FriendForm';
@@ -103,10 +103,27 @@ class Profile extends Component {
             </Segment>
         }
     }
+    loadFavSongsCards() {
+        if(this.gotProfileInfo) {
+            return(
+                this.state.userInfo.top_songs.map( song => {
+                return(
+                    <Card raised image={song.url}/>);
+            })
+            );
+        }
+        else {
+            <Segment>
+                <Loader/>
+            </Segment>
+        }
+    }
+
 
     render() {
         let image, description, name= '';
         let artistimage_list=[]
+        let songimage_list=[]
         let spotify_follower = 0;
 
         if (this.gotProfileInfo) {
@@ -117,6 +134,7 @@ class Profile extends Component {
             spotify_follower = this.state.userInfo.spotify_followers;
 
             artistimage_list=this.loadFavArtistsImagesList()
+            songimage_list=this.loadFavSongsCards()
             
             //<Segment raised> My fav song rn: {fav_song_rn.name}</Segment>
         }
@@ -162,7 +180,12 @@ class Profile extends Component {
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
-                        
+                <Container>
+                <Card.Group itemsPerRow={5}>
+                    {songimage_list}
+                    {/* <Card image={}/> */}
+                </Card.Group> 
+                </Container>    
                 <Coverflow
                     width={960}
                     height={480}
