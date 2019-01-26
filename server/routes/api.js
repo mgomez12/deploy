@@ -134,7 +134,7 @@ router.post('/friend', function(req, res) {
                 index = friendObj.sent_request_to.indexOf(req.body.sender);
                 friendObj.sent_request_to.splice(index, 1);
             }
-            if (!friendObj.received_request_from.includes(req.body.sender)) {
+            else if (!friendObj.received_request_from.includes(req.body.sender)) {
                 friendObj.received_request_from.push(req.body.sender)
             }
         friendObj.save()

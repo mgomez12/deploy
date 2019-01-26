@@ -42,12 +42,13 @@ class FriendForm extends Component {
     }
 
     addFriend() {
-        if (this.setState.added === 'waiting')
+        if (this.state.added === 'waiting') {
+            console.log('is waiting, changing to friends')
         this.setState({
             added: 'friends'
-        })
+        }) }
 
-        else this.setState({added: 'sent'})
+        else {this.setState({added: 'sent'})}
         fetch('/api/friend', {method: 'POST',
             body: JSON.stringify({
                 receiver: this.props.receiverId,
