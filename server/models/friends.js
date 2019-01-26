@@ -5,8 +5,8 @@ const mongoose = require('mongoose');
 const FriendModelSchema = new mongoose.Schema ({
   _id                   : String,
   friends               : Array,
-  friends_you_request   : Array,
-  friends_need_request  : Array,
+  sent_request_to       : Array,
+  received_request_from : Array,
   mutual_friends        : Array
 });
 
