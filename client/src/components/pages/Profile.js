@@ -69,7 +69,7 @@ class Profile extends Component {
         }
     }
 
- loadFavArtistsImagesList() {
+    loadFavArtistsImagesList() {
         if(this.state.userInfo!=null) {
             return(
                 this.state.userInfo.top_artists.map( artist => {
@@ -103,12 +103,14 @@ class Profile extends Component {
             </Segment>
         }
     }
+
     loadFavSongsCards() {
         if(this.gotProfileInfo) {
             return(
                 this.state.userInfo.top_songs.map( song => {
                 return(
-                    <Card raised image={song.url}/>);
+                    <Card> <a href={"/song/" + song.id}><Image src={String(song.album.images[0].url)}/></a><Card.Content>
+                <Card.Header>{song.name}</Card.Header></Card.Content></Card>);
             })
             );
         }
@@ -118,7 +120,6 @@ class Profile extends Component {
             </Segment>
         }
     }
-
 
     render() {
         let image, description, name= '';
@@ -166,26 +167,19 @@ class Profile extends Component {
                                 <Header as='h4'>Follow user!</Header>
                                 {this.loadFriendBox()}
                             </div>
-                            <Header as="h2">
-                                Top Artists: 
-                            </Header>
-                        </Grid.Column>
-                        <Grid.Column style={{'textAlign':'center'}}>
-                            <Header as="h3">
-                            Top Songs: 
-                            </Header>
-                            <Segment.Group raised>
-                                {this.loadFavSongs()}
-                            </Segment.Group>
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
                 <Container>
+                <Header as="h2">
+                        Top Songs: 
+                </Header>
                 <Card.Group itemsPerRow={5}>
                     {songimage_list}
-                    {/* <Card image={}/> */}
-                </Card.Group> 
-                </Container>    
+                </Card.Group>    
+                <Header as="h2">
+                                Top Artists: 
+                </Header>
                 <Coverflow
                     width={960}
                     height={480}
@@ -202,6 +196,7 @@ class Profile extends Component {
                 </div>
                 {artistimage_list}
                 </Coverflow>
+                </Container> 
             </div>
         ) 
     }
