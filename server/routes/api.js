@@ -169,8 +169,14 @@ router.get('/friend', function(req, res) {
             if(err) {
                 console.log(err)
             }
-            console.log("length: " + song.comments.length)
-            res.send(song.comments);
+            if(!song)
+            {
+                res.send(null)
+            }
+            else {
+                console.log("song comments: "+song.comments)
+                res.send(song.comments);
+            }
         });
         });
 
