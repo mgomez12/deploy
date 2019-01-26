@@ -99,17 +99,43 @@ router.post('/suggestion', function(req, res) {
 
 router.post('/friend', function(req, res) {
     connect.ensureLoggedIn();
-    User.findOne({_id: req.body.sender}, (err, profile) => {
+    Friend.findOne({_id: req.body.sender}, (err, friendObj) => {
         if (err) {
             console.log(err);
         }
         else {
-        profile.friends.push(req.body.receiver)
-        profile.save()
-        global.io.emit('notification_' + req.body.receiver, "" + req.body.sender + " started following you!")
+            if (friendObj.received_request_from.includes(req.body.receiver)) {
+                friendObj.friends.push(req.body.receiver)
+                User.findOne({_id: req.body.sender}, (err, user) => {
+                    user.friends +=1;
+                    user.save()
+                })
+            }
+            else if (!friendObj.sent_request_to.includes(req.body.receiver)){
+                friendsObj.sent_request_to.push(req.body.receiver)
+            }
+        friendObj.save()
+        }
+    })
+    res.send({})
+    Friend.findOne({_id: req.body.receiver}, (err, friendObj) => {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            if (!friendObj.received_request_from.includes(req.body.sender)) {
+                friendsObj.received_request_from.push(req.body.sender)
+            }
+            else if (friendObj.sent_request_to.includes(req.body.sender)){
+                friendObj.friends.push(req.body.sender)
+                User.findOne({_id: req.body.receiver}, (err, user) => {
+                    user.friends +=1;
+                    user.save()
+                })
+            }
+        friendObj.save()
         }
     });
-    res.send({})
 })
 
 router.get('/friend', function(req, res) {

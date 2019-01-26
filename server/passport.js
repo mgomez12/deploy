@@ -1,6 +1,7 @@
 const passport = require('passport');
 const SpotifyStrategy = require('passport-spotify').Strategy;
 const User = require('./models/user')
+const Friends = require('./models/friends')
 
 passport.use(
    new SpotifyStrategy(
@@ -22,8 +23,9 @@ passport.use(
              image: (profile.photos.length >0 ? profile.photos[0] : ''),
              descrip: '',
              fav_song_rn: "",
+             notifications: [],
+             friends: 0,
              spotify_followers: 0,
-             friends: [],
              access_token: accessToken,
              refresh_token: refreshToken,
              top_songs: {},
@@ -34,6 +36,17 @@ passport.use(
              recently_played_artists: [],
              related_artists: [],
              recent_genres: []
+           });
+
+           const friends = new Friends({
+             _id: profile.id,
+             friends: [],
+             sent_request_to: [],
+             received_request_from: [],
+             mutual_friends: []
+           })
+           friends.save(function(err) {
+            if (err) console.log(err);
            });
     
            user.save(function(err) {
