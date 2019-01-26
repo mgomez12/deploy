@@ -110,6 +110,8 @@ router.post('/friend', function(req, res) {
                     user.friends +=1;
                     user.save()
                 })
+                index = friendObj.received_request_from.indexOf(req.body.receiver);
+                friendObj.received_request_from.splice(index, 1);
             }
             else if (!friendObj.sent_request_to.includes(req.body.receiver)){
                 friendObj.sent_request_to.push(req.body.receiver)
@@ -123,15 +125,17 @@ router.post('/friend', function(req, res) {
             console.log(err);
         }
         else {
-            if (!friendObj.received_request_from.includes(req.body.sender)) {
-                friendObj.received_request_from.push(req.body.sender)
-            }
-            else if (friendObj.sent_request_to.includes(req.body.sender)){
+            if (friendObj.sent_request_to.includes(req.body.sender)){
                 friendObj.friends.push(req.body.sender)
                 User.findOne({_id: req.body.receiver}, (err, user) => {
                     user.friends +=1;
                     user.save()
                 })
+                index = friendObj.sent_request_to.indexOf(req.body.receiver);
+                friendObj.sent_request_to.splice(index, 1);
+            }
+            if (!friendObj.received_request_from.includes(req.body.sender)) {
+                friendObj.received_request_from.push(req.body.sender)
             }
         friendObj.save()
         }
