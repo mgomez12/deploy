@@ -4,6 +4,7 @@ import { Loader, Header, Grid, Segment, Image, Container } from 'semantic-ui-rea
 import default_profile from "../../public/assets/default_profile.png";
 import SuggestionForm from '../modules/SuggestionForm';
 import FriendForm from '../modules/FriendForm';
+import Coverflow from 'react-coverflow';
 
 class Profile extends Component {
     constructor(props) {
@@ -19,8 +20,11 @@ class Profile extends Component {
     }
 
     componentDidMount() {
-        if (this.props.match.params.user !== "me") {
-            this.getProfile(this.props.match.params.user); }
+        console.log("hi")
+        console.log(this.props.match.params.user)
+        // if (this.props.match.params.user !== "me") {
+            this.getProfile(this.props.match.params.user); 
+        // }
     }
 
     componentDidUpdate() {
@@ -35,8 +39,8 @@ class Profile extends Component {
     }
     }
 
-    getProfile(id) {
-
+    getProfile = (id) => {
+        console.log("hi")
         fetch('/api/user?_id=' + id).then(res => res.json())
         .then((profile) => {
             this.setState({
@@ -65,15 +69,14 @@ class Profile extends Component {
         }
     }
 
-    loadFavArtists() {
-        if(this.gotProfileInfo) {
+ loadFavArtistsImagesList() {
+        if(this.state.userInfo!=null) {
             return(
-                this.state.userInfo.top_artists.map( track => {
+                this.state.userInfo.top_artists.map( artist => {
                 return(
-                <Segment className='center-parent' key={track.id}>
-                    <a href={"/artist/" + track.id}>{track.name}</a>
-                </Segment>);
-            })
+                    <a href={"/artist/" + artist.id}><img src={artist.images[0].url} alt={artist.name} style={{ display: 'block', width: '100%' }}/></a>
+                );
+                })
             );
         }
         else {
@@ -103,7 +106,9 @@ class Profile extends Component {
 
     render() {
         let image, description, name= '';
+        let artistimage_list=[]
         let spotify_follower = 0;
+
         if (this.gotProfileInfo) {
             name = (this.state.userInfo.name)
             image = (this.state.userInfo.image !== '' ? this.state.userInfo.image : default_profile)
@@ -111,6 +116,7 @@ class Profile extends Component {
 
             spotify_follower = this.state.userInfo.spotify_followers;
 
+            artistimage_list=this.loadFavArtistsImagesList()
             
             //<Segment raised> My fav song rn: {fav_song_rn.name}</Segment>
         }
@@ -143,7 +149,7 @@ class Profile extends Component {
                                 {this.loadFriendBox()}
                             </div>
                             <Header as="h2">
-                                Description: {description}
+                                Top Artists: 
                             </Header>
                         </Grid.Column>
                         <Grid.Column style={{'textAlign':'center'}}>
@@ -154,16 +160,25 @@ class Profile extends Component {
                                 {this.loadFavSongs()}
                             </Segment.Group>
                         </Grid.Column>
-                        <Grid.Column style={{'textAlign':'center'}}>
-                            <Header as="h3">
-                            Top Artists:
-                            </Header>
-                            <Segment.Group raised>
-                                {this.loadFavArtists()}
-                            </Segment.Group>
-                        </Grid.Column>
                     </Grid.Row>
                 </Grid>
+                        
+                <Coverflow
+                    width={960}
+                    height={480}
+                    displayQuantityOfSide={2}
+                    navigation={false}
+                    enableHeading={false}
+                >
+                <div
+                 onClick={() => fn()}
+                 onKeyDown={() => fn()}
+                 role="menuitem"
+                 tabIndex="0"
+                >
+                </div>
+                {artistimage_list}
+                </Coverflow>
             </div>
         ) 
     }

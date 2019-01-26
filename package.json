@@ -32,6 +32,7 @@
     "passport": "^0.4.0",
     "passport-spotify": "^1.0.1",
     "react": "^16.7.0",
+    "react-coverflow": "^0.2.17",
     "react-dom": "^16.7.0",
     "react-router-dom": "^4.3.1",
     "request": "^2.88.0",
