@@ -43,8 +43,6 @@ class Song extends Component {
     var artistHeader = [['Authorization', 'Bearer ' + this.props.userInfo.access_token]];
     console.log('token: ' + this.props.userInfo.access_token)
     get('https://api.spotify.com/v1/tracks/' + this.props.match.params.songid, null, function(songData) {
-
-        console.log('song data in get: ' + songData)
         obj.setState({
             songInfo: songData
         })
@@ -70,7 +68,7 @@ render() {
 
     return(
         <div className='page' style={{'paddingBottom':'45px'}}>
-    <div style={{'textAlign': 'center', paddingBottom: '10px'}}>
+    <div style={{'textAlign': 'center', paddingBottom: '10px', paddingTop: '8px'}}>
         <Container className="center-text" id="song-image">
             {image}
         </Container>
@@ -88,12 +86,13 @@ render() {
     </div>
     <div>
         {this.gotSongInfo ?<AddComment songId={this.props.match.params.songid} userId={this.props.userInfo._id}/> : <Loader active inline />}
-        <Container>
             {this.gotSongInfo ?<SongComment songId={this.props.match.params.songid}/>: <Loader active inline />}
-        </Container>
     </div>
     <div>
-    <PlaybackBar premium={this.props.userInfo.premium} track={this.state.songInfo == null ? '' : this.state.songInfo.preview_url}/>
+    <PlaybackBar token={this.props.userInfo.access_token} 
+                 maxTime={this.state.songInfo == null ? 1 : this.state.songInfo.duration_ms}
+                 premium={this.props.userInfo.premium} 
+                 track={this.state.songInfo == null ? '' : (this.props.userInfo.premium ? this.state.songInfo.uri : this.state.songInfo.preview_url)}/>
     </div>
     </div>)
 }

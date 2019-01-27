@@ -2,7 +2,6 @@ import _ from 'lodash'
 import React, { Component } from 'react'
 import { Search } from 'semantic-ui-react'
 import {get, get2} from "./api";
-import Song from '../pages/Song';
 
 
 
