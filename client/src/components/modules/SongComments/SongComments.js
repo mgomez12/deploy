@@ -98,6 +98,7 @@ class SongComment extends Component {
                         <Comment.Avatar as='a' src={default_profile} />
                         <Comment.Content>
                             <Comment.Author as='a'>Groove Team</Comment.Author>
+                            <br/>
                             <Comment.Metadata>
                                 <div>Posted {date}</div>
                                 <div>
@@ -105,7 +106,7 @@ class SongComment extends Component {
                                     {loves} Loves!
                                 </div>
                             </Comment.Metadata>
-                            <Comment.Text>No comments to this song! Post one!</Comment.Text>
+                            <Comment.Text>No comments to this song! Post one!<br/></Comment.Text>
                         </Comment.Content>
                     </Comment>
                 </Comment.Group>
@@ -123,7 +124,7 @@ class SongComment extends Component {
                 <Comment>
                     <Comment.Avatar as='a' src={image} />
                     <Comment.Content>
-                        <Comment.Author>{name}</Comment.Author>
+                        <Comment.Author as='a'>{name}</Comment.Author>
                         <Comment.Metadata>
                             <div>Posted {date}</div>
                             <div>

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import "../../public/css/styles.css"
 import {Menu } from 'semantic-ui-react';
-import Script from 'react-load-script'
+import Script from 'react-load-script';
+import {get} from './api'
 
 class PlaybackBar extends Component {
     constructor(props) {
@@ -17,7 +18,9 @@ class PlaybackBar extends Component {
         };
         this.player = null;
         this.gotSongInfo = false;
+        this.device_id = '';
         this.updated = false;
+        this.prevSong = this.props.track;
         this.audio = null;
         this.pause = this.pause.bind(this);
         this.play = this.play.bind(this);
@@ -31,7 +34,28 @@ class PlaybackBar extends Component {
         clearInterval(this.interval);
       }
 
+      componentDidMount() {
+        let player;
+        window.onSpotifyWebPlaybackSDKReady = () => {
+            player = new Spotify.Player({      // Spotify is not defined until 
+            name: 'Web SDK player',            // the script is loaded in 
+            getOAuthToken: cb => { cb(this.props.token) }
+          });
+          player.connect();
+          player.addListener('ready', ({ device_id }) => {
+              this.device_id = device_id;
+              console.log('Connected with Device ID', device_id)
+              this.player = player;
+            this.componentDidUpdate()})
+      }
+      }
+
     componentDidUpdate() {
+        if (this.prevSong !== this.props.track) {
+            this.updated = false;
+            this.prevSong = this.props.track
+            clearInterval(this.interval)
+        }
         if (!this.updated && this.props.track !== '' && !this.props.premium) {
             this.setState({
                 playing: true,
@@ -43,18 +67,36 @@ class PlaybackBar extends Component {
             this.updated = true;
         }
         else if (!this.updated && this.player !== null && this.props.premium) {
-            this.setState({
+            let obj = this;
+            this.updated = true;
+            fetch('https://api.spotify.com/v1/me/player/play?device_id=' + this.device_id, {
+              method: 'PUT',
+              headers: {
+                  'Authorization': 'Bearer ' + this.props.token,
+              },
+              body: JSON.stringify({
+                  'uris': [this.props.track]
+              })}).then(() => {
+            this.player.getCurrentState().then(info => {
+                console.log('info: ' + info + ', updated: ' + this.updated)
+            obj.setState({
                 playing: true,
                 maxTime: this.props.maxTime,
-                time: this.player.getCurrentState.position
+                time: info.position
             })
-            this.updated = true;
-            this.interval = setInterval(() => this.setState({ time: this.player.getCurrentState.position}), 1000);
+        })})
+            this.interval = setInterval(() => 
+            this.player.getCurrentState().then(info => {this.setState({ time: info.position})}), 1000);
         }
     }
 
     pause(){
         if (this.state.audio == '') {
+            if (this.props.premium) {
+                this.player.pause();
+                this.setState({playing: false})
+                return;
+            }
             return
         }
         this.audio.pause()
@@ -62,6 +104,10 @@ class PlaybackBar extends Component {
     }
     play(){
         if (this.state.audio == '') {
+            if (this.props.premium) {
+                this.player.resume();
+                this.setState({playing: true})
+            }
             return
         }
         this.audio.play()
@@ -72,14 +118,22 @@ class PlaybackBar extends Component {
         clearInterval(this.interval);
     }
     onSeekMouseUp() {
+        if (this.props.premium) {
+            this.player.seek(this.state.seekValue);
+            this.interval = setInterval(() => 
+            this.player.getCurrentState().then(info => {this.setState({ time: info.position})}), 1000);this.setState({
+                time: this.state.seekValue,
+                seekValue: null
+            })
+        }
+        else if (this.state.audio !== '') {
         this.audio.currentTime = this.state.seekValue
         this.setState({
             time: this.state.seekValue,
             seekValue: null
-        })
-        this.interval = setInterval(() => this.setState({ time: this.audio.currentTime}), 1000);
+        }) 
+        this.interval = setInterval(() => this.setState({ time: this.audio.currentTime}), 1000);}
     }
-
     onSeekChange(e) {
        
         this.setState({
@@ -88,35 +142,26 @@ class PlaybackBar extends Component {
     }
 
     handleScriptLoad = () => {
-        let player;
-        const promise = new Promise(resolve => {
-            if (window.Spotify) {
-              resolve();
-            } else {
-              window.onSpotifyWebPlaybackSDKReady = resolve;
-            }
-          });
-          promise.then( () =>{
-          player = new Spotify.Player({      // Spotify is not defined until 
-          name: 'Web SDK player',            // the script is loaded in 
-          getOAuthToken: cb => { cb(this.props.token) }
-        });
-        player.connect()
-        this.player = player;
-        this.componentDidUpdate();})
+        this.componentDidMount()
         
-        }
+    }
 
     render() {
 
         let time=0;
-        if (this.state.audio !== '') {
+        if (this.state.audio !== '' || this.props.premium) {
            time = this.state.time
         }
         let timeString='0:00'
         if (this.state.audio !== '') {
             const minutes = Math.floor(this.state.time / 60);
             let seconds = Math.floor(this.state.time % 60);
+            if (seconds < 10) {seconds = '0' + seconds}
+            timeString = minutes + ':' + seconds;
+        }
+        else if (this.props.premium) {
+            const minutes = Math.floor(this.state.time / 1000 / 60);
+            let seconds = Math.floor(this.state.time / 1000 % 60);
             if (seconds < 10) {seconds = '0' + seconds}
             timeString = minutes + ':' + seconds;
         }
