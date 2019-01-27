@@ -53,9 +53,10 @@ class SearchBarSpotifySuggest extends Component {
   updateSourceTracks(value) {
     if (value.length < 1) return this.resetComponent() 
     const obj = this;
+    var query = value.replace(/ /g,"%20")
     var artistHeader = [['Authorization', 'Bearer ' + this.props.userInfo.access_token]];
     console.log('token: ' + this.props.userInfo.access_token)
-    get('https://api.spotify.com/v1/search?q=' + value + '&type=track&market=US&limit=5', null, function(searchData) {
+    get('https://api.spotify.com/v1/search?q=' + query + '&type=track&market=US&limit=5', null, function(searchData) {
 
         console.log('search data in get: ' + searchData.tracks.items[0].name)
         const compiled = searchData.tracks.items.map( track => {

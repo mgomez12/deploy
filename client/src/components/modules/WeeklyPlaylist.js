@@ -14,11 +14,25 @@ class WeeklyPlaylist extends Component{
     }
 
     update_playlist() {
-        this.props.userInfo.suggestions_received;
+        const uri_list = this.props.userInfo.suggestions_received;
+        const playlist_id = this.props.userInfo.suggestion_playlist_id;
+        fetch("https://api.spotify.com/v1/playlists/"+ playlist_id, {
+            method: 'PUT',
+            headers: {
+                'Authorization': "Bearer " + req.user.access_token,
+                'Content-type': 'application/json'
+            },
+            body: {
+                public: true,
+                uris: uri_list
+            }
+          }).then(res => res.json());
     }
 
 
-    handleClick = () => this.updateLog('Button received click with mouse')
+    handleClick = () => {
+        this.props.history.push('https://open.spotify.com/playlist/'+this.props.userInfo.suggestion_playlist_id);
+    }
 
     render() {
         return(

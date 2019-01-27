@@ -89,7 +89,7 @@ render() {
     }
 
     return(
-        <div>
+        <div className='page'>
         <Container>
 
         <section>

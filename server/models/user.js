@@ -16,6 +16,7 @@ const UserModelSchema = new mongoose.Schema ({
  top_songs           : Object,
  top_artists         : Object,
  suggestions_received: Array,
+ premium             : Boolean,
  recently_played_tracks: Array,
  related_artists     : Array,
  recent_genres        : Array,

@@ -93,24 +93,22 @@ class SongComment extends Component {
         console.log("initialized: "+this.state.initialized)
         if (!this.state.commentsToDisplay) {
             return(
-                <div>
-                    <Comment.Group>
-                        <Comment>
-                            <Comment.Avatar as='a' src={default_profile} />
-                            <Comment.Content>
-                                <Comment.Author as='a'>Groove Team</Comment.Author>
-                                <Comment.Metadata>
-                                    <div>Posted {date}</div>
-                                    <div>
-                                        <Icon name='heart' />
-                                        {loves} Loves!
-                                    </div>
-                                </Comment.Metadata>
-                                <Comment.Text>No comments to this song! Post one!</Comment.Text>
-                            </Comment.Content>
-                        </Comment>
-                    </Comment.Group>
-                </div>
+                <Comment.Group>
+                    <Comment>
+                        <Comment.Avatar as='a' src={default_profile} />
+                        <Comment.Content>
+                            <Comment.Author as='a'>Groove Team</Comment.Author>
+                            <Comment.Metadata>
+                                <div>Posted {date}</div>
+                                <div>
+                                    <Icon name='heart' />
+                                    {loves} Loves!
+                                </div>
+                            </Comment.Metadata>
+                            <Comment.Text>No comments to this song! Post one!</Comment.Text>
+                        </Comment.Content>
+                    </Comment>
+                </Comment.Group>
             )
         }
         if(this.state.initialized) {

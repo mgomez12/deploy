@@ -59,7 +59,7 @@ render() {
     }
 
     return(
-        <div>
+        <div className='page'>
     <Container>
         <Container className="center-text" id="album-image">
             {image}    

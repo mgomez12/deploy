@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import "../../public/css/styles.css"
-import { Dropdown, Message, Menu } from 'semantic-ui-react';
+import { Dropdown, Message, Menu, Sticky } from 'semantic-ui-react';
 import SearchBarSpotify from "./SearchBarSpotify"
 
 class NavBar extends Component{
@@ -26,9 +26,8 @@ class NavBar extends Component{
             idString = this.props.userInfo._id
             notifications = this.props.userInfo.notifications
         }
-        console.log(notifications)
         return(
-        <Menu color='teal' inverted>
+        <Menu fixed='top' color='teal' inverted>
             <Menu.Item icon='home' href="/"/>
             <Menu.Item name='profile' href={'/u/profile/' + idString}/>
             <Menu.Item name='songs' href='/song/2ZWlPOoWh0626oTaHrnl2a'/>

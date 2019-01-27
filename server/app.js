@@ -129,7 +129,6 @@ app.get(
      top_songs: request(top_songs),
      top_artists: request(top_artists),
      profInfo: request(prof),
-     create_playlist: request(create_playlist),
      recently_played: request(recently_played),
    }
 
@@ -138,11 +137,22 @@ app.get(
 
 
    User.findOne({_id: req.user._id}, (err, profile)=> {
+     console.log(profile)
      values.top_songs
      .then(track => {profile.top_songs = track.items})
      .then(() => {return values.top_artists}).then(artist => {profile.top_artists = artist.items})
-      .then(() => {return values.profInfo}).then(prof => {profile.spotify_followers = prof.followers.total})
-      .then(() => { return values.create_playlist}).then(playlist => {profile.suggestion_playlist_id = playlist.id})
+     .then(() => {return values.profInfo}).then(prof => {profile.spotify_followers = prof.followers.total;
+      profile.premium = (prof.product == 'premium' ? true : false)})
+      .then(() => { 
+        if(profile.suggestion_playlist_id==""||(!profile.suggestion_playlist_id)) {
+          console.log("here" +profile.suggestion_playlist_id)
+          return request(create_playlist)
+        }
+        else {
+          console.log("there: " +profile.suggestion_playlist_id)
+          return {id: profile.suggestion_playlist_id}
+        }
+      }).then(playlist => {profile.suggestion_playlist_id = playlist.id})
         .then( () => {return values.recently_played}).then(tracks => {
         var recent_tracks = tracks.items.map(song => {
           return(

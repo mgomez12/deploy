@@ -1,3 +1,4 @@
+
 // dependencies
 const express = require('express');
 const connect = require('connect-ensure-login');
@@ -27,6 +28,7 @@ router.get('/allusers', function(req, res) {
         }
         res.send(users);
     });
+    User.find()
 });
 
 router.get('/whoami', function(req, res) {

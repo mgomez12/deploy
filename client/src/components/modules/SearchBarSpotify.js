@@ -52,15 +52,16 @@ class SearchBarSpotify extends Component {
   handleSearchChange = (e, { value }) => {
     this.setState({ isLoading: true, value: value })
 
+    var query = value.replace(/ /g,"%20")
     setTimeout(() => {
         if (value.length < 1) return this.resetComponent() 
 
         const obj = this;
         var headers = {Authorization : 'Bearer ' + this.props.userInfo.access_token};
         const promises = [
-            get2('https://api.spotify.com/v1/search?q=' + value + '&type=track&market=US&limit=3',null,headers),
-            get2('https://api.spotify.com/v1/search?q=' + value + '&type=album&market=US&limit=2',null,headers),
-            get2('https://api.spotify.com/v1/search?q=' + value + '&type=artist&market=US&limit=2',null,headers)
+            get2('https://api.spotify.com/v1/search?q=' + query + '&type=track&market=US&limit=3',null,headers),
+            get2('https://api.spotify.com/v1/search?q=' + query + '&type=album&market=US&limit=2',null,headers),
+            get2('https://api.spotify.com/v1/search?q=' + query + '&type=artist&market=US&limit=2',null,headers)
         ]
         Promise.all(promises).then(responses => {
             console.log(responses)
