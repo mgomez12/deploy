@@ -34,7 +34,7 @@ class SuggestionEntry extends Component {
         })
     }
         const token_header = [['Authorization', 'Bearer ' + this.props.userInfo.access_token]];
-        get('https://api.spotify.com/v1/tracks/' + this.props.sug.track_id, {}, function(songData) {
+        get('https://api.spotify.com/v1/tracks/' + this.props.sug.track_id, null, function(songData) {
             obj.setState({
                 trackInfo: songData
             })

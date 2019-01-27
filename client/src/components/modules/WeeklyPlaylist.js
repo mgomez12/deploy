@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import "../../public/css/styles.css"
 import io from 'socket.io-client';
-import { Button, Header, Dropdown, Message, Menu } from 'semantic-ui-react';
+import { Icon, Button, Header, Dropdown, Message, Menu } from 'semantic-ui-react';
 
 class WeeklyPlaylist extends Component{
     constructor(props) {
         super(props);
-        //takes in userInfo as a prop
+        //takes in history and userInfo as a prop
     }
 
     componentDidMount() {
@@ -16,17 +16,17 @@ class WeeklyPlaylist extends Component{
     update_playlist() {
         const uri_list = this.props.userInfo.suggestions_received;
         const playlist_id = this.props.userInfo.suggestion_playlist_id;
-        fetch("https://api.spotify.com/v1/playlists/"+ playlist_id, {
+        fetch("https://api.spotify.com/v1/playlists/"+ playlist_id+"/tracks", {
             method: 'PUT',
             headers: {
-                'Authorization': "Bearer " + req.user.access_token,
+                'Authorization': "Bearer " + this.props.userInfo.access_token,
                 'Content-type': 'application/json'
             },
             body: {
                 public: true,
                 uris: uri_list
             }
-          }).then(res => res.json());
+          }).then(res => res.json()).then(res => console.log(res));
     }
 
 
@@ -38,7 +38,6 @@ class WeeklyPlaylist extends Component{
         return(
             <div>
                 <Button animated
-                content='Click'
                 onClick={this.handleClick}>
                     <Button.Content visible>Check Out Your Playlist of Recent Suggestions!</Button.Content>
                     <Button.Content hidden>

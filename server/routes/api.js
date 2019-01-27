@@ -80,6 +80,8 @@ router.post('/suggestion', function(req, res) {
         time_sent: req.body.time
     })
     User.findOne({_id: req.body.receiver}, (err, receiverProfile) => {
+        console.log("yo")
+        console.log(receiverProfile)
         if (!receiverProfile) {
             res.send({status: 'fail'});
         }
@@ -87,10 +89,10 @@ router.post('/suggestion', function(req, res) {
             const suggestion_length = receiverProfile.suggestions_received.length;
             if(suggestion_length > 50) {
                 receiverProfile.suggestions_received = receiverProfile.suggestions_received.slice(suggestion_length-49,suggestion_length)
-                receiverProfile.suggestions_received.push(newSuggestion.track_id)
+                receiverProfile.suggestions_received.push(req.body.uri)
             }
             else {
-                receiverProfile.suggestions_received.push(newSuggestion.track_id)
+                receiverProfile.suggestions_received.push(req.body.uri)
             }
             receiverProfile.save();
 
