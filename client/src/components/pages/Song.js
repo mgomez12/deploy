@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import "../../public/css/styles.css"
-import { Header, Image, Container, Loader } from 'semantic-ui-react';
+import { Header, Image, Container, Loader, Menu } from 'semantic-ui-react';
 import {get} from "../modules/api";
 import SuggestionForm from "../modules/SuggestionForm"
 import AddComment from "../modules/SongComments/AddComment"
 import SongComment from "../modules/SongComments/SongComments"
-
+import PlaybackBar from "../modules/PlaybackBar"
 
 
 class Song extends Component {
@@ -18,7 +18,7 @@ class Song extends Component {
             songid: null
         };
         this.gotSongInfo = false;
-
+        this.audio='';
     }
     componentDidMount() {
         const song = this.props.match.params.songid
@@ -54,13 +54,12 @@ class Song extends Component {
 
     
 render() {
-    let image, name, artist, audio, artistid, songId, userId= '';
+    let image, name, artist, artistid, songId, userId= '';
     if (this.state.songInfo) {
         image = <Image centered size="medium" src={this.state.songInfo.album.images[0].url}/>
         name = this.state.songInfo.name;
         artist =this.state.songInfo.artists[0].name;
         artistid=this.state.songInfo.artists[0].id;
-        audio = <audio autoPlay src={this.state.songInfo.preview_url}/>;
         songId = this.state.songInfo.id
         console.log(songId)
         userId = this.props.userInfo._id
@@ -70,7 +69,7 @@ render() {
     }
 
     return(
-        <div>
+        <div className='page'>
     <Container className="center-screen">
         <Container className="center-text" id="song-image">
             {image}
@@ -91,7 +90,7 @@ render() {
         <AddComment songId='2ZWlPOoWh0626oTaHrnl2a' userId='glabred'/>
         <SongComment songId='2ZWlPOoWh0626oTaHrnl2a'/>
     </div>
-    {audio}
+    <PlaybackBar premium={this.props.userInfo.premium} track={this.state.songInfo == null ? '' : this.state.songInfo.preview_url}/>
     </div>)
 }
 }

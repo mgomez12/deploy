@@ -23,7 +23,7 @@ class Main extends Component {
         if (this.props.userInfo.access_token == null) {
             return <Loader size='massive'/>
         }
-        return(<div>
+        return(<div className='page' >
             <NavBar history={this.props.history} userInfo={this.props.userInfo}/>
             <Container style={{padding: '5em'}}>
                 <Grid columns='2' stackable style={{height:'80vh'}}>

@@ -125,7 +125,8 @@ app.get(
      values.top_songs
      .then(track => {profile.top_songs = track.items})
      .then(() => {return values.top_artists}).then(artist => {profile.top_artists = artist.items})
-      .then(() => {return values.profInfo}).then(prof => {profile.spotify_followers = prof.followers.total})
+      .then(() => {return values.profInfo}).then(prof => {profile.spotify_followers = prof.followers.total;
+                                                          profile.premium = (prof.product == 'premium' ? true : false)})
         .then( () => {return values.recently_played}).then(tracks => {
         var recent_tracks = tracks.items.map(song => {
           return(

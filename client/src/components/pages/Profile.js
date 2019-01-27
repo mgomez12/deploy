@@ -145,7 +145,7 @@ class Profile extends Component {
         }
         
         return (
-            <div>
+            <div className='page'>
                 <Grid style={{padding:"10px"}}>
                     <Grid.Row columns={2} verticalAlign='middle'>  
                         <Grid.Column width='5' className='center-parent'>
