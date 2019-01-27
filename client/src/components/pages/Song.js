@@ -70,7 +70,7 @@ render() {
 
     return(
         <div className='page' style={{'paddingBottom':'45px'}}>
-    <Container className="center-screen">
+    <div style={{'textAlign': 'center', paddingBottom: '10px'}}>
         <Container className="center-text" id="song-image">
             {image}
         </Container>
@@ -85,7 +85,7 @@ render() {
             {this.gotSongInfo ?<SuggestionForm userId={this.props.userInfo._id} track={this.props.match.params.songid} isTrack={false}/>
             : <Loader active inline />}
         </div>
-    </Container>
+    </div>
     <div>
         {this.gotSongInfo ?<AddComment songId={this.props.match.params.songid} userId={this.props.userInfo._id}/> : <Loader active inline />}
         <Container>
