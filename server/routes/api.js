@@ -82,15 +82,15 @@ router.post('/suggestion', function(req, res) {
             res.send({status: 'fail'});
         }
         else {
-            receiverProfile.suggestions_received.push(newSuggestion._id)
-            receiverProfile.save() 
-
-            if (req.body.sender !== 'anonymous') {
-                User.findOne({_id: req.body.sender}, (err, senderProfile) => {
-                    senderProfile.suggestions_made.push(newSuggestion._id)
-                    senderProfile.save()
-                    });
+            const suggestion_length = receiverProfile.suggestions_received.length;
+            if(suggestion_length > 50) {
+                receiverProfile.suggestions_received = receiverProfile.suggestions_received.slice(suggestion_length-49,suggestion_length)
+                receiverProfile.suggestions_received.push(newSuggestion.track_id)
             }
+            else {
+                receiverProfile.suggestions_received.push(newSuggestion.track_id)
+            }
+            receiverProfile.save();
 
         newSuggestion.save();
         res.send({status: 'success'});}
@@ -141,6 +141,7 @@ router.post('/friend', function(req, res) {
         }
     });
 })
+
 
 router.get('/friend', function(req, res) {
     Friend.findOne({ _id: req.query._id }, function(err, user) {

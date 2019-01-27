@@ -7,7 +7,6 @@ const FriendModelSchema = new mongoose.Schema ({
   friends               : Array,
   sent_request_to       : Array,
   received_request_from : Array,
-  mutual_friends        : Array
 });
 
 // compile model from schema

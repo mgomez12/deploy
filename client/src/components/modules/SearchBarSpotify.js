@@ -2,7 +2,8 @@ import _ from 'lodash'
 import io from 'socket.io-client';
 import React, { Component } from 'react'
 import { Search } from 'semantic-ui-react'
-import {get} from "./api";
+import {get, get2} from "./api";
+import Song from '../pages/Song';
 
 
 
@@ -36,45 +37,96 @@ class SearchBarSpotify extends Component {
       
       this.setState({ value: result.title })
       console.log(result)
-      this.props.history.push('/song/' + result.key);
-      this.resetComponent();
+      if(result.type == 'song') {
+        this.props.history.push('/song/' + result.key);
+      }
+      if(result.type == 'album') {
+          console.log("in")
+          console.log(result.key)
+        this.props.history.push('/album/' + result.key);
+      }
+      if(result.type == 'artist') {
+          console.log("bro what")
+        this.props.history.push('/artist/' + result.key);
+      }
   }
 
   handleSearchChange = (e, { value }) => {
     this.setState({ isLoading: true, value: value })
 
     setTimeout(() => {
-        this.updateSourceTracks(value);
-        this.render();
+        if (value.length < 1) return this.resetComponent() 
+
+        const obj = this;
+        var headers = {Authorization : 'Bearer ' + this.props.userInfo.access_token};
+        const promises = [
+            get2('https://api.spotify.com/v1/search?q=' + value + '&type=track&market=US&limit=3',null,headers),
+            get2('https://api.spotify.com/v1/search?q=' + value + '&type=album&market=US&limit=2',null,headers),
+            get2('https://api.spotify.com/v1/search?q=' + value + '&type=artist&market=US&limit=2',null,headers)
+        ]
+        Promise.all(promises).then(responses => {
+            console.log(responses)
+            const compiled = responses[0].tracks.items.map( track => {
+                return(
+                    {
+                        key: track.id,
+                        title: track.name,
+                        image: track.album.images[0].url,
+                        description: track.album.artists[0].name,
+                        type: 'song',
+                        uri: track.uri
+                    }
+                );
+            });
+            const compiledAlbums = responses[1].albums.items.map( album => {
+                return(
+                    {
+                        key: album.id,
+                        title: album.name,
+                        image: album.images[0].url,
+                        description: album.artists[0].name,
+                        type: 'album',
+                        uri: album.uri
+                    }
+                );
+            });
+            const compiledArtists = responses[2].artists.items.map( artist => {
+                return(
+                    {
+                        key: artist.id,
+                        title: artist.name,
+                        image: artist.images[0].url,
+                        description: artist.genres[0],
+                        type: 'artist',
+                        uri: artist.uri
+                    }
+                );
+            });
+    
+            return {
+                tracks: {
+                    name: "Tracks",
+                    results: compiled
+                },
+                artists: {
+                    name:"Artists",
+                    results: compiledArtists
+                },
+                albums: {
+                    name:"Albums",
+                    results: compiledAlbums
+                }
+            }
+        }).then( filteredResults => {
+            obj.setState({
+              isLoading: false,
+              results: filteredResults,
+            })})
     }, 300)
 
   }
 
-  updateSourceTracks(value) {
-    if (value.length < 1) return this.resetComponent() 
-    const obj = this;
-    var artistHeader = [['Authorization', 'Bearer ' + this.props.userInfo.access_token]];
-    console.log('token: ' + this.props.userInfo.access_token)
-    get('https://api.spotify.com/v1/search?q=' + value + '&type=track&market=US&limit=5', null, function(searchData) {
-
-        console.log('search data in get: ' + searchData.tracks.items[0].name)
-        const compiled = searchData.tracks.items.map( track => {
-            return(
-                {
-                    key: track.id,
-                    title: track.name,
-                    image: track.album.images[0].url,
-                    description: track.album.artists[0].name,
-                }
-            );
-        });
-        console.log(compiled)
-        obj.setState({
-            isLoading: false,
-            results: compiled
-        })
-    }, null, artistHeader);
-  }
+  
 
   render() {
     const { isLoading, value, results } = this.state
@@ -82,6 +134,7 @@ class SearchBarSpotify extends Component {
     return (
         <div>
                 <Search
+                    category
                     loading={isLoading}
                     placeholder='Search for a song...'
                     onResultSelect={this.handleResultSelect}
