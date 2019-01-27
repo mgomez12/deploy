@@ -70,7 +70,7 @@ app.get(['/defaultprofileimage'], function (req, res) {
 app.get(
  '/auth/spotify',
  passport.authenticate('spotify', {
-   scope: ['user-read-recently-played', 'user-top-read', 'app-remote-control', 'streaming', 'user-modify-playback-state', 'playlist-modify-public', 'user-read-currently-playing'],
+   scope: ['user-read-recently-played',"user-read-birthdate", "user-read-email", "user-read-private", 'user-top-read', 'app-remote-control', 'streaming', 'user-modify-playback-state', 'playlist-modify-public', 'user-read-currently-playing'],
    showDialog: true
  }),
  function(req, res) {
@@ -99,7 +99,7 @@ app.get(
    };
 
    var prof = {
-     url: 'https://api.spotify.com/v1/users/' + req.user._id,
+     url: 'https://api.spotify.com/v1/me/',
      headers: {'Authorization': "Bearer " + req.user.access_token},
      json: true
    };

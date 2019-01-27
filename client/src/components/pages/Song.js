@@ -93,7 +93,7 @@ render() {
         </Container>
     </div>
     <div>
-    <PlaybackBar premium={this.props.userInfo.premium} track={this.state.songInfo == null ? '' : this.state.songInfo.preview_url}/>
+    <PlaybackBar token={this.props.userInfo.access_token} maxTime={this.state.songInfo == null ? 1 : this.state.songInfo.duration_ms} premium={this.props.userInfo.premium} track={this.state.songInfo == null ? '' : this.state.songInfo.preview_url}/>
     </div>
     </div>)
 }

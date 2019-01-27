@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import "../../public/css/styles.css"
 import {Menu } from 'semantic-ui-react';
+import Script from 'react-load-script'
 
 class PlaybackBar extends Component {
     constructor(props) {
@@ -14,6 +15,7 @@ class PlaybackBar extends Component {
             time: 0,
             seekValue: null
         };
+        this.player = null;
         this.gotSongInfo = false;
         this.updated = false;
         this.audio = null;
@@ -22,6 +24,7 @@ class PlaybackBar extends Component {
         this.onSeekChange = this.onSeekChange.bind(this);
         this.onSeekMouseDown = this.onSeekMouseDown.bind(this);
         this.onSeekMouseUp = this.onSeekMouseUp.bind(this);
+        this.handleScriptLoad = this.handleScriptLoad.bind(this);
     }
 
       componentWillUnmount() {
@@ -29,7 +32,7 @@ class PlaybackBar extends Component {
       }
 
     componentDidUpdate() {
-        if (!this.updated && this.props.track !== '') {
+        if (!this.updated && this.props.track !== '' && !this.props.premium) {
             this.setState({
                 playing: true,
                 maxTime: 30,
@@ -38,6 +41,15 @@ class PlaybackBar extends Component {
             }) 
             this.interval = setInterval(() => this.setState({ time: this.audio.currentTime}), 1000);
             this.updated = true;
+        }
+        else if (!this.updated && this.player !== null && this.props.premium) {
+            this.setState({
+                playing: true,
+                maxTime: this.props.maxTime,
+                time: this.player.getCurrentState.position
+            })
+            this.updated = true;
+            this.interval = setInterval(() => this.setState({ time: this.player.getCurrentState.position}), 1000);
         }
     }
 
@@ -75,6 +87,26 @@ class PlaybackBar extends Component {
         })
     }
 
+    handleScriptLoad = () => {
+        let player;
+        const promise = new Promise(resolve => {
+            if (window.Spotify) {
+              resolve();
+            } else {
+              window.onSpotifyWebPlaybackSDKReady = resolve;
+            }
+          });
+          promise.then( () =>{
+          player = new Spotify.Player({      // Spotify is not defined until 
+          name: 'Web SDK player',            // the script is loaded in 
+          getOAuthToken: cb => { cb(this.props.token) }
+        });
+        player.connect()
+        this.player = player;
+        this.componentDidUpdate();})
+        
+        }
+
     render() {
 
         let time=0;
@@ -90,7 +122,12 @@ class PlaybackBar extends Component {
         }
         return(
         <React.Fragment>
-            {this.state.audio}
+            {this.props.premium ? <Script 
+                url="https://sdk.scdn.co/spotify-player.js" 
+                onError={this.handleScriptError} 
+                onLoad={this.handleScriptLoad}
+            /> : 
+            this.state.audio}
         <Menu inverted fixed='bottom'>
             {this.state.playing ? 
             <Menu.Item style={{width:'5%'}} icon='pause' onClick={this.pause}></Menu.Item> :
