@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import "../../public/css/styles.css"
 import { Header, Image, Container, Loader, Menu } from 'semantic-ui-react';
 import {get} from "../modules/api";
-import SuggestionForm from "../modules/SuggestionForm"
+import SuggestionFormUser from "../modules/SuggestionFormUser"
 import AddComment from "../modules/SongComments/AddComment"
 import SongComment from "../modules/SongComments/SongComments"
 import PlaybackBar from "../modules/PlaybackBar"
@@ -82,7 +82,7 @@ render() {
             <a href={"/artist/" + artistid}>{artist}</a>
             </Header>
             <Header as='h4'>Suggest this song to someone!</Header>
-            {this.gotSongInfo ?<SuggestionForm userId={this.props.userInfo._id} track={this.props.match.params.songid} isTrack={false}/>
+            {this.gotSongInfo ?<SuggestionFormUser userInfo={this.props.userInfo} track={this.state.songInfo} isTrack={false}/>
             : <Loader active inline />}
         </div>
     </Container>
