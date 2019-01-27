@@ -104,6 +104,21 @@ app.get(
      json: true
    };
 
+   var create_playlist = {
+    method: 'POST',
+    url: 'https://api.spotify.com/v1/users/'+req.user._id+'/playlists',
+    headers: {
+      'Authorization': "Bearer " + req.user.access_token,
+      'Content-type': 'application/json'
+    },
+    body: {
+      "name": "Groove Suggestions",
+      "description": "A playlist curated from your friend suggestions!",
+      "public": true
+    },
+    json: true
+ }
+
    var recently_played = {
      url: 'https://api.spotify.com/v1/me/player/recently-played?type=track&limit=50',
      headers: {'Authorization': "Bearer " + req.user.access_token},
@@ -114,7 +129,7 @@ app.get(
      top_songs: request(top_songs),
      top_artists: request(top_artists),
      profInfo: request(prof),
-     recently_played: request(recently_played)
+     recently_played: request(recently_played),
    }
 
   
@@ -122,11 +137,22 @@ app.get(
 
 
    User.findOne({_id: req.user._id}, (err, profile)=> {
+     console.log(profile)
      values.top_songs
      .then(track => {profile.top_songs = track.items})
      .then(() => {return values.top_artists}).then(artist => {profile.top_artists = artist.items})
-      .then(() => {return values.profInfo}).then(prof => {profile.spotify_followers = prof.followers.total;
-                                                          profile.premium = (prof.product == 'premium' ? true : false)})
+     .then(() => {return values.profInfo}).then(prof => {profile.spotify_followers = prof.followers.total;
+      profile.premium = (prof.product == 'premium' ? true : false)})
+      .then(() => { 
+        if(profile.suggestion_playlist_id==""||(!profile.suggestion_playlist_id)) {
+          console.log("here" +profile.suggestion_playlist_id)
+          return request(create_playlist)
+        }
+        else {
+          console.log("there: " +profile.suggestion_playlist_id)
+          return {id: profile.suggestion_playlist_id}
+        }
+      }).then(playlist => {profile.suggestion_playlist_id = playlist.id})
         .then( () => {return values.recently_played}).then(tracks => {
         var recent_tracks = tracks.items.map(song => {
           return(

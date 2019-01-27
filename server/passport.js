@@ -30,12 +30,12 @@ passport.use(
              refresh_token: refreshToken,
              top_songs: {},
              top_artists: {},
-             suggestions_made: [],
              suggestions_received: [],
              recently_played_tracks: [],
              recently_played_artists: [],
              related_artists: [],
-             recent_genres: []
+             recent_genres: [],
+             suggestion_playlist_id: ""
            });
 
            const friends = new Friends({
@@ -43,7 +43,6 @@ passport.use(
              friends: [],
              sent_request_to: [],
              received_request_from: [],
-             mutual_friends: []
            })
            friends.save(function(err) {
             if (err) console.log(err);
