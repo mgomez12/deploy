@@ -171,6 +171,8 @@ app.get(
         profile.recently_played_artists = recent_artists.filter(function(item, index){
           return recent_artists.indexOf(item) >= index;
         });
+        console.log("asdfask")
+        console.log(profile.recently_played_artists)
       })
       .then(() => { return Promise.all(
         profile.recently_played_artists.map(artistId => {
@@ -187,6 +189,22 @@ app.get(
             return recent_genres.indexOf(item) >= index;
           });
         })})
+        .then(() => { return Promise.all(
+          profile.recently_played_artists.map(artistId => {
+          return request({url: 'https://api.spotify.com/v1/artists/' + artistId +'/related-artists', headers: {'Authorization': "Bearer " + req.user.access_token}, json: true})
+          })).then( artists => {
+            console.log("no error artist")
+            var related_artists = [];
+            artists.map( artist => {
+              artist.artists.map( artist => {
+                related_artists.push(artist.id)
+              })
+            })
+            profile.related_artists = related_artists.filter(function(item, index){
+              return related_artists.indexOf(item) >= index;
+            });
+            console.log(profile.related_artists)
+          })})
       .then(() => profile.save())
    })
 
