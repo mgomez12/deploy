@@ -14,7 +14,7 @@ class WeeklyPlaylist extends Component{
     }
 
     update_playlist() {
-        this.props.userInfo.suggestions_received
+        this.props.userInfo.suggestions_received;
     }
 
 
