@@ -69,7 +69,7 @@ render() {
     }
 
     return(
-        <div className='page'>
+        <div className='page' style={{'paddingBottom':'45px'}}>
     <Container className="center-screen">
         <Container className="center-text" id="song-image">
             {image}
