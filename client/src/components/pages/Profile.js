@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import "../../public/css/styles.css"
-import { Loader, Header, Grid, Segment, Image, Container } from 'semantic-ui-react';
+import { Loader, Header, Grid, Segment, Image, Container, Card } from 'semantic-ui-react';
 import default_profile from "../../public/assets/default_profile.png";
 import SuggestionForm from '../modules/SuggestionForm';
 import FriendForm from '../modules/FriendForm';
@@ -69,7 +69,7 @@ class Profile extends Component {
         }
     }
 
- loadFavArtistsImagesList() {
+    loadFavArtistsImagesList() {
         if(this.state.userInfo!=null) {
             return(
                 this.state.userInfo.top_artists.map( artist => {
@@ -104,9 +104,27 @@ class Profile extends Component {
         }
     }
 
+    loadFavSongsCards() {
+        if(this.gotProfileInfo) {
+            return(
+                this.state.userInfo.top_songs.map( song => {
+                return(
+                    <Card> <a href={"/song/" + song.id}><Image src={String(song.album.images[0].url)}/></a><Card.Content>
+                <Card.Header>{song.name}</Card.Header></Card.Content></Card>);
+            })
+            );
+        }
+        else {
+            <Segment>
+                <Loader/>
+            </Segment>
+        }
+    }
+
     render() {
         let image, description, name= '';
         let artistimage_list=[]
+        let songimage_list=[]
         let spotify_follower = 0;
 
         if (this.gotProfileInfo) {
@@ -117,6 +135,7 @@ class Profile extends Component {
             spotify_follower = this.state.userInfo.spotify_followers;
 
             artistimage_list=this.loadFavArtistsImagesList()
+            songimage_list=this.loadFavSongsCards()
             
             //<Segment raised> My fav song rn: {fav_song_rn.name}</Segment>
         }
@@ -148,21 +167,19 @@ class Profile extends Component {
                                 <Header as='h4'>Follow user!</Header>
                                 {this.loadFriendBox()}
                             </div>
-                            <Header as="h2">
-                                Top Artists: 
-                            </Header>
-                        </Grid.Column>
-                        <Grid.Column style={{'textAlign':'center'}}>
-                            <Header as="h3">
-                            Top Songs: 
-                            </Header>
-                            <Segment.Group raised>
-                                {this.loadFavSongs()}
-                            </Segment.Group>
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
-                        
+                <Container>
+                <Header as="h2">
+                        Top Songs: 
+                </Header>
+                <Card.Group itemsPerRow={5}>
+                    {songimage_list}
+                </Card.Group>    
+                <Header as="h2">
+                                Top Artists: 
+                </Header>
                 <Coverflow
                     width={960}
                     height={480}
@@ -179,6 +196,7 @@ class Profile extends Component {
                 </div>
                 {artistimage_list}
                 </Coverflow>
+                </Container> 
             </div>
         ) 
     }

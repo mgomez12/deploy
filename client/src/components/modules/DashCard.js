@@ -50,7 +50,7 @@ class DashCard extends Component {
                 <Card.Content extra>
                     <a>
                         <Icon name='user' />
-                        {this.state.friendInfo.friends.length} Friends
+                        {this.state.friendInfo.friends} Friends
                     </a>
                 </Card.Content>
             </Card>

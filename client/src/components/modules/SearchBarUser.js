@@ -1,5 +1,4 @@
 import _ from 'lodash'
-import io from 'socket.io-client';
 import React, { Component } from 'react'
 import { Search } from 'semantic-ui-react'
 import {get} from "./api";
@@ -9,8 +8,6 @@ import default_profile from "../../public/assets/default_profile.png";
 class SearchBarUser extends Component {
     constructor(props) {
         super(props);
-
-        this.socket = io('http://localhost:3000');
 
         this.state = {
             isLoading: false,
