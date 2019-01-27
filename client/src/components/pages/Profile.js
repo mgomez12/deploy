@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import "../../public/css/styles.css"
-import { Loader, Header, Grid, Segment, Image, Container, Card } from 'semantic-ui-react';
+import { Loader, Header, Grid, Segment, Image, Container, Card, Form, TextArea } from 'semantic-ui-react';
 import default_profile from "../../public/assets/default_profile.png";
 import SuggestionForm from '../modules/SuggestionForm';
 import FriendForm from '../modules/FriendForm';
 import Coverflow from 'react-coverflow';
+import DescriptionInputForm from '../modules/DescriptionInputBox';
 
 class Profile extends Component {
     constructor(props) {
@@ -59,6 +60,43 @@ class Profile extends Component {
             <Loader active inline />
         }
     }
+    loadDescriptionBox() {
+        if(this.gotProfileInfo) {
+            return (<DescriptionInputForm userId={this.props.viewerInfo._id}/>);
+        }
+        else {
+            <Loader active inline />
+        }
+    }
+
+    // loadDescriptionBox() {
+    //     if(this.gotProfileInfo) {
+    //         if(this.props.match.params.user==this.state.userInfo._id){
+    //             if(this.userInfo.descrip!==null){
+    //                 return (
+    //                     <Container>
+    //                     <p>
+    //                     {this.userInfo.descrip}
+    //                     </p>
+    //                     </Container>);
+    //             }
+    //             else{
+    //                 return(
+    //                     <Form>
+    //                         <Form.Field control={TextArea} label='About Me' placeholder='Tell us more about you...' />
+    //                         <Form.Field control={Button}>Submit</Form.Field>
+    //                     </Form>
+                        
+    //                 );
+    //                 <SuggestionForm userId={this.props.viewerInfo._id} receiverId={this.state.userInfo._id} isTrack={true}/>
+    //             }
+    //         }
+    //     else {
+    //         <Loader active inline />
+    //     }
+    // }
+    // }
+    
 
     loadFriendBox() {
         if(this.gotProfileInfo) {
@@ -168,6 +206,12 @@ class Profile extends Component {
                                 {this.loadFriendBox()}
                             </div>
                         </Grid.Column>
+                        <Grid.Column width='10'>
+                            <div className='center-parent'>
+                            <Header as='h4'>About!</Header>
+                            {this.loadDescriptionBox()}
+                            </div>
+                        </Grid.Column> 
                     </Grid.Row>
                 </Grid>
                 <Container>
