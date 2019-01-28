@@ -144,10 +144,9 @@ class PlaybackBar extends Component {
           script.src = "https://sdk.scdn.co/spotify-player.js";
           document.body.appendChild(script);
           console.log(this.props.token)
-              let player;
               window.onSpotifyWebPlaybackSDKReady = () => {
                   console.log('inside window function' + Spotify.Player)
-                  player = new Spotify.Player({      // Spotify is not defined until 
+                  const player = new Spotify.Player({      // Spotify is not defined until 
                   name: 'Web SDK player',            // the script is loaded in 
                   getOAuthToken: cb => { cb(this.props.token) }
                 });
