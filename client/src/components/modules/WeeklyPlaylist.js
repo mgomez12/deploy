@@ -48,7 +48,7 @@ class WeeklyPlaylist extends Component{
         return(
             <div>
                 <Button animated
-                onClick={this.handleClick}
+                href={'https://open.spotify.com/playlist/' +this.props.userInfo.suggestion_playlist_id}
                 color='violet'>
                     <Button.Content visible>Check Out Your Playlist of Recent Suggestions!</Button.Content>
                     <Button.Content hidden>
