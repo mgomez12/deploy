@@ -19,10 +19,17 @@ class Artist extends Component {
         this.gotArtistInfo = false;
 
     }
+    componentDidMount() {
+        this.renderArtistData();
+    }
     componentDidUpdate() {
         if (this.props.token && !this.gotArtistInfo) {
-        this.renderArtistData();
-        this.render() }
+        this.renderArtistData();}
+        if(this.state.artistInfo!=null) {
+            if (this.props.match.params.artistid!=this.state.artistInfo.id) {
+                this.renderArtistData();
+            }
+        }
     }
 
   

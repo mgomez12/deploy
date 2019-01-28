@@ -10,17 +10,11 @@ class SearchBarSpotify extends Component {
     constructor(props) {
         super(props);
 
-
-
-        
         this.state = {
             isLoading: false,
             results: [],
             value: '',
-            source: [{
-                title: "Jeffrey Chen",
-                image: "https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=234005436790515&height=200&width=200&ext=1550675248&hash=AeQ2vzL0Qc9aF3s7"
-            }]
+            source: [{}]
         };
         
     }
@@ -33,15 +27,18 @@ class SearchBarSpotify extends Component {
 
   handleResultSelect = (e, { result }) => {
       
-      this.setState({ value: result.title })
+      this.setState({ 
+          value: "",
+          source: [{}]
+     })
       if(result.type == 'song') {
-        this.props.history.push('/song/' + result.key);
+            this.props.history.push('/song/' + result.key);
       }
       if(result.type == 'album') {
-        this.props.history.push('/album/' + result.key);
+            this.props.history.push('/album/' + result.key);
       }
       if(result.type == 'artist') {
-        this.props.history.push('/artist/' + result.key);
+            this.props.history.push('/artist/' + result.key);
       }
   }
 
@@ -129,8 +126,9 @@ class SearchBarSpotify extends Component {
         <div>
                 <Search
                     category
+                    fluid ={true}
                     loading={isLoading}
-                    placeholder='Search for a song...'
+                    placeholder='Search for a song, album, or artist...'
                     onResultSelect={this.handleResultSelect}
                     onSearchChange={_.debounce(this.handleSearchChange, 500, { leading: true })}
                     results={results}
