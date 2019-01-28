@@ -19,6 +19,10 @@ router.get('/user', function(req, res) {
       res.send(user);
     });
   });
+
+router.get('/refresh', function(req, res) {
+    
+})
   
 router.get('/allusers', function(req, res) {
     User.find({}, function(err, users) {

@@ -12,6 +12,7 @@ const UserModelSchema = new mongoose.Schema ({
  fav_song_rn         : String,
  spotify_followers   : Number,
  access_token        : String,
+ expire_time         : Number,
  refresh_token       : String,
  top_songs           : Object,
  top_artists         : Object,

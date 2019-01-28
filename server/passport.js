@@ -27,6 +27,7 @@ passport.use(
              friends: 0,
              spotify_followers: 0,
              access_token: accessToken,
+             expire_time: expires_in,
              refresh_token: refreshToken,
              top_songs: {},
              top_artists: {},
