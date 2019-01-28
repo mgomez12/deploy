@@ -51,7 +51,11 @@ class PlaybackBar extends Component {
                     this.setState({update: true})
                     console.log('player is' + player)
                     console.log('this.player is ' + this.player)})
+                console.log('device id ' + this.device_id)
+
+                this.interval = setInterval(() => console.log('device id ' + this.device_id), 1000);
                 }
+                
 
 
     }
