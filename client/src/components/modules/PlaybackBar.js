@@ -44,6 +44,18 @@ class PlaybackBar extends Component {
                     this.device_id = device_id;
                     this.player = player;
                     this.setState({update: true})})
+                player.on('initialization_error', ({ message }) => {
+                    console.error('Failed to initialize', message);
+                    });
+                player.on('authentication_error', ({ message }) => {
+                console.error('Failed to authenticate', message);
+                });
+                player.on('account_error', ({ message }) => {
+                    console.error('Failed to validate Spotify account', message);
+                  });
+                player.on('playback_error', ({ message }) => {
+                console.error('Failed to perform playback', message);
+                });
                 }
             }
                 
