@@ -26,6 +26,7 @@ class PlaybackBar extends Component {
         this.onSeekMouseDown = this.onSeekMouseDown.bind(this);
         this.onSeekMouseUp = this.onSeekMouseUp.bind(this);
         this.handleScriptLoad = this.handleScriptLoad.bind(this);
+        this.loadMore = this.loadMore.bind(this);
 
 
     }
@@ -139,9 +140,12 @@ class PlaybackBar extends Component {
           const script = document.createElement("script");
   
           script.src = "https://sdk.scdn.co/spotify-player.js";
+          script.onload = this.loadMore
           document.body.appendChild(script);
-            
-          console.log(this.props.token)
+        }
+
+    loadMore = () => {
+        console.log(this.props.token)
           let player;
           window.onSpotifyWebPlaybackSDKReady = () => {
               console.log('inside window function')
@@ -156,8 +160,8 @@ class PlaybackBar extends Component {
                 this.setState({update: true})
                 console.log('player is' + player)
                 console.log('this.player is ' + this.player)})
-        }
     }
+}
 
     render() {
         
