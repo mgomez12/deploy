@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import "../../public/css/styles.css"
 import {Menu } from 'semantic-ui-react';
-import Script from 'react-load-script';
-import {get} from './api'
 
 class PlaybackBar extends Component {
     constructor(props) {
@@ -28,6 +26,8 @@ class PlaybackBar extends Component {
         this.onSeekMouseDown = this.onSeekMouseDown.bind(this);
         this.onSeekMouseUp = this.onSeekMouseUp.bind(this);
         this.handleScriptLoad = this.handleScriptLoad.bind(this);
+
+
     }
 
       componentWillUnmount() {
@@ -35,8 +35,17 @@ class PlaybackBar extends Component {
       }
 
       componentDidMount() {
+          if (this.props.premium) {
+              console.log('is premium, mounting')
+        const script = document.createElement("script");
+
+        script.src = "https://sdk.scdn.co/spotify-player.js";
+        document.body.appendChild(script);
+
         let player;
+        console.log('in handlescript')
         window.onSpotifyWebPlaybackSDKReady = () => {
+            console.log('inside window function')
             player = new window.Spotify.Player({      // Spotify is not defined until 
             name: 'Web SDK player',            // the script is loaded in 
             getOAuthToken: cb => { cb(this.props.token) }
@@ -45,10 +54,10 @@ class PlaybackBar extends Component {
           player.addListener('ready', ({ device_id }) => {
               this.device_id = device_id;
               this.player = player;
-              console.log('player is ' + this.player)
             this.setState({update: true})})
       }
-      }
+
+      }}
 
     componentDidUpdate() {
         if (this.prevSong !== this.props.track) {
@@ -57,6 +66,7 @@ class PlaybackBar extends Component {
             clearInterval(this.interval)
         }
         if (this.state.update && this.props.track !== '' && !this.props.premium) {
+            console.log('loading player')
             this.setState({
                 playing: true,
                 maxTime: 30,
@@ -141,11 +151,12 @@ class PlaybackBar extends Component {
     }
 
     handleScriptLoad = () => {
-        this.componentDidMount()
+        
         
     }
 
     render() {
+        
 
         let time=0;
         if (this.state.audio !== '' || this.props.premium) {
@@ -166,11 +177,7 @@ class PlaybackBar extends Component {
         }
         return(
         <React.Fragment>
-            {this.props.premium ? <Script 
-                url="https://sdk.scdn.co/spotify-player.js" 
-                onError={this.handleScriptError} 
-                onLoad={this.handleScriptLoad}
-            /> : 
+            {this.props.premium ? '' : 
             this.state.audio}
         <Menu inverted fixed='bottom'>
             {this.state.playing ? 
