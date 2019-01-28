@@ -1,35 +1,8 @@
 import React, { Component } from 'react';
 import "../../public/css/styles.css"
-import { Message, Input, Loader, Checkbox, Form, TextArea, Button } from 'semantic-ui-react';
+import { Message, Input, Loader, Form, TextArea, Button } from 'semantic-ui-react';
 import { post } from "./api"
 
-    // loadDescriptionBox() {
-    //     if(this.gotProfileInfo) {
-    //         if(this.props.match.params.user==this.state.userInfo._id){
-    //             if(this.userInfo.descrip!==null){
-    //                 return (
-    //                     <Container>
-    //                     <p>
-    //                     {this.userInfo.descrip}
-    //                     </p>
-    //                     </Container>);
-    //             }
-    //             else{
-    //                 return(
-    //                     <Form>
-    //                         <Form.Field control={TextArea} label='About Me' placeholder='Tell us more about you...' />
-    //                         <Form.Field control={Button}>Submit</Form.Field>
-    //                     </Form>
-                        
-    //                 );
-    //                 <SuggestionForm userId={this.props.viewerInfo._id} receiverId={this.state.userInfo._id} isTrack={true}/>
-    //             }
-    //         }
-    //     else {
-    //         <Loader active inline />
-    //     }
-    // }
-    // }
 class DescriptionInputForm extends Component {
     constructor(props) {
         super(props);
@@ -38,10 +11,11 @@ class DescriptionInputForm extends Component {
             input: '',
             submitted: false,
             response: null,
+            edit: false,
         };
         this.handleChange = this.handleChange.bind(this)
         this.submitDescription = this.submitDescription.bind(this)
-        // this.checkboxChange = this.checkboxChange.bind(this)
+        this.editDescription = this.editDescription.bind(this)
 
     }
 
@@ -51,45 +25,36 @@ class DescriptionInputForm extends Component {
         })
     }
 
-    // checkboxChange(event, data) {
-    //     console.log(data)
-    //     if (data.checked == null) {
-    //         return
-    //     }
-    //     this.setState({
-    //         anonymous: data.checked
-    //     })
-       
-    // }
+    editDescription() {
+        this.setState({
+            edit: true,
+        })
+    }
 
     submitDescription() {
         const input = this.state.input
         this.setState({
             input: '',
-            submitted: true,
-            response: null
+            submitted: false,
+            response: null,
+            edit: false,
         })
-        const date = new Date()
         // if (!this.props.isTrack) {
-            console.log('submitted' + this.props.userId + input)
-            post('/api/description', {user_id: this.props.userId, bio:input, time:date},
-            (response) => {
-                console.log(response);
-                if (response.status =='success') {
-                    this.setState({
-                        response: true
-                    })
-                    return
-                }
+        console.log('submitted' + this.props.userId + input)
+        post('/api/description', {user_id: this.props.userId, bio:input},
+        (response) => {  
+            console.log(response);
+            if (response.status =='success') {
                 this.setState({
-                    response: false
+                    response: true,
+                    edit: false
                 })
+                return
+            }
+            this.setState({
+                response: false
             })
-        // }
-        // else {
-        // console.log('submitted' + this.props.userId + this.props.receiverId)
-        // post('/api/description', {user_id: this.props.userId, bio: input, time:date})
-        // }
+        })
     }
 
     render() {
@@ -109,22 +74,49 @@ class DescriptionInputForm extends Component {
         else {
             banner=''
         }
-        return(
-            <React.Fragment>
-            <div style={{display:'inline-block'}}>
-            <Form.Field
-                control={TextArea}
-                action={{ color: 'teal', content: 'submit', onClick: this.submitDescription}}
-                placeholder="Type in your bio!"
-                value={this.state.input}
-                onChange={this.handleChange}
-            />
-            <Form.Field control={Button}>Submit</Form.Field>
-            {banner}
-            </div>
-            {/* <Checkbox toggle label='Submit anonymously' onClick={this.checkboxChange}/> */}
-            </React.Fragment>
-        )
+        if (this.props.userId==this.props.personId){
+            if (this.props.userProfile.descrip=="" || this.state.edit){
+                console.log("HESFJLKSEJF"+ this.props.userProfile.descrip)
+                return(
+                    <React.Fragment>
+                    <div style={{display:'inline-block'}}>
+                    <Form.Field
+                        control={TextArea}
+                        action={{ color: 'teal', content: 'submit', onClick: this.submitDescription}}
+                        placeholder="Type in your bio!"
+                        value={this.state.input}
+                        onChange={this.handleChange}
+                    />
+                    <Form.Field control={Button} onClick={this.submitDescription}>Submit</Form.Field>
+                    {banner}
+                    </div>
+                    </React.Fragment>
+                )
+                console.log("HESFJLKSEJF"+ this.props.userProfile.descrip)
+            }
+            else {
+                console.log("HESFJLKSEJF"+ this.props.userProfile.descrip)
+                return(
+                    <div>
+                        <p>{this.props.userProfile.descrip}</p>
+                        <Button onClick={this.editDescription}>Edit Description</Button>
+                    </div>
+                )
+            }
+
+        }
+        else{
+            if (this.props.personProfile.descrip==null){
+                return(
+                    <div></div>
+                )
+            }
+            else{
+                return(
+                    <div><p>{this.props.personProfile.descrip}</p></div>
+                )
+            }   
+        }
     }
 }
 export default DescriptionInputForm;

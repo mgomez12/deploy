@@ -7,7 +7,6 @@ const connect = require('connect-ensure-login');
 const User = require('../models/user');
 const Suggestion = require('../models/suggestion');
 const Friend = require('../models/friends');
-const Description = require('../models/description')
 const SongComment = require('../models/songcomment');
 
 const router = express.Router();
@@ -104,23 +103,26 @@ router.post('/suggestion', function(req, res) {
 
 router.post('/description', function(req, res) {
     connect.ensureLoggedIn();
-    const newDescription = Description({
-        user_id:req.body.user_id,
-        bio:req.body.bio,
-        time_sent: req.body.time
+    User.findOne({_id: req.body.user_id}, (err, userInfo) => {
+        userInfo.descrip=req.body.bio
+        userInfo.save()
+        console.log(userInfo.descrip)
     })
-    User.findOne({_id: req.body.user_id}, (err, userProfile) => {
-        if (!userProfile) {
-            res.send({status: 'fail'});
-        }
-        else {
-            userProfile.descrip.push(newDescription._id)
-            userProfile.save() 
-
-        newDescription.save();
-        res.send({status: 'success'});}
-    });
+    console.log("HELOOOOO"+ req.body.userProfile.descrip)
+    res.send({status: 'success'});
+    // }
+    // });
 })
+
+// router.post('/editdescription', function(req, res) {
+//     connect.ensureLoggedIn();
+//     User.findOne({_id: req.body.user_id}, (err, userProfile) => {
+//         userProfile.descrip=""
+//         userProfile.save()
+//     })
+//     console.log(req.body.user_id.descrip)
+//     res.send({status: 'success'});
+// })
 
 router.post('/friend', function(req, res) {
     connect.ensureLoggedIn();

@@ -60,42 +60,16 @@ class Profile extends Component {
             <Loader active inline />
         }
     }
+
     loadDescriptionBox() {
         if(this.gotProfileInfo) {
-            return (<DescriptionInputForm userId={this.props.viewerInfo._id}/>);
+            return (
+            <DescriptionInputForm userId={this.props.viewerInfo._id} personId={this.state.userInfo._id} userProfile={this.props.viewerInfo} personProfile={this.state.userInfo}/>);
         }
         else {
             <Loader active inline />
         }
     }
-
-    // loadDescriptionBox() {
-    //     if(this.gotProfileInfo) {
-    //         if(this.props.match.params.user==this.state.userInfo._id){
-    //             if(this.userInfo.descrip!==null){
-    //                 return (
-    //                     <Container>
-    //                     <p>
-    //                     {this.userInfo.descrip}
-    //                     </p>
-    //                     </Container>);
-    //             }
-    //             else{
-    //                 return(
-    //                     <Form>
-    //                         <Form.Field control={TextArea} label='About Me' placeholder='Tell us more about you...' />
-    //                         <Form.Field control={Button}>Submit</Form.Field>
-    //                     </Form>
-                        
-    //                 );
-    //                 <SuggestionForm userId={this.props.viewerInfo._id} receiverId={this.state.userInfo._id} isTrack={true}/>
-    //             }
-    //         }
-    //     else {
-    //         <Loader active inline />
-    //     }
-    // }
-    // }
     
 
     loadFriendBox() {
