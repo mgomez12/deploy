@@ -88,8 +88,7 @@ class SongComment extends Component {
     }
 
     render() {
-        var image, name, content, date = "";
-        var loves = 0;
+        var image, name, content, time = "";
         console.log("initialized: "+this.state.initialized)
         if (!this.state.commentsToDisplay) {
             return(
@@ -100,11 +99,7 @@ class SongComment extends Component {
                             <Comment.Author as='a'>Groove Team</Comment.Author>
                             <br/>
                             <Comment.Metadata>
-                                <div>Posted {date}</div>
-                                <div>
-                                    <Icon name='heart' />
-                                    {loves} Loves!
-                                </div>
+                                <div>Posted Today</div>
                             </Comment.Metadata>
                             <Comment.Text>No comments to this song! Post one!<br/></Comment.Text>
                         </Comment.Content>
@@ -117,7 +112,8 @@ class SongComment extends Component {
             name = this.state.currentProfile.name;
             image = (this.state.currentProfile.image !== '' ? this.state.currentProfile.image : default_profile);
             content = this.state.currentComment.content;
-            loves = this.state.currentComment.loves;
+            var date = new Date(this.state.currentComment.time.toString());
+            time = date.toDateString();
         }
         return(
             <Comment.Group>
@@ -126,11 +122,7 @@ class SongComment extends Component {
                     <Comment.Content>
                         <Comment.Author as='a'>{name}</Comment.Author>
                         <Comment.Metadata>
-                            <div>Posted {date}</div>
-                            <div>
-                                <Icon name='heart' />
-                                {loves} Loves!
-                            </div>
+                            <div>Posted {time}</div>
                         </Comment.Metadata>
                         <Comment.Text>{content}</Comment.Text>
                     </Comment.Content>

@@ -16,17 +16,27 @@ class WeeklyPlaylist extends Component{
     update_playlist() {
         const uri_list = this.props.userInfo.suggestions_received;
         const playlist_id = this.props.userInfo.suggestion_playlist_id;
-        fetch("https://api.spotify.com/v1/playlists/"+ playlist_id+"/tracks", {
+        
+        const length = uri_list.length;
+        var uri_string = "" + uri_list[0];
+        for(var i = 1; i <length; i++) {
+            uri_string = uri_string + "," + uri_list[i];
+        }
+        uri_string = uri_string.replace(/:\s*/g,"%3A")
+        uri_string = uri_string.replace(/,\s*/g,"%2C")
+
+        console.log(uri_string)
+
+        fetch("https://api.spotify.com/v1/playlists/"+ playlist_id+"/tracks?uris="+uri_string, {
             method: 'PUT',
             headers: {
-                'Authorization': "Bearer " + this.props.userInfo.access_token,
-                'Content-type': 'application/json'
+                "Authorization": "Bearer " + this.props.userInfo.access_token,
+                "Content-type": 'application/json'
             },
             body: {
-                public: true,
-                uris: uri_list
             }
-          }).then(res => res.json()).then(res => console.log(res));
+          }).then(res => res.json()).then(res => console.log("hello"));
+          console.log("did it work?")
     }
 
 
