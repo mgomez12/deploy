@@ -44,7 +44,7 @@ class PlaybackBar extends Component {
                 });
                 console.log('past player initialization')
                 player.connect();
-                console.log('player is ' + player)
+                console.log('player is ' + JSON.stringify(player));
                 player.addListener('ready', ({ device_id }) => {
                     this.device_id = device_id;
                     this.player = player;
@@ -54,6 +54,7 @@ class PlaybackBar extends Component {
                 player.addListener('not_ready', ({ device_id }) => {
                     console.log('Device ID is not ready for playback', device_id);
                     });
+                console.log('player is ' + JSON.stringify(player));
                 console.log('device id ' + this.device_id)
 
                 this.interval = setInterval(() => console.log('device id ' + this.device_id), 1000);
