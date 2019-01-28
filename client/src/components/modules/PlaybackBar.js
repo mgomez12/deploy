@@ -35,6 +35,7 @@ class PlaybackBar extends Component {
       }
 
       componentDidMount() {
+          this.handleScriptLoad()
       }
 
     componentDidUpdate() {
@@ -53,6 +54,9 @@ class PlaybackBar extends Component {
                 audio: <audio autoPlay src={this.props.track} ref={(audioTag) => {this.audio = audioTag}}/>
             }) 
             this.interval = setInterval(() => this.setState({ time: this.audio.currentTime}), 1000);
+        }
+        else if (this.state.update && this.player == null && this.props.premium) {
+            this.handleScriptLoad()
         }
         
         else if (this.state.update && this.props.premium && this.player !== null) {
@@ -75,31 +79,6 @@ class PlaybackBar extends Component {
         })})
             this.interval = setInterval(() => 
             this.player.getCurrentState().then(info => {this.setState({ time: info.position})}), 1000);
-        }
-        else if (this.state.update && this.props.premium && this.player == null) {
-            console.log('is premium, mounting')
-            this.setState({update: false})
-          const script = document.createElement("script");
-  
-          script.src = "https://sdk.scdn.co/spotify-player.js";
-          document.body.appendChild(script);
-            
-          console.log(this.props.token)
-          let player;
-          window.onSpotifyWebPlaybackSDKReady = () => {
-              console.log('inside window function')
-              player = new window.Spotify.Player({      // Spotify is not defined until 
-              name: 'Web SDK player',            // the script is loaded in 
-              getOAuthToken: cb => { cb(this.props.token) }
-            });
-            player.connect();
-            player.addListener('ready', ({ device_id }) => {
-                this.device_id = device_id;
-                this.player = player;
-                this.setState({update: true})
-                console.log('player is' + player)
-                console.log('this.player is ' + this.player)})
-        }
         }
     }
 
@@ -156,7 +135,29 @@ class PlaybackBar extends Component {
 
     handleScriptLoad = () => {
         
-        
+        console.log('is premium, mounting')
+            this.setState({update: false})
+          const script = document.createElement("script");
+  
+          script.src = "https://sdk.scdn.co/spotify-player.js";
+          document.body.appendChild(script);
+            
+          console.log(this.props.token)
+          let player;
+          window.onSpotifyWebPlaybackSDKReady = () => {
+              console.log('inside window function')
+              player = new window.Spotify.Player({      // Spotify is not defined until 
+              name: 'Web SDK player',            // the script is loaded in 
+              getOAuthToken: cb => { cb(this.props.token) }
+            });
+            player.connect();
+            player.addListener('ready', ({ device_id }) => {
+                this.device_id = device_id;
+                this.player = player;
+                this.setState({update: true})
+                console.log('player is' + player)
+                console.log('this.player is ' + this.player)})
+        }
     }
 
     render() {
