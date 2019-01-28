@@ -28,6 +28,7 @@ class PlaybackBar extends Component {
         this.onSeekMouseUp = this.onSeekMouseUp.bind(this);
         this.handleScriptLoad = this.handleScriptLoad.bind(this);
 
+        console.log('premium:' + this.props.premium)
         if (this.props.premium) {
           const script = document.createElement("script");
   
