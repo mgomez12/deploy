@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import _ from 'lodash'
 import "../../public/css/styles.css"
 import { Icon, Accordion, Loader, Header, Message, Button } from 'semantic-ui-react';
+import {Link } from "react-router-dom";
 import { post, get, get2 } from "./api"
 import { loadavg } from 'os';
 
@@ -11,11 +12,12 @@ class ListenSimilarites extends Component {
 
         //props: viewerInfo, cardUserInfo
         this.state = {
-            activeIndex: 0,
+            activeIndex: 5,
             artistsInCommon: [],
             songsInCommon : [],
             genresInCommon: [],
             relatedArtistsInCommon: [],
+            recommendations: [],
             loaded: false
         }
 
@@ -50,26 +52,49 @@ class ListenSimilarites extends Component {
             intersect_artists=iintersect_artists.splice(0,5)
         }
         if(intersect_genres.length>5) {
-            intersect_genres=intersect_genres.splice(0,4)
+            intersect_genres=intersect_genres.splice(0,5)
         }
         if(intersect_related_artists.length>5) {
             intersect_related_artists=intersect_related_artists.splice(0,5)
         }
+        
+
+        const artist_length = intersect_artists.length;
+        var artist_string = "";
+        if(artist_length>0) {
+            var artist_string = "" + intersect_artists[0];
+            for(var i = 1; i <artist_length; i++) {
+                artist_string = artist_string + "," + intersect_artists[i];
+            }
+            artist_string = artist_string.replace(/:\s*/g,"%3A")
+            artist_string = artist_string.replace(/,\s*/g,"%2C")
+        }
+
+        const song_length = intersect_songs.length;
+        var song_string = "";
+        if(song_length>0) {
+            var song_string = "" + intersect_songs[0];
+            for(var i = 1; i <song_length; i++) {
+                song_string = song_string + "," + intersect_songs[i];
+            }
+            song_string = song_string.replace(/:\s*/g,"%3A")
+            song_string = song_string.replace(/,\s*/g,"%2C")
+        }
+
+
         Promise.all(intersect_artists.map(artistId => {
             return get2('https://api.spotify.com/v1/artists/' + artistId, null, header);
         })).then( artists => {
             this.setState({
                 genresInCommon: intersect_genres,
                 artistsInCommon: artists,
-                
-
         })})
 
         Promise.all(intersect_songs.map(songId => {
             return get2('https://api.spotify.com/v1/tracks/' + songId, null, header);
         })).then( songs => {
             this.setState({
-            songsInCommon: songs
+                songsInCommon: songs
         })})
         
         Promise.all(intersect_related_artists.map(artistId => {
@@ -77,7 +102,19 @@ class ListenSimilarites extends Component {
         })).then( artists => {
             this.setState({
                 relatedArtistsInCommon: artists
-        })})
+        })}).then( () => {
+            if(artist_string=="" && song_string=="") {
+                return []
+            }
+            else {
+                return get2('https://api.spotify.com/v1/recommendations?seed_artists=' + artist_string + "&seed_tracks="+ song_string, null, header);
+            }
+        }).then( tracks => {
+            console.log(tracks)
+            this.setState({
+                recommendations: tracks
+            })
+        })
 
         this.setState({
             loaded: true
@@ -109,7 +146,7 @@ class ListenSimilarites extends Component {
             return this.state.artistsInCommon.map( artist => {
                 return(
                     <div>
-                        {artist.name}
+                        <Link to={"/artist/"+artist.id}>{artist.name}</Link>
                     </div>
                 ) 
             })
@@ -129,7 +166,7 @@ class ListenSimilarites extends Component {
             return this.state.songsInCommon.map( song => {
                 return(
                     <div>
-                        {song.name}
+                        <Link to={"/song/"+song.id}>{song.name}</Link>
                     </div>
                 ) 
             })
@@ -167,7 +204,7 @@ class ListenSimilarites extends Component {
             return this.state.relatedArtistsInCommon.map( artist => {
                 return(
                     <div>
-                        {artist.name}
+                        <Link to={"/artist/"+artist.id}>{artist.name}</Link>
                     </div>
                 ) 
             })
@@ -176,6 +213,28 @@ class ListenSimilarites extends Component {
             return(
                 <div>
                     No related artists in common :(
+                </div>
+            )
+        }
+    }
+
+    loadRecommendations() {
+        console.log("break")
+        console.log(this.state.recommendations)
+        console.log("break")
+        if (this.state.recommendations.length!={} && this.state.recommendations.length!=[]) {
+            return this.state.recommendations.tracks.map( track => {
+                return(
+                    <div>
+                        <Link to={"/song/"+track.id}>{track.name}</Link>
+                    </div>
+                ) 
+            })
+        }
+        else {
+            return(
+                <div>
+                    No recommendations in common :(
                 </div>
             )
         }
@@ -228,6 +287,14 @@ class ListenSimilarites extends Component {
                 </Accordion.Title>
                 <Accordion.Content active={activeIndex === 3}>
                     {this.loadRelatedArtists()}
+                </Accordion.Content>
+
+                <Accordion.Title active={activeIndex === 4} index={4} onClick={this.handleClick}>
+                <Icon name='dropdown' />
+                Recommendations
+                </Accordion.Title>
+                <Accordion.Content active={activeIndex === 4}>
+                    {this.loadRecommendations()}
                 </Accordion.Content>
             </Accordion>
         )
