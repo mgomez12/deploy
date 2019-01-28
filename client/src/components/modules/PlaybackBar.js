@@ -30,7 +30,29 @@ class PlaybackBar extends Component {
 
         console.log('premium:' + this.props.premium)
         if (this.props.premium) {
-          const script = document.createElement("script");
+          
+                
+
+
+    }
+}
+
+      componentWillUnmount() {
+        clearInterval(this.interval);
+      }
+
+      componentDidMount() {
+      }
+
+    componentDidUpdate() {
+        if (this.prevSong !== this.props.track) {
+            this.setState({update: true})
+            this.prevSong = this.props.track
+            clearInterval(this.interval)
+        }
+        if (!this.updated && this.props.premium) {
+            this.updated = true;
+            const script = document.createElement("script");
   
           script.src = "https://sdk.scdn.co/spotify-player.js";
           document.body.appendChild(script);
@@ -61,24 +83,6 @@ class PlaybackBar extends Component {
                 console.error('Failed to perform playback', message);
                 });
                 }
-            }
-                
-
-
-    }
-
-      componentWillUnmount() {
-        clearInterval(this.interval);
-      }
-
-      componentDidMount() {
-      }
-
-    componentDidUpdate() {
-        if (this.prevSong !== this.props.track) {
-            this.setState({update: true})
-            this.prevSong = this.props.track
-            clearInterval(this.interval)
         }
         if (this.state.update && this.props.track !== '' && !this.props.premium) {
             this.setState({
