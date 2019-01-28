@@ -44,6 +44,7 @@ class PlaybackBar extends Component {
                 });
                 console.log('past player initialization')
                 player.connect();
+                console.log('player is ' + player)
                 player.addListener('ready', ({ device_id }) => {
                     this.device_id = device_id;
                     this.player = player;
