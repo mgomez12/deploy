@@ -36,7 +36,7 @@ class Dash extends Component {
         return (
             <div>
                 {this.props.userInfo.friends == 0 ? <Header as='h3' style={{color:'gray'}}>You currently don't have any friends. Follow friends to see their cards!</Header>:
-                <Card.Group itemsPerRow="4">
+                <Card.Group itemsPerRow="5">
                     {this.loadCards()}
                 </Card.Group>}
             </div>

@@ -32,26 +32,41 @@ class DashCard extends Component {
         })
     }
 
+    loadListenSimilarities() {
+        return <div><ListenSimilarites cardUserInfo={this.state.friendInfo} viewerInfo={this.props.userInfo}/></div>;
+
+    }
+
+    loadExtra() {
+        return this.state.friendInfo.friends + " Friends"                   
+    }
+
     render() {
         if (!this.state.gotFriendInfo) {
             return <Loader active size='large'/>
         }
+        console.log('got friend info')
+        var href = "/u/profile/" + this.state.friendInfo._id;
         return (
-            <Card style={{width:"150px", height:'300px'}}>
-                <Image src={this.state.friendInfo.image !== '' ? this.state.friendInfo.image : default_profile}/>
-                <Card.Content>
-                    <Card.Header> {this.state.friendInfo.name} </Card.Header>
-                    <Card.Description>
-                        <ListenSimilarites cardUserInfo={this.state.friendInfo} viewerInfo={this.props.userInfo}/>
-                    </Card.Description>
-                </Card.Content>
-                <Card.Content extra>
-                    <a>
-                        <Icon name='user' />
-                        {this.state.friendInfo.friends} Friends
-                    </a>
-                </Card.Content>
-            </Card>
+            <div>
+                <Card
+                    link
+                    color="teal"
+                    raised>
+                        <Image 
+                            src={this.state.friendInfo.image !== '' ? this.state.friendInfo.image : default_profile}
+                            href={href}
+                        />
+                        <Card.Content>
+                            <Card.Header>{this.state.friendInfo.name}</Card.Header>
+                            <Card.Meta>Friend</Card.Meta>
+                            <Card.Description>{this.loadListenSimilarities()}</Card.Description>
+                        </Card.Content>
+                        <Card.Content extra>
+                            {this.loadExtra()}
+                        </Card.Content>
+                    </Card>
+            </div>
         )
     }
 }

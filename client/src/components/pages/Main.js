@@ -34,18 +34,13 @@ class Main extends Component {
                 <Container style={{padding: '5em'}}>
                     <Grid columns='2' stackable style={{height:'80vh'}}>
                         <Grid.Column>
-                            <div ref={this.handleContextRef}>
-                            <Visibility offset={[10, 10]}>
                                 <SuggestionBox userInfo={this.props.userInfo}/>
-                            </Visibility>
-                            </div>
                         </Grid.Column>
                         <Grid.Column>
-                            <Sticky context={contextRef}>
+                                {console.log(contextRef)}
                                 <WeeklyPlaylist userInfo={this.props.userInfo} history={this.props.history}/>
                                 <SearchBarUser history={this.props.history}/>
                                 <Dash userInfo={this.props.userInfo} friendCount ={this.props.userInfo.friends}/>
-                            </Sticky>
                         </Grid.Column>
                     </Grid>
                 </Container>            
