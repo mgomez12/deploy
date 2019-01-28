@@ -18,6 +18,7 @@ class PlaybackBar extends Component {
         this.player = null;
         this.gotSongInfo = false;
         this.device_id = '';
+        this.loaded = false;
         this.prevSong = this.props.track;
         this.audio = null;
         this.pause = this.pause.bind(this);
@@ -26,7 +27,6 @@ class PlaybackBar extends Component {
         this.onSeekMouseDown = this.onSeekMouseDown.bind(this);
         this.onSeekMouseUp = this.onSeekMouseUp.bind(this);
         this.handleScriptLoad = this.handleScriptLoad.bind(this);
-        this.loadMore = this.loadMore.bind(this);
 
 
     }
@@ -55,8 +55,10 @@ class PlaybackBar extends Component {
             }) 
             this.interval = setInterval(() => this.setState({ time: this.audio.currentTime}), 1000);
         }
-        else if (this.state.update && this.player == null && this.props.premium) {
+        else if (this.state.update && !this.loaded && this.player == null && this.props.premium) {
+            console.log('loading script')
             this.handleScriptLoad()
+            this.loaded = true;
         }
         
         else if (this.state.update && this.props.premium && this.player !== null) {
@@ -134,33 +136,34 @@ class PlaybackBar extends Component {
     }
 
     handleScriptLoad = () => {
+        function loadMore() {
+            }
         
         console.log('is premium, mounting')
             this.setState({update: false})
           const script = document.createElement("script");
   
           script.src = "https://sdk.scdn.co/spotify-player.js";
-          script.onload = this.loadMore
           document.body.appendChild(script);
+          console.log(this.props.token)
+              let player;
+              window.onSpotifyWebPlaybackSDKReady = () => {
+                  console.log('inside window function')
+                  player = new window.Spotify.Player({      // Spotify is not defined until 
+                  name: 'Web SDK player',            // the script is loaded in 
+                  getOAuthToken: cb => { cb(this.props.token) }
+                });
+                player.connect();
+                player.addListener('ready', ({ device_id }) => {
+                    this.device_id = device_id;
+                    this.player = player;
+                    this.setState({update: true})
+                    console.log('player is' + player)
+                    console.log('this.player is ' + this.player)})
         }
 
-    loadMore = () => {
-        console.log(this.props.token)
-          let player;
-          window.onSpotifyWebPlaybackSDKReady = () => {
-              console.log('inside window function')
-              player = new window.Spotify.Player({      // Spotify is not defined until 
-              name: 'Web SDK player',            // the script is loaded in 
-              getOAuthToken: cb => { cb(this.props.token) }
-            });
-            player.connect();
-            player.addListener('ready', ({ device_id }) => {
-                this.device_id = device_id;
-                this.player = player;
-                this.setState({update: true})
-                console.log('player is' + player)
-                console.log('this.player is ' + this.player)})
-    }
+
+    
 }
 
     render() {
