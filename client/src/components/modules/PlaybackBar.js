@@ -35,7 +35,6 @@ class PlaybackBar extends Component {
       }
 
       componentDidMount() {
-          this.handleScriptLoad()
       }
 
     componentDidUpdate() {
