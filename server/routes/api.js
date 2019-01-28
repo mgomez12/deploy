@@ -24,10 +24,11 @@ router.get('/user', function(req, res) {
 
   
 router.get('/allusers', function(req, res) {
-    User.find({}, function(err, users) {
+    User.find({}, '_id name image', function(err, users) {
         if(err) {
             console.log(err)
         }
+        console.log('getting all users: ' + users)
         res.send(users);
     });
     User.find()
