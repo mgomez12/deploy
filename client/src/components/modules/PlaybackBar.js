@@ -54,6 +54,15 @@ class PlaybackBar extends Component {
                 player.addListener('not_ready', ({ device_id }) => {
                     console.log('Device ID is not ready for playback', device_id);
                     });
+                player.on('initialization_error', ({ message }) => {
+                    console.error('Failed to initialize', message);
+                    });
+                player.on('authentication_error', ({ message }) => {
+                    console.error('Failed to authenticate', message);
+                    });
+                player.on('account_error', ({ message }) => {
+                    console.error('Failed to validate Spotify account', message);
+                    });
                 console.log('player is ' + JSON.stringify(player));
                 console.log('device id ' + this.device_id)
 
