@@ -35,6 +35,7 @@ class PlaybackBar extends Component {
       }
 
       componentDidMount() {
+          console.log('mounting, ' + this.props.premium)
           if (this.props.premium) {
               console.log('is premium, mounting')
         const script = document.createElement("script");
@@ -43,7 +44,6 @@ class PlaybackBar extends Component {
         document.body.appendChild(script);
 
         let player;
-        console.log('in handlescript')
         window.onSpotifyWebPlaybackSDKReady = () => {
             console.log('inside window function')
             player = new window.Spotify.Player({      // Spotify is not defined until 
@@ -54,6 +54,8 @@ class PlaybackBar extends Component {
           player.addListener('ready', ({ device_id }) => {
               this.device_id = device_id;
               this.player = player;
+              console.log('player is' + player)
+              console.log('this.player is ' + this.player)
             this.setState({update: true})})
       }
 
