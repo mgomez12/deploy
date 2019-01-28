@@ -30,7 +30,6 @@ class SearchBarUser extends Component {
   getUsers() {
     fetch('/api/allusers').then(res => res.json())
     .then((users) => {
-        console.log(users)
         this.setState({
             source: users.map( user => {
                 var userImage = user.image;
@@ -45,7 +44,6 @@ class SearchBarUser extends Component {
                 )
             }),
         })
-        console.log(this.state.source)
         this.gotUsers = true;
     })
 }
@@ -53,8 +51,6 @@ class SearchBarUser extends Component {
   handleResultSelect = (e, { result }) => {
       
       this.setState({ value: result.title })
-      console.log(result)
-      console.log(result.key)
       this.props.history.push('/u/profile/' + result.key);
       this.resetComponent();
   }

@@ -21,8 +21,6 @@ class Profile extends Component {
     }
 
     componentDidMount() {
-        console.log("hi")
-        console.log(this.props.match.params.user)
         // if (this.props.match.params.user !== "me") {
             this.getProfile(this.props.match.params.user); 
         // }
@@ -41,7 +39,6 @@ class Profile extends Component {
     }
 
     getProfile = (id) => {
-        console.log("hi")
         fetch('/api/user?_id=' + id).then(res => res.json())
         .then((profile) => {
             this.setState({
@@ -176,7 +173,6 @@ class Profile extends Component {
                     <Grid.Row columns={3}>
                         <Grid.Column>
                             <div className='center-parent'>
-                                <Header as='h4'>Follow user!</Header>
                                 {this.loadFriendBox()}
                             </div>
                         </Grid.Column>

@@ -28,6 +28,16 @@ const api = require('./routes/api');
 var sessionStore = new MongoStore({
  mongooseConnection: db
 });
+app.enable("trust proxy");
+
+if(process.env.NODE_ENV === 'production') {
+  app.use((req, res, next) => {
+    if (req.header('x-forwarded-proto') !== 'https')
+      res.redirect(`https://${req.header('host')}${req.url}`)
+    else
+      next()
+  })
+}
 
 app.use(session({
    secret: 'session-secret',
@@ -82,7 +92,7 @@ app.get(
 
 app.get(
  '/auth/spotify/callback',
- passport.authenticate('spotify', { failureRedirect: '/login' }),
+ passport.authenticate('spotify', { failureRedirect: '/error' }),
  function(req, res) {
    // Successful authentication, redirect home.
 
@@ -137,7 +147,6 @@ app.get(
 
 
    User.findOne({_id: req.user._id}, (err, profile)=> {
-     console.log(profile)
      values.top_songs
      .then(track => {profile.top_songs = track.items})
      .then(() => {return values.top_artists}).then(artist => {profile.top_artists = artist.items})
@@ -145,11 +154,9 @@ app.get(
       profile.premium = (prof.product == 'premium' ? true : false)})
       .then(() => { 
         if(profile.suggestion_playlist_id==""||(!profile.suggestion_playlist_id)) {
-          console.log("here" +profile.suggestion_playlist_id)
           return request(create_playlist)
         }
         else {
-          console.log("there: " +profile.suggestion_playlist_id)
           return {id: profile.suggestion_playlist_id}
         }
       }).then(playlist => {profile.suggestion_playlist_id = playlist.id})
@@ -176,7 +183,6 @@ app.get(
         profile.recently_played_artists.map(artistId => {
         return request({url: 'https://api.spotify.com/v1/artists/' + artistId , headers: {'Authorization': "Bearer " + req.user.access_token}, json: true})
         })).then( artists => {
-          console.log("no error")
           var recent_genres = [];
           artists.map( artist => {
             artist.genres.map( genre => {
@@ -187,6 +193,20 @@ app.get(
             return recent_genres.indexOf(item) >= index;
           });
         })})
+        .then(() => { return Promise.all(
+          profile.recently_played_artists.map(artistId => {
+          return request({url: 'https://api.spotify.com/v1/artists/' + artistId +'/related-artists', headers: {'Authorization': "Bearer " + req.user.access_token}, json: true})
+          })).then( artists => {
+            var related_artists = [];
+            artists.map( artist => {
+              artist.artists.map( artist => {
+                related_artists.push(artist.id)
+              })
+            })
+            profile.related_artists = related_artists.filter(function(item, index){
+              return related_artists.indexOf(item) >= index;
+            });
+          })})
       .then(() => profile.save())
    })
 

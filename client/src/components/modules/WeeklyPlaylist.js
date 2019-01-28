@@ -14,21 +14,31 @@ class WeeklyPlaylist extends Component{
     }
 
     update_playlist() {
-        const uri_list = this.props.userInfo.suggestions_received;
+        var uri_list = this.props.userInfo.suggestions_received;
+        uri_list = uri_list.filter(function(item, index){
+            return uri_list.indexOf(item) >= index;
+          });
         const playlist_id = this.props.userInfo.suggestion_playlist_id;
-        fetch("https://api.spotify.com/v1/playlists/"+ playlist_id+"/tracks", {
+        
+        const length = uri_list.length;
+        var uri_string = "" + uri_list[0];
+        for(var i = 1; i <length; i++) {
+            uri_string = uri_string + "," + uri_list[i];
+        }
+        uri_string = uri_string.replace(/:\s*/g,"%3A")
+        uri_string = uri_string.replace(/,\s*/g,"%2C")
+
+
+        fetch("https://api.spotify.com/v1/playlists/"+ playlist_id+"/tracks?uris="+uri_string, {
             method: 'PUT',
             headers: {
-                'Authorization': "Bearer " + this.props.userInfo.access_token,
-                'Content-type': 'application/json'
+                "Authorization": "Bearer " + this.props.userInfo.access_token,
+                "Content-type": 'application/json'
             },
             body: {
-                public: true,
-                uris: uri_list
             }
-          }).then(res => res.json()).then(res => console.log(res));
+          })
     }
-
 
     handleClick = () => {
         this.props.history.push('https://open.spotify.com/playlist/'+this.props.userInfo.suggestion_playlist_id);
@@ -38,10 +48,11 @@ class WeeklyPlaylist extends Component{
         return(
             <div>
                 <Button animated
-                onClick={this.handleClick}>
+                href={'https://open.spotify.com/playlist/' +this.props.userInfo.suggestion_playlist_id}
+                color='violet'>
                     <Button.Content visible>Check Out Your Playlist of Recent Suggestions!</Button.Content>
                     <Button.Content hidden>
-                        <Icon name='arrow right' />
+                        <Icon name='headphones'/>
                     </Button.Content>
                 </Button>
             </div>

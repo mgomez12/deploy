@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import "../../public/css/styles.css"
-import { Message, Button } from 'semantic-ui-react';
+import { Header, Message, Button } from 'semantic-ui-react';
 import { get } from "./api"
 
 class FriendForm extends Component {
@@ -21,9 +21,7 @@ class FriendForm extends Component {
     }
     areFriends() {
         get('/api/friend', {_id: this.props.userId},(friendObj) => {
-            console.log(friendObj)  
             if(friendObj.friends.includes(this.props.receiverId)) {
-                console.log("are friends")
                 this.setState({
                     added: 'friends'
                 })
@@ -43,7 +41,6 @@ class FriendForm extends Component {
 
     addFriend() {
         if (this.state.added === 'waiting') {
-            console.log('is waiting, changing to friends')
         this.setState({
             added: 'friends'
         }) }
@@ -55,37 +52,44 @@ class FriendForm extends Component {
                 sender: this.props.userId}),
             headers: { "Content-Type": "application/json" }})
         .then((res) => {
-            console.log('friend added');
             get('/api/updateUser', {}, response => {console.log(response)});
         })
     }
     render() {
-        let message = '';
+        let message, header = '';
         status = this.state.added;
-        if (status == 'friends') {
-            message = <Message compact positive><Message.Header>Friend</Message.Header></Message>
-        }
-        else if (status == 'sent') {
-            message = <Message compact warning><Message.Header>Friend request sent!</Message.Header></Message>
-        }
-        else if (status == 'waiting') {
-            message =  <div><Message compact warning><Message.Header>Friend request received</Message.Header></Message>
-            <Button
-                color='teal'
-                content='Confirm'
-                onClick={this.addFriend}
-            /></div>
+        if(this.props.userId == this.props.receiverId) {
+            message = <div></div>
+            header = <div></div>
         }
         else {
-            message = <Button
-            color='teal'
-            content='Add Friend'
-            onClick={this.addFriend}
-        />
+            header = <Header as='h4'>Follow user!</Header>
+            if (status == 'friends') {
+                message = <Message compact positive><Message.Header>Friend</Message.Header></Message>
+            }
+            else if (status == 'sent') {
+                message = <Message compact warning><Message.Header>Friend request sent!</Message.Header></Message>
+            }
+            else if (status == 'waiting') {
+                message =  <div><Message compact warning><Message.Header>Friend request received</Message.Header></Message>
+                <Button
+                    color='teal'
+                    content='Confirm'
+                    onClick={this.addFriend}
+                /></div>
+            }
+            else {
+                message = <Button
+                color='teal'
+                content='Add Friend'
+                onClick={this.addFriend}
+            />
+            }
         }
+
         return(
         <div style={{display:'inline-block'}}>
-
+            {header}
             {message}
         </div>
         )

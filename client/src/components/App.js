@@ -10,7 +10,7 @@ import Album from "./pages/Album";
 import Artist from "./pages/Artist";
 import NavBar from "./modules/NavBar";
 import ErrorPage from "./pages/error";
-import {Message, Segment, TransitionablePortal} from "semantic-ui-react";
+import {Segment, TransitionablePortal} from "semantic-ui-react";
 import io from "socket.io-client";
 
 class App extends React.Component {
@@ -29,12 +29,12 @@ class App extends React.Component {
     }
 
     componentDidMount () {
+        console.log('mounting');
         this.getUser();
     }
 
     componentDidUpdate() {
         if (this.state.startSocket && this.state.updated) {
-            console.log('starting socket')
             this.socket.on('notification_' + this.state.userInfo._id, notification => {
                 console.log('got notification');
                 this.setState({
@@ -59,10 +59,10 @@ class App extends React.Component {
                 <Route path='/' render = {(props) => <NavBar {...props} userInfo={userInfo}/>}/>
             </Switch>
             <Switch>
-            <Route path='/u/profile/:user' render = {(props) => <Profile {...props} userInfo ={userInfo} viewerInfo={userInfo} />} />
+            <Route path='/u/profile/:user' render = {(props) => <Profile {...props} viewerInfo={userInfo} />} />
             <Route exact path ="/login" component={Login} />
             <Route exact path ='/error' component={ErrorPage}/>
-            <Route exact path="/" render = {() => <Main userInfo ={userInfo} />} />
+            <Route exact path="/" render = {() => <Main userInfo ={userInfo} updated={this.state.updated} />} />
             <Route path="/song/:songid" render = {(props) => <Song {...props} userInfo ={userInfo}  />} />
             <Route exact path="/album/:albumid" render = {(props) => <Album {...props} userInfo ={userInfo} token ={userInfo.access_token} />}/>
             <Route exact path="/artist/:artistid" render = {(props) => <Artist {...props} userInfo ={userInfo} token ={userInfo.access_token} />}/>
@@ -72,14 +72,15 @@ class App extends React.Component {
                 {this.state.message.sender + (this.state.message.type == 'sent' ? ' sent you a friend request' : ' confirmed your friend request')}
                 </Segment></TransitionablePortal>
         </div>
-        )
-    ;
+        );
   }
+
   getUser = () => {
-    fetch('/api/whoami')
+    fetch('/api/refresh')
     .then(res => res.json())
     .then(
         userObj => {
+            console.log('userobj: ' + userObj)
             if (userObj._id !== undefined) {
                 this.setState({
                     userInfo: userObj,
@@ -98,5 +99,6 @@ class App extends React.Component {
     )
     };
 }
+
 
 export default App;

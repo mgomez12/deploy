@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import "../../public/css/styles.css"
 import {Menu } from 'semantic-ui-react';
-import Script from 'react-load-script';
-import {get} from './api'
 
 class PlaybackBar extends Component {
     constructor(props) {
@@ -14,12 +12,13 @@ class PlaybackBar extends Component {
             playing: false,
             maxTime: 1,
             time: 0,
-            seekValue: null
+            seekValue: null,
+            update: true
         };
         this.player = null;
         this.gotSongInfo = false;
         this.device_id = '';
-        this.updated = false;
+        this.loaded = false;
         this.prevSong = this.props.track;
         this.audio = null;
         this.pause = this.pause.bind(this);
@@ -28,47 +27,76 @@ class PlaybackBar extends Component {
         this.onSeekMouseDown = this.onSeekMouseDown.bind(this);
         this.onSeekMouseUp = this.onSeekMouseUp.bind(this);
         this.handleScriptLoad = this.handleScriptLoad.bind(this);
+
+        console.log('premium:' + this.props.premium)
+        if (this.props.premium) {
+          
+                
+
+
     }
+}
 
       componentWillUnmount() {
         clearInterval(this.interval);
       }
 
       componentDidMount() {
-        let player;
-        window.onSpotifyWebPlaybackSDKReady = () => {
-            player = new Spotify.Player({      // Spotify is not defined until 
-            name: 'Web SDK player',            // the script is loaded in 
-            getOAuthToken: cb => { cb(this.props.token) }
-          });
-          player.connect();
-          player.addListener('ready', ({ device_id }) => {
-              this.device_id = device_id;
-              console.log('Connected with Device ID', device_id)
-              this.player = player;
-            this.componentDidUpdate()})
-      }
       }
 
     componentDidUpdate() {
         if (this.prevSong !== this.props.track) {
-            this.updated = false;
+            this.setState({update: true})
             this.prevSong = this.props.track
             clearInterval(this.interval)
         }
-        if (!this.updated && this.props.track !== '' && !this.props.premium) {
+        if (!this.updated && this.props.premium) {
+            this.updated = true;
+            const script = document.createElement("script");
+  
+          script.src = "https://sdk.scdn.co/spotify-player.js";
+          document.body.appendChild(script);
+            console.log('loaded script')
+              window.onSpotifyWebPlaybackSDKReady = () => {
+                  console.log('in window function')
+                  const player = new Spotify.Player({      // Spotify is not defined until 
+                  name: 'Web SDK player',            // the script is loaded in 
+                  getOAuthToken: cb => { cb(this.props.token) }
+                });
+                player.connect();
+                console.log('player is ' + player)
+                player.addListener('ready', ({ device_id }) => {
+                    console.log('player ready')
+                    this.device_id = device_id;
+                    this.player = player;
+                    this.setState({update: true})})
+                player.on('initialization_error', ({ message }) => {
+                    console.error('Failed to initialize', message);
+                    });
+                player.on('authentication_error', ({ message }) => {
+                console.error('Failed to authenticate', message);
+                });
+                player.on('account_error', ({ message }) => {
+                    console.error('Failed to validate Spotify account', message);
+                  });
+                player.on('playback_error', ({ message }) => {
+                console.error('Failed to perform playback', message);
+                });
+                }
+        }
+        if (this.state.update && this.props.track !== '' && !this.props.premium) {
             this.setState({
                 playing: true,
                 maxTime: 30,
                 time:0,
+                update: false,
                 audio: <audio autoPlay src={this.props.track} ref={(audioTag) => {this.audio = audioTag}}/>
             }) 
             this.interval = setInterval(() => this.setState({ time: this.audio.currentTime}), 1000);
-            this.updated = true;
         }
-        else if (!this.updated && this.player !== null && this.props.premium) {
+        
+        else if (this.state.update && this.props.premium && this.player !== null) {
             let obj = this;
-            this.updated = true;
             fetch('https://api.spotify.com/v1/me/player/play?device_id=' + this.device_id, {
               method: 'PUT',
               headers: {
@@ -78,11 +106,11 @@ class PlaybackBar extends Component {
                   'uris': [this.props.track]
               })}).then(() => {
             this.player.getCurrentState().then(info => {
-                console.log('info: ' + info + ', updated: ' + this.updated)
             obj.setState({
                 playing: true,
                 maxTime: this.props.maxTime,
-                time: info.position
+                time: info.position,
+                update: false
             })
         })})
             this.interval = setInterval(() => 
@@ -142,11 +170,16 @@ class PlaybackBar extends Component {
     }
 
     handleScriptLoad = () => {
-        this.componentDidMount()
         
-    }
+        
+    
+
+
+    
+}
 
     render() {
+        
 
         let time=0;
         if (this.state.audio !== '' || this.props.premium) {
@@ -167,11 +200,7 @@ class PlaybackBar extends Component {
         }
         return(
         <React.Fragment>
-            {this.props.premium ? <Script 
-                url="https://sdk.scdn.co/spotify-player.js" 
-                onError={this.handleScriptError} 
-                onLoad={this.handleScriptLoad}
-            /> : 
+            {this.props.premium ? '' : 
             this.state.audio}
         <Menu inverted fixed='bottom'>
             {this.state.playing ? 

@@ -31,12 +31,10 @@ class SongComment extends Component {
 
     getCommentsArrayLength(id) {
         fetch('/api/song_info_length?id=' + id ).then(res => {
-            console.log("res: "+res)
             if(res) {
                 return res.json()
             }
             else {
-                console.log("in comments")
                 this.setState({
                     commentsToDisplay: false
                 })
@@ -47,7 +45,6 @@ class SongComment extends Component {
 
     getSongInfo(id, comments) {
         if(!comments) {
-            console.log("bruhsh: " + comments)
             this.setState({
                 commentsToDisplay: false
             })
@@ -62,16 +59,13 @@ class SongComment extends Component {
                 })
                 return comment
             }).then( (comment) => {
-                console.log(comment)
                 this.displayRandomComment(comment)})
         }
     }
 
 
     displayRandomComment(comment) {
-            console.log("hoe")
             const id = comment.userId;
-            console.log(id)
             fetch('/api/user?_id=' + id)
             .then(res => res.json())
             .then((profile) => {
@@ -83,14 +77,11 @@ class SongComment extends Component {
                     initialized: true,
                     commentsToDisplay: true
                 })
-                console.log("after promises")
             })
     }
 
     render() {
-        var image, name, content, date = "";
-        var loves = 0;
-        console.log("initialized: "+this.state.initialized)
+        var image, name, content, time = "";
         if (!this.state.commentsToDisplay) {
             return(
                 <Comment.Group>
@@ -100,11 +91,7 @@ class SongComment extends Component {
                             <Comment.Author as='a'>Groove Team</Comment.Author>
                             <br/>
                             <Comment.Metadata>
-                                <div>Posted {date}</div>
-                                <div>
-                                    <Icon name='heart' />
-                                    {loves} Loves!
-                                </div>
+                                <div>Posted Today</div>
                             </Comment.Metadata>
                             <Comment.Text>No comments to this song! Post one!<br/></Comment.Text>
                         </Comment.Content>
@@ -113,11 +100,11 @@ class SongComment extends Component {
             )
         }
         if(this.state.initialized) {
-            console.log("down here")
             name = this.state.currentProfile.name;
             image = (this.state.currentProfile.image !== '' ? this.state.currentProfile.image : default_profile);
             content = this.state.currentComment.content;
-            loves = this.state.currentComment.loves;
+            var date = new Date(this.state.currentComment.time.toString());
+            time = date.toDateString();
         }
         return(
             <Comment.Group>
@@ -125,12 +112,9 @@ class SongComment extends Component {
                     <Comment.Avatar as='a' src={image} />
                     <Comment.Content>
                         <Comment.Author as='a'>{name}</Comment.Author>
+                        <br/>
                         <Comment.Metadata>
-                            <div>Posted {date}</div>
-                            <div>
-                                <Icon name='heart' />
-                                {loves} Loves!
-                            </div>
+                            <div>Posted {time}</div>
                         </Comment.Metadata>
                         <Comment.Text>{content}</Comment.Text>
                     </Comment.Content>

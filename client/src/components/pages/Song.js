@@ -41,7 +41,6 @@ class Song extends Component {
   renderSongData() {
     const obj = this;
     var artistHeader = [['Authorization', 'Bearer ' + this.props.userInfo.access_token]];
-    console.log('token: ' + this.props.userInfo.access_token)
     get('https://api.spotify.com/v1/tracks/' + this.props.match.params.songid, null, function(songData) {
         obj.setState({
             songInfo: songData
@@ -54,14 +53,13 @@ class Song extends Component {
 render() {
     let image, name, artist, artistid, songId, userId= '';
     if (this.state.songInfo) {
-        image = <Image centered size="medium" src={this.state.songInfo.album.images[0].url}/>
+        let href = "/album/" + this.state.songInfo.album.id
+        image = <Image centered size="medium" src={this.state.songInfo.album.images[0].url} href={href}/>
         name = this.state.songInfo.name;
         artist =this.state.songInfo.artists[0].name;
         artistid=this.state.songInfo.artists[0].id;
         songId = this.state.songInfo.id
-        console.log(songId)
         userId = this.props.userInfo._id
-        console.log(userId)
 
 
     }
@@ -85,8 +83,8 @@ render() {
         </div>
     </div>
     <div>
+        {this.gotSongInfo ?<SongComment songId={this.props.match.params.songid}/>: <Loader active inline />}
         {this.gotSongInfo ?<AddComment songId={this.props.match.params.songid} userId={this.props.userInfo._id}/> : <Loader active inline />}
-            {this.gotSongInfo ?<SongComment songId={this.props.match.params.songid}/>: <Loader active inline />}
     </div>
     <div>
     <PlaybackBar token={this.props.userInfo.access_token} 

@@ -37,7 +37,6 @@ class SuggestionFormUser extends Component {
   getUsers() {
     fetch('/api/allusers').then(res => res.json())
     .then((users) => {
-        console.log(users)
         this.setState({
             source: users.map( user => {
                 var userImage = user.image;
@@ -53,7 +52,6 @@ class SuggestionFormUser extends Component {
                     })
             }),
         })
-        console.log(this.state.source)
         this.gotUsers = true;
     })
 }
@@ -61,7 +59,6 @@ class SuggestionFormUser extends Component {
   handleResultSelect = (e, { result }) => {
       
       this.setState({ value: result.title })
-      console.log(result)
       this.submitSuggestion(result);
       this.resetComponent();
   }
@@ -83,7 +80,6 @@ class SuggestionFormUser extends Component {
   }
 
     checkboxChange(event, data) {
-        console.log(data)
         if (data.checked == null) {
             return
         }
@@ -95,6 +91,14 @@ class SuggestionFormUser extends Component {
 
     submitSuggestion(result) {
         const input = result.key
+        if(input == this.props.userInfo._id) {
+            this.setState({
+                value: '',
+                submitted: true,
+                response: false
+            })
+            return 
+        }
         console.log("input: "+result.key)
         console.log(result)
         this.setState({
@@ -104,11 +108,8 @@ class SuggestionFormUser extends Component {
         })
         const date = new Date()
         if (!this.props.isTrack) {
-            console.log('submitted' + this.props.userInfo._id + input)
             post('/api/suggestion', {receiver: input, sender: (this.state.anonymous? 'anonymous' : this.props.userInfo._id), track: this.props.track.id, uri: result.uri, time:date},
             (response) => {
-                console.log("in post")
-                console.log(response);
                 if (response.status =='success') {
                     this.setState({
                         response: true
@@ -121,11 +122,8 @@ class SuggestionFormUser extends Component {
             })
         }
         else {
-        console.log('submitted' + this.props.userInfo._id + this.props.receiverId + input)
         post('/api/suggestion', {receiver: this.props.receiverId, sender: (this.state.anonymous? 'anonymous' : this.props.userInfo._id), track: input, uri: result.uri, time:date},
         (response) => {
-            console.log("in post")
-            console.log(response);
             if (response.status =='success') {
                 this.setState({
                     response: true
@@ -143,7 +141,6 @@ class SuggestionFormUser extends Component {
         const { isLoading, value, results } = this.state
 
         if (this.state.submitted) {
-            console.log(this.state.response)
             if (this.state.response == null) {
                 banner=<Message compact ><Loader active size='medium'/></Message>
             }

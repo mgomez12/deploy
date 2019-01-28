@@ -2,6 +2,7 @@ import _ from 'lodash'
 import React, { Component } from 'react'
 import { Search } from 'semantic-ui-react'
 import {get, get2} from "./api";
+import default_profile from  '../../public/assets/default_profile.png'
 
 
 
@@ -9,17 +10,11 @@ class SearchBarSpotify extends Component {
     constructor(props) {
         super(props);
 
-
-
-        
         this.state = {
             isLoading: false,
             results: [],
             value: '',
-            source: [{
-                title: "Jeffrey Chen",
-                image: "https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=234005436790515&height=200&width=200&ext=1550675248&hash=AeQ2vzL0Qc9aF3s7"
-            }]
+            source: [{}]
         };
         
     }
@@ -32,19 +27,18 @@ class SearchBarSpotify extends Component {
 
   handleResultSelect = (e, { result }) => {
       
-      this.setState({ value: result.title })
-      console.log(result)
+      this.setState({ 
+          value: "",
+          source: [{}]
+     })
       if(result.type == 'song') {
-        this.props.history.push('/song/' + result.key);
+            this.props.history.push('/song/' + result.key);
       }
       if(result.type == 'album') {
-          console.log("in")
-          console.log(result.key)
-        this.props.history.push('/album/' + result.key);
+            this.props.history.push('/album/' + result.key);
       }
       if(result.type == 'artist') {
-          console.log("bro what")
-        this.props.history.push('/artist/' + result.key);
+            this.props.history.push('/artist/' + result.key);
       }
   }
 
@@ -63,13 +57,12 @@ class SearchBarSpotify extends Component {
             get2('https://api.spotify.com/v1/search?q=' + query + '&type=artist&market=US&limit=2',null,headers)
         ]
         Promise.all(promises).then(responses => {
-            console.log(responses)
             const compiled = responses[0].tracks.items.map( track => {
                 return(
                     {
                         key: track.id,
                         title: track.name,
-                        image: track.album.images[0].url,
+                        image: (track.album.images.length > 0 ? track.album.images[0].url : default_profile),
                         description: track.album.artists[0].name,
                         type: 'song',
                         uri: track.uri
@@ -81,7 +74,7 @@ class SearchBarSpotify extends Component {
                     {
                         key: album.id,
                         title: album.name,
-                        image: album.images[0].url,
+                        image: (album.images.length > 0 ? album.images[0].url : default_profile) ,
                         description: album.artists[0].name,
                         type: 'album',
                         uri: album.uri
@@ -93,7 +86,7 @@ class SearchBarSpotify extends Component {
                     {
                         key: artist.id,
                         title: artist.name,
-                        image: artist.images[0].url,
+                        image: (artist.images.length > 0 ? artist.images[0].url : default_profile),
                         description: artist.genres[0],
                         type: 'artist',
                         uri: artist.uri
@@ -133,8 +126,9 @@ class SearchBarSpotify extends Component {
         <div>
                 <Search
                     category
+                    fluid ={true}
                     loading={isLoading}
-                    placeholder='Search for a song...'
+                    placeholder='Search for a song, album, or artist...'
                     onResultSelect={this.handleResultSelect}
                     onSearchChange={_.debounce(this.handleSearchChange, 500, { leading: true })}
                     results={results}

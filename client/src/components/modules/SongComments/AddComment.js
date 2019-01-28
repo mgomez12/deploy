@@ -17,7 +17,6 @@ class AddComment extends Component {
             response: null,
             anonymous: false
         };
-        console.log(this.props.songId + " "+ this.props.userId)
         this.handleChange = this.handleChange.bind(this)
         this.submitComment = this.submitComment.bind(this)
 
@@ -43,10 +42,8 @@ class AddComment extends Component {
             response: null
         })
         const date = new Date()
-        console.log('submitted' + this.props.userId + input)
         post('/api/song_info_comment?id='+ this.props.songId, {comment: { userId: this.props.userId, content: input, loves: 0, time:date}},
         (response) => {
-            console.log(response);
             if (response.status =='success') {
                 this.setState({
                     response: true
@@ -61,7 +58,6 @@ class AddComment extends Component {
     render() {
         let banner;
         if (this.state.submitted) {
-            console.log(this.state.response)
             if (this.state.response == null) {
                 banner=<Message compact ><Loader active size='medium'/></Message>
             }
