@@ -83,7 +83,8 @@ class PlaybackBar extends Component {
   
           script.src = "https://sdk.scdn.co/spotify-player.js";
           document.body.appendChild(script);
-  
+            
+          console.log(this.props.token)
           let player;
           window.onSpotifyWebPlaybackSDKReady = () => {
               console.log('inside window function')
