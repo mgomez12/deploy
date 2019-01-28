@@ -28,6 +28,29 @@ class PlaybackBar extends Component {
         this.onSeekMouseUp = this.onSeekMouseUp.bind(this);
         this.handleScriptLoad = this.handleScriptLoad.bind(this);
 
+        console.log('is premium, mounting')
+            this.setState({update: false})
+          const script = document.createElement("script");
+  
+          script.src = "https://sdk.scdn.co/spotify-player.js";
+          document.body.appendChild(script);
+
+          console.log(this.props.token)
+              window.onSpotifyWebPlaybackSDKReady = () => {
+                  console.log('inside window function' + Spotify.Player)
+                  const player = new Spotify.Player({      // Spotify is not defined until 
+                  name: 'Web SDK player',            // the script is loaded in 
+                  getOAuthToken: cb => { cb(this.props.token) }
+                });
+                player.connect();
+                player.addListener('ready', ({ device_id }) => {
+                    this.device_id = device_id;
+                    this.player = player;
+                    this.setState({update: true})
+                    console.log('player is' + player)
+                    console.log('this.player is ' + this.player)})
+                }
+
 
     }
 
@@ -137,27 +160,8 @@ class PlaybackBar extends Component {
 
     handleScriptLoad = () => {
         
-        console.log('is premium, mounting')
-            this.setState({update: false})
-          const script = document.createElement("script");
-  
-          script.src = "https://sdk.scdn.co/spotify-player.js";
-          document.body.appendChild(script);
-          console.log(this.props.token)
-              window.onSpotifyWebPlaybackSDKReady = () => {
-                  console.log('inside window function' + Spotify.Player)
-                  const player = new Spotify.Player({      // Spotify is not defined until 
-                  name: 'Web SDK player',            // the script is loaded in 
-                  getOAuthToken: cb => { cb(this.props.token) }
-                });
-                player.connect();
-                player.addListener('ready', ({ device_id }) => {
-                    this.device_id = device_id;
-                    this.player = player;
-                    this.setState({update: true})
-                    console.log('player is' + player)
-                    console.log('this.player is ' + this.player)})
-        }
+        
+    
 
 
     
