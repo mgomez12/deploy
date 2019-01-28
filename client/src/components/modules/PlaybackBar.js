@@ -78,6 +78,7 @@ class PlaybackBar extends Component {
         }
         else if (this.state.update && this.props.premium && this.player == null) {
             console.log('is premium, mounting')
+            this.setState({update: false})
           const script = document.createElement("script");
   
           script.src = "https://sdk.scdn.co/spotify-player.js";
