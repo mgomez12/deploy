@@ -136,8 +136,6 @@ class PlaybackBar extends Component {
     }
 
     handleScriptLoad = () => {
-        function loadMore() {
-            }
         
         console.log('is premium, mounting')
             this.setState({update: false})
@@ -149,7 +147,7 @@ class PlaybackBar extends Component {
               let player;
               window.onSpotifyWebPlaybackSDKReady = () => {
                   console.log('inside window function')
-                  player = new window.Spotify.Player({      // Spotify is not defined until 
+                  player = new Spotify.Player({      // Spotify is not defined until 
                   name: 'Web SDK player',            // the script is loaded in 
                   getOAuthToken: cb => { cb(this.props.token) }
                 });
