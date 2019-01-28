@@ -137,7 +137,6 @@ app.get(
 
 
    User.findOne({_id: req.user._id}, (err, profile)=> {
-     console.log(profile)
      values.top_songs
      .then(track => {profile.top_songs = track.items})
      .then(() => {return values.top_artists}).then(artist => {profile.top_artists = artist.items})
@@ -171,8 +170,6 @@ app.get(
         profile.recently_played_artists = recent_artists.filter(function(item, index){
           return recent_artists.indexOf(item) >= index;
         });
-        console.log("asdfask")
-        console.log(profile.recently_played_artists)
       })
       .then(() => { return Promise.all(
         profile.recently_played_artists.map(artistId => {
@@ -203,7 +200,6 @@ app.get(
             profile.related_artists = related_artists.filter(function(item, index){
               return related_artists.indexOf(item) >= index;
             });
-            console.log(profile.related_artists)
           })})
       .then(() => profile.save())
    })

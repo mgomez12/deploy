@@ -28,7 +28,7 @@ class SuggestionBox extends Component {
         }
         
         return (
-            <Card style={{height:"80%"}}>
+            <Card style={{width:"85%", height:"200%"}}>
                 <Card.Header as='h3' style={{padding:'4px'}}>
                     Recent Suggestions
                 </Card.Header>

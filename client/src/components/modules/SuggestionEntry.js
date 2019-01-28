@@ -47,7 +47,7 @@ class SuggestionEntry extends Component {
         }
 
         if (this.props.sug.sender_id == 'anonymous') {
-            user= 'Someone '
+            user= 'Someone secret '
         }
         else {
             user=<Feed.User href={"/u/profile/" + this.props.sug.sender_id} style={{padding:'4px'}}>

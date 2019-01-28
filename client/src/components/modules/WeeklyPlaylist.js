@@ -14,7 +14,10 @@ class WeeklyPlaylist extends Component{
     }
 
     update_playlist() {
-        const uri_list = this.props.userInfo.suggestions_received;
+        var uri_list = this.props.userInfo.suggestions_received;
+        uri_list = uri_list.filter(function(item, index){
+            return uri_list.indexOf(item) >= index;
+          });
         const playlist_id = this.props.userInfo.suggestion_playlist_id;
         
         const length = uri_list.length;
@@ -48,10 +51,11 @@ class WeeklyPlaylist extends Component{
         return(
             <div>
                 <Button animated
-                onClick={this.handleClick}>
+                onClick={this.handleClick}
+                color='violet'>
                     <Button.Content visible>Check Out Your Playlist of Recent Suggestions!</Button.Content>
                     <Button.Content hidden>
-                        <Icon name='arrow right' />
+                        <Icon name='headphones'/>
                     </Button.Content>
                 </Button>
             </div>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import _ from 'lodash'
 import "../../public/css/styles.css"
-import { Loader, Header, Message, Button } from 'semantic-ui-react';
+import { Icon, Accordion, Loader, Header, Message, Button } from 'semantic-ui-react';
 import { post, get, get2 } from "./api"
 import { loadavg } from 'os';
 
@@ -11,6 +11,7 @@ class ListenSimilarites extends Component {
 
         //props: viewerInfo, cardUserInfo
         this.state = {
+            activeIndex: 0,
             artistsInCommon: [],
             songsInCommon : [],
             genresInCommon: [],
@@ -183,27 +184,55 @@ class ListenSimilarites extends Component {
         }
     }
 
+    handleClick = (e, titleProps) => {
+        const { index } = titleProps
+        const { activeIndex } = this.state
+        const newIndex = activeIndex === index ? -1 : index
+    
+        this.setState({ activeIndex: newIndex })
+      }
+
     render() {
+        const { activeIndex } = this.state
         if(!this.state.loaded) {
             return(
                 <Loader/>
             )
         }
         return(
-            <div>
-                <div>
-                    You and {this.props.cardUserInfo.name} both recently listened to: {this.loadArtists()} 
-                </div>
-                <div>
-                    and... {this.loadSongs()}
-                </div>
-                <div>
-                    and share tastes in... {this.loadGenres()}
-                </div>
-                <div>
-                    You may both like: {this.loadRelatedArtists()}
-                </div>
-            </div>
+            <Accordion fluid styled>
+                <Accordion.Title active={activeIndex === 0} index={0} onClick={this.handleClick}>
+                <Icon name='dropdown' />
+                You and {this.props.cardUserInfo.name} both recently listened to...
+                </Accordion.Title>
+                <Accordion.Content active={activeIndex === 0}>
+                    {this.loadArtists()}
+                </Accordion.Content>
+        
+                <Accordion.Title active={activeIndex === 1} index={1} onClick={this.handleClick}>
+                <Icon name='dropdown' />
+                and...
+                </Accordion.Title>
+                <Accordion.Content active={activeIndex === 1}>
+                    {this.loadSongs()}
+                </Accordion.Content>
+        
+                <Accordion.Title active={activeIndex === 2} index={2} onClick={this.handleClick}>
+                <Icon name='dropdown' />
+                You both listen to simlilar genres
+                </Accordion.Title>
+                <Accordion.Content active={activeIndex === 2}>
+                    {this.loadGenres()}
+                </Accordion.Content>
+
+                <Accordion.Title active={activeIndex === 3} index={3} onClick={this.handleClick}>
+                <Icon name='dropdown' />
+                Related artists you both may like
+                </Accordion.Title>
+                <Accordion.Content active={activeIndex === 3}>
+                    {this.loadRelatedArtists()}
+                </Accordion.Content>
+            </Accordion>
         )
     }
 }
