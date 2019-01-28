@@ -28,6 +28,7 @@ const api = require('./routes/api');
 var sessionStore = new MongoStore({
  mongooseConnection: db
 });
+app.enable("trust proxy");
 
 app.use(session({
    secret: 'session-secret',
