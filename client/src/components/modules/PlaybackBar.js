@@ -28,46 +28,24 @@ class PlaybackBar extends Component {
         this.onSeekMouseUp = this.onSeekMouseUp.bind(this);
         this.handleScriptLoad = this.handleScriptLoad.bind(this);
 
-        console.log('is premium, mounting')
-            this.setState({update: false})
+        if (this.props.premium) {
           const script = document.createElement("script");
   
           script.src = "https://sdk.scdn.co/spotify-player.js";
           document.body.appendChild(script);
 
-          console.log(this.props.token)
               window.onSpotifyWebPlaybackSDKReady = () => {
-                  console.log('inside window function' + Spotify.Player)
                   const player = new Spotify.Player({      // Spotify is not defined until 
                   name: 'Web SDK player',            // the script is loaded in 
                   getOAuthToken: cb => { cb(this.props.token) }
                 });
-                console.log('past player initialization')
                 player.connect();
-                console.log('player is ' + JSON.stringify(player));
                 player.addListener('ready', ({ device_id }) => {
                     this.device_id = device_id;
                     this.player = player;
-                    this.setState({update: true})
-                    console.log('player is' + player)
-                    console.log('this.player is ' + this.player)})
-                player.addListener('not_ready', ({ device_id }) => {
-                    console.log('Device ID is not ready for playback', device_id);
-                    });
-                player.on('initialization_error', ({ message }) => {
-                    console.error('Failed to initialize', message);
-                    });
-                player.on('authentication_error', ({ message }) => {
-                    console.error('Failed to authenticate', message);
-                    });
-                player.on('account_error', ({ message }) => {
-                    console.error('Failed to validate Spotify account', message);
-                    });
-                console.log('player is ' + JSON.stringify(player));
-                console.log('device id ' + this.device_id)
-
-                this.interval = setInterval(() => console.log('device id ' + this.device_id), 1000);
+                    this.setState({update: true})})
                 }
+            }
                 
 
 
@@ -87,7 +65,6 @@ class PlaybackBar extends Component {
             clearInterval(this.interval)
         }
         if (this.state.update && this.props.track !== '' && !this.props.premium) {
-            console.log('loading player')
             this.setState({
                 playing: true,
                 maxTime: 30,
@@ -96,11 +73,6 @@ class PlaybackBar extends Component {
                 audio: <audio autoPlay src={this.props.track} ref={(audioTag) => {this.audio = audioTag}}/>
             }) 
             this.interval = setInterval(() => this.setState({ time: this.audio.currentTime}), 1000);
-        }
-        else if (this.state.update && !this.loaded && this.player == null && this.props.premium) {
-            console.log('loading script')
-            this.handleScriptLoad()
-            this.loaded = true;
         }
         
         else if (this.state.update && this.props.premium && this.player !== null) {
