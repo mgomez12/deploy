@@ -42,6 +42,7 @@ class PlaybackBar extends Component {
                   name: 'Web SDK player',            // the script is loaded in 
                   getOAuthToken: cb => { cb(this.props.token) }
                 });
+                console.log('past player initialization')
                 player.connect();
                 player.addListener('ready', ({ device_id }) => {
                     this.device_id = device_id;
