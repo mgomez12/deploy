@@ -37,7 +37,7 @@ class PlaybackBar extends Component {
       componentDidMount() {
         let player;
         window.onSpotifyWebPlaybackSDKReady = () => {
-            player = new Spotify.Player({      // Spotify is not defined until 
+            player = new window.Spotify.Player({      // Spotify is not defined until 
             name: 'Web SDK player',            // the script is loaded in 
             getOAuthToken: cb => { cb(this.props.token) }
           });
