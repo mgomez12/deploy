@@ -14,12 +14,12 @@ class PlaybackBar extends Component {
             playing: false,
             maxTime: 1,
             time: 0,
-            seekValue: null
+            seekValue: null,
+            update: false
         };
         this.player = null;
         this.gotSongInfo = false;
         this.device_id = '';
-        this.updated = false;
         this.prevSong = this.props.track;
         this.audio = null;
         this.pause = this.pause.bind(this);
@@ -45,30 +45,28 @@ class PlaybackBar extends Component {
           player.addListener('ready', ({ device_id }) => {
               this.device_id = device_id;
               this.player = player;
-              console.log(player)
-            this.componentDidUpdate()})
+            this.setState({update: true})})
       }
       }
 
     componentDidUpdate() {
         if (this.prevSong !== this.props.track) {
-            this.updated = false;
+            this.setState({update: true})
             this.prevSong = this.props.track
             clearInterval(this.interval)
         }
-        if (!this.updated && this.props.track !== '' && !this.props.premium) {
+        if (this.state.update && this.props.track !== '' && !this.props.premium) {
             this.setState({
                 playing: true,
                 maxTime: 30,
                 time:0,
+                update: false,
                 audio: <audio autoPlay src={this.props.track} ref={(audioTag) => {this.audio = audioTag}}/>
             }) 
             this.interval = setInterval(() => this.setState({ time: this.audio.currentTime}), 1000);
-            this.updated = true;
         }
-        else if (!this.updated && this.player !== null && this.props.premium) {
+        else if (this.state.update && this.player !== null && this.props.premium) {
             let obj = this;
-            this.updated = true;
             fetch('https://api.spotify.com/v1/me/player/play?device_id=' + this.device_id, {
               method: 'PUT',
               headers: {
@@ -81,7 +79,8 @@ class PlaybackBar extends Component {
             obj.setState({
                 playing: true,
                 maxTime: this.props.maxTime,
-                time: info.position
+                time: info.position,
+                update: false
             })
         })})
             this.interval = setInterval(() => 
