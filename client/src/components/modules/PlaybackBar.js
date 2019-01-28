@@ -13,7 +13,7 @@ class PlaybackBar extends Component {
             maxTime: 1,
             time: 0,
             seekValue: null,
-            update: false
+            update: true
         };
         this.player = null;
         this.gotSongInfo = false;
@@ -35,31 +35,7 @@ class PlaybackBar extends Component {
       }
 
       componentDidMount() {
-          console.log('mounting, ' + this.props.premium)
-          if (this.props.premium) {
-              console.log('is premium, mounting')
-        const script = document.createElement("script");
-
-        script.src = "https://sdk.scdn.co/spotify-player.js";
-        document.body.appendChild(script);
-
-        let player;
-        window.onSpotifyWebPlaybackSDKReady = () => {
-            console.log('inside window function')
-            player = new window.Spotify.Player({      // Spotify is not defined until 
-            name: 'Web SDK player',            // the script is loaded in 
-            getOAuthToken: cb => { cb(this.props.token) }
-          });
-          player.connect();
-          player.addListener('ready', ({ device_id }) => {
-              this.device_id = device_id;
-              this.player = player;
-              console.log('player is' + player)
-              console.log('this.player is ' + this.player)
-            this.setState({update: true})})
       }
-
-      }}
 
     componentDidUpdate() {
         if (this.prevSong !== this.props.track) {
@@ -78,7 +54,8 @@ class PlaybackBar extends Component {
             }) 
             this.interval = setInterval(() => this.setState({ time: this.audio.currentTime}), 1000);
         }
-        else if (this.state.update && this.player !== null && this.props.premium) {
+        
+        else if (this.state.update && this.props.premium && this.player !== null) {
             let obj = this;
             fetch('https://api.spotify.com/v1/me/player/play?device_id=' + this.device_id, {
               method: 'PUT',
@@ -98,6 +75,29 @@ class PlaybackBar extends Component {
         })})
             this.interval = setInterval(() => 
             this.player.getCurrentState().then(info => {this.setState({ time: info.position})}), 1000);
+        }
+        else if (this.state.update && this.props.premium && this.player == null) {
+            console.log('is premium, mounting')
+          const script = document.createElement("script");
+  
+          script.src = "https://sdk.scdn.co/spotify-player.js";
+          document.body.appendChild(script);
+  
+          let player;
+          window.onSpotifyWebPlaybackSDKReady = () => {
+              console.log('inside window function')
+              player = new window.Spotify.Player({      // Spotify is not defined until 
+              name: 'Web SDK player',            // the script is loaded in 
+              getOAuthToken: cb => { cb(this.props.token) }
+            });
+            player.connect();
+            player.addListener('ready', ({ device_id }) => {
+                this.device_id = device_id;
+                this.player = player;
+                this.setState({update: true})
+                console.log('player is' + player)
+                console.log('this.player is ' + this.player)})
+        }
         }
     }
 
