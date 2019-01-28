@@ -18,10 +18,7 @@ class SearchBarSpotifySuggest extends Component {
             isLoading: false,
             results: [],
             value: '',
-            source: [{
-                title: "Jeffrey Chen",
-                image: "https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=234005436790515&height=200&width=200&ext=1550675248&hash=AeQ2vzL0Qc9aF3s7"
-            }]
+            source: [{}]
         };
         
     }
@@ -34,7 +31,10 @@ class SearchBarSpotifySuggest extends Component {
 
   handleResultSelect = (e, { result }) => {
       
-      this.setState({ value: result.title })
+    this.setState({ 
+        value: "",
+        source: [{}]
+   })
       this.props.history.push('/song/' + result.key);
       this.resetComponent();
   }

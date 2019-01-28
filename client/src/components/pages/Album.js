@@ -25,15 +25,22 @@ class Album extends Component {
     }
     componentDidUpdate() {
         if (this.props.token && !this.gotAlbumInfo) {
-        this.renderAlbumData();
-        this.render() }
+        this.renderAlbumData();}
+        if(this.state.albumInfo!=null) {
+            console.log(this.state.albumInfo.id)
+            console.log(this.props.match.params.albumid)
+            if (this.props.match.params.albumid!=this.state.albumInfo.id) {
+                this.renderAlbumData();
+            }
+        }
+
     }
 
   
   renderAlbumData() {
     const obj = this;
     var artistHeader = [['Authorization', 'Bearer ' + this.props.token]];
-    get('https://api.spotify.com/v1/albums/' + this.state.albumid, {}, function(albumData) {
+    get('https://api.spotify.com/v1/albums/' + this.props.match.params.albumid, {}, function(albumData) {
 
         obj.setState({
             albumInfo: albumData
