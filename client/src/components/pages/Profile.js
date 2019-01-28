@@ -164,7 +164,6 @@ class Profile extends Component {
                     <Grid.Row columns={3}>
                         <Grid.Column>
                             <div className='center-parent'>
-                                <Header as='h4'>Follow user!</Header>
                                 {this.loadFriendBox()}
                             </div>
                         </Grid.Column>

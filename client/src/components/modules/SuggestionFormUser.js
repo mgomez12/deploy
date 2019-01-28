@@ -95,6 +95,14 @@ class SuggestionFormUser extends Component {
 
     submitSuggestion(result) {
         const input = result.key
+        if(input == this.props.userInfo._id) {
+            this.setState({
+                value: '',
+                submitted: true,
+                response: false
+            })
+            return 
+        }
         console.log("input: "+result.key)
         console.log(result)
         this.setState({

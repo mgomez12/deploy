@@ -49,7 +49,7 @@ class ListenSimilarites extends Component {
             intersect_artists=iintersect_artists.splice(0,5)
         }
         if(intersect_genres.length>5) {
-            intersect_genres=intersect_genres.splice(0,5)
+            intersect_genres=intersect_genres.splice(0,4)
         }
         if(intersect_related_artists.length>5) {
             intersect_related_artists=intersect_related_artists.splice(0,5)
