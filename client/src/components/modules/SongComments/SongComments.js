@@ -125,6 +125,7 @@ class SongComment extends Component {
                     <Comment.Avatar as='a' src={image} />
                     <Comment.Content>
                         <Comment.Author as='a'>{name}</Comment.Author>
+                        <br/>
                         <Comment.Metadata>
                             <div>Posted {date}</div>
                             <div>
