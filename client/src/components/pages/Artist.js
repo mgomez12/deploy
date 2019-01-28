@@ -29,10 +29,8 @@ class Artist extends Component {
   renderArtistData() {
     const obj = this;
     var artistHeader = [['Authorization', 'Bearer ' + this.props.token]];
-    console.log('token: ' + this.props.token)
     get('https://api.spotify.com/v1/artists/' + this.props.match.params.artistid, {}, function(artistData) {
 
-        console.log('artist data in get: ' + artistData)
         obj.setState({
             artistInfo: artistData
         })
@@ -40,7 +38,6 @@ class Artist extends Component {
 
     get('https://api.spotify.com/v1/artists/' + this.props.match.params.artistid + "/top-tracks", {country:"US"}, function(artistData) {
 
-        console.log('artist track data in get: ' + artistData)
         obj.setState({
             artisttoptracks: artistData
         })
@@ -48,14 +45,12 @@ class Artist extends Component {
 
     get('https://api.spotify.com/v1/artists/' + this.props.match.params.artistid + "/albums", {country:"US", include_groups:"album"}, function(artistData) {
 
-        console.log('artist track data in get: ' + artistData)
         obj.setState({
             artistalbums: artistData
         })
     }, null, artistHeader);
     get('https://api.spotify.com/v1/artists/' + this.props.match.params.artistid + "/related-artists", {}, function(artistData) {
 
-    console.log('artist related artist data in get: ' + artistData)
     obj.setState({
         relatedartists: artistData
     })
@@ -74,18 +69,14 @@ render() {
         image = <Image size="medium" centered rounded src={this.state.artistInfo.images[0].url}/>
         artist = this.state.artistInfo.name;
         for(let i  = 0; i < this.state.artisttoptracks.tracks.length; i++) {
-            console.log(this.state.artisttoptracks.tracks[i]);
            toptracks.push(this.state.artisttoptracks.tracks[i]);
         }
         for(let i  = 0; i < this.state.artistalbums.items.length; i++) {
-            console.log(this.state.artistalbums.items[i]);
            albums.push(this.state.artistalbums.items[i]);
         }
         for(let i  = 0; i < this.state.relatedartists.artists.length; i++) {
-            console.log(this.state.relatedartists.artists[i]);
            related.push(this.state.relatedartists.artists[i]);
         }
-    console.log(albums)
     }
 
     return(
@@ -112,7 +103,6 @@ render() {
         </section>
         <section className="artistlist">
            {toptracks.map( track => {
-               {console.log(track.name)}
                return(
                <Segment floated="left">
                     <a href={"/song/" + track.id}>{track.name}</a>
@@ -134,7 +124,6 @@ render() {
         <section className="artistlist">
         <div>
             {albums.map( album => {
-                {console.log(album.name)}
                 return(
                 <Segment floated="left">
                     <a href={"/album/" + album.id}>{album.name}</a>
@@ -150,7 +139,6 @@ render() {
             <section className="artistlist">
             <div>
             {related.map( person => {
-                {console.log(person.name)}
                    return(
                 <Segment floated="left">
                         <a href={"/artist/" + person.id}>{person.name}</a>

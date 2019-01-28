@@ -16,7 +16,6 @@ class Main extends Component {
 
     componentDidUpdate() {
         if (this.props.userInfo !== null && !this.props.userInfo.name) {
-            console.log('main redirected');
             this.props.history.push("/login");
         }
     }
@@ -26,7 +25,7 @@ class Main extends Component {
     render() {
         const { contextRef } = this.state
         if (this.props.userInfo.access_token == null) {
-            return <Loader size='massive'/>
+            return <Loader active size='massive'/>
         }
         return(<div className='page' >
             <Container>
@@ -43,8 +42,6 @@ class Main extends Component {
                         </Grid.Column>
                         <Grid.Column>
                             <Sticky context={contextRef}>
-                                {console.log("sticky")}
-                                {console.log(contextRef)}
                                 <WeeklyPlaylist userInfo={this.props.userInfo} history={this.props.history}/>
                                 <SearchBarUser history={this.props.history}/>
                                 <Dash userInfo={this.props.userInfo} friendCount ={this.props.userInfo.friends}/>

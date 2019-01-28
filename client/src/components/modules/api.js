@@ -59,7 +59,6 @@ function formatParams(params) {
   // params is given as a JSON
     export function get2(endpoint, params, headers) {
       const fullPath = endpoint + (params!==null ? '?' + formatParams(params) : '');
-      console.log(endpoint)
       return fetch(fullPath, {headers: headers}).then(res => res.json());
     }
 

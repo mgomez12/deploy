@@ -33,10 +33,8 @@ class Album extends Component {
   renderAlbumData() {
     const obj = this;
     var artistHeader = [['Authorization', 'Bearer ' + this.props.token]];
-    console.log('token: ' + this.props.token)
     get('https://api.spotify.com/v1/albums/' + this.state.albumid, {}, function(albumData) {
 
-        console.log('album data in get: ' + albumData)
         obj.setState({
             albumInfo: albumData
         })

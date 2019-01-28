@@ -25,7 +25,6 @@ class WeeklyPlaylist extends Component{
         uri_string = uri_string.replace(/:\s*/g,"%3A")
         uri_string = uri_string.replace(/,\s*/g,"%2C")
 
-        console.log(uri_string)
 
         fetch("https://api.spotify.com/v1/playlists/"+ playlist_id+"/tracks?uris="+uri_string, {
             method: 'PUT',
@@ -35,20 +34,14 @@ class WeeklyPlaylist extends Component{
             },
             body: {
             }
-          }).then(res => res.json()).then(res => console.log("hello"));
-          console.log("did it work?")
+          })
     }
 
-
-    handleClick = () => {
-        this.props.history.push('https://open.spotify.com/playlist/'+this.props.userInfo.suggestion_playlist_id);
-    }
 
     render() {
         return(
             <div>
-                <Button animated
-                onClick={this.handleClick}>
+                <Button animated href={'https://open.spotify.com/playlist/'+this.props.userInfo.suggestion_playlist_id}>
                     <Button.Content visible>Check Out Your Playlist of Recent Suggestions!</Button.Content>
                     <Button.Content hidden>
                         <Icon name='arrow right' />

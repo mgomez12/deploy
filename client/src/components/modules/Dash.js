@@ -20,7 +20,6 @@ class Dash extends Component {
         fetch('/api/friend?_id=' + this.props.userInfo._id, {method: "GET"})
         .then(res => res.json())
         .then( friendObj => {
-            console.log(friendObj)
             this.setState({
                 friends: friendObj
             })

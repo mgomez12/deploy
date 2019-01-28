@@ -35,7 +35,6 @@ class SearchBarSpotifySuggest extends Component {
   handleResultSelect = (e, { result }) => {
       
       this.setState({ value: result.title })
-      console.log(result)
       this.props.history.push('/song/' + result.key);
       this.resetComponent();
   }
@@ -55,10 +54,8 @@ class SearchBarSpotifySuggest extends Component {
     const obj = this;
     var query = value.replace(/ /g,"%20")
     var artistHeader = [['Authorization', 'Bearer ' + this.props.userInfo.access_token]];
-    console.log('token: ' + this.props.userInfo.access_token)
     get('https://api.spotify.com/v1/search?q=' + query + '&type=track&market=US&limit=5', null, function(searchData) {
 
-        console.log('search data in get: ' + searchData.tracks.items[0].name)
         const compiled = searchData.tracks.items.map( track => {
             return(
                 {
@@ -70,7 +67,6 @@ class SearchBarSpotifySuggest extends Component {
                 }
             );
         });
-        console.log(compiled)
         obj.setState({
             isLoading: false,
             results: compiled

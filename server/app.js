@@ -82,7 +82,7 @@ app.get(
 
 app.get(
  '/auth/spotify/callback',
- passport.authenticate('spotify', { failureRedirect: '/login' }),
+ passport.authenticate('spotify', { failureRedirect: '/error' }),
  function(req, res) {
    // Successful authentication, redirect home.
 
@@ -137,7 +137,6 @@ app.get(
 
 
    User.findOne({_id: req.user._id}, (err, profile)=> {
-     console.log(profile)
      values.top_songs
      .then(track => {profile.top_songs = track.items})
      .then(() => {return values.top_artists}).then(artist => {profile.top_artists = artist.items})
@@ -145,11 +144,9 @@ app.get(
       profile.premium = (prof.product == 'premium' ? true : false)})
       .then(() => { 
         if(profile.suggestion_playlist_id==""||(!profile.suggestion_playlist_id)) {
-          console.log("here" +profile.suggestion_playlist_id)
           return request(create_playlist)
         }
         else {
-          console.log("there: " +profile.suggestion_playlist_id)
           return {id: profile.suggestion_playlist_id}
         }
       }).then(playlist => {profile.suggestion_playlist_id = playlist.id})
@@ -171,14 +168,11 @@ app.get(
         profile.recently_played_artists = recent_artists.filter(function(item, index){
           return recent_artists.indexOf(item) >= index;
         });
-        console.log("asdfask")
-        console.log(profile.recently_played_artists)
       })
       .then(() => { return Promise.all(
         profile.recently_played_artists.map(artistId => {
         return request({url: 'https://api.spotify.com/v1/artists/' + artistId , headers: {'Authorization': "Bearer " + req.user.access_token}, json: true})
         })).then( artists => {
-          console.log("no error")
           var recent_genres = [];
           artists.map( artist => {
             artist.genres.map( genre => {
@@ -193,7 +187,6 @@ app.get(
           profile.recently_played_artists.map(artistId => {
           return request({url: 'https://api.spotify.com/v1/artists/' + artistId +'/related-artists', headers: {'Authorization': "Bearer " + req.user.access_token}, json: true})
           })).then( artists => {
-            console.log("no error artist")
             var related_artists = [];
             artists.map( artist => {
               artist.artists.map( artist => {
@@ -203,7 +196,6 @@ app.get(
             profile.related_artists = related_artists.filter(function(item, index){
               return related_artists.indexOf(item) >= index;
             });
-            console.log(profile.related_artists)
           })})
       .then(() => profile.save())
    })

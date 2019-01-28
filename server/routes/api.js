@@ -2,6 +2,7 @@
 // dependencies
 const express = require('express');
 const connect = require('connect-ensure-login');
+const request = require('request-promise');
 
 // models
 const User = require('../models/user');
@@ -20,14 +21,11 @@ router.get('/user', function(req, res) {
     });
   });
 
-router.get('/refresh', function(req, res) {
-    
-})
+
   
 router.get('/allusers', function(req, res) {
     User.find({}, function(err, users) {
         if(err) {
-            console.log("hello")
             console.log(err)
         }
         res.send(users);
@@ -35,36 +33,72 @@ router.get('/allusers', function(req, res) {
     User.find()
 });
 
-router.get('/whoami', function(req, res) {
-
-if(req.isAuthenticated()){
-    res.send(req.user);
-}
-else{
-    res.send({});
-}
-});
-
-router.get('/updateUser', function(req, res) {
-    if(req.isAuthenticated()) {
-        console.log('searching for user')
+router.get('/refresh', function(req, res) {
+    const currentTime = new Date()
+    console.log('expire time: ' + req.user.expire_time)
+    console.log('time diff = ' + (currentTime.getTime()-req.user.expire_time))
+    if(req.isAuthenticated() && currentTime.getTime() < req.user.expire_time) {
+        console.log('only updating user')
         User.findOne({ _id: req.user._id}, function(err, user) {
             if(err) {
                 console.log(err)
                 res.send(err)
             }
             else {
-                console.log('logging in updated user')
                 req.logOut();
                 req.login(user, (err) => {console.log(err)});
                 res.send(req.user);
             }
     })
-}})
+    }
+
+    else if (req.isAuthenticated()) {
+        const params = {
+            'grant_type': 'refresh_token',
+            'refresh_token': req.user.refresh_token
+        }
+        const searchParams = Object.keys(params).map((key) => {
+            return encodeURIComponent(key) + '=' + encodeURIComponent(params[key]);
+          }).join('&');
+
+          var recently_played = {
+            method: 'POST',
+            url: 'https://accounts.spotify.com/api/token',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+                'Authorization': 'Basic ' + Buffer.from(process.env.clientID + ':' + process.env.clientSecret).toString('base64')
+              },
+            body: searchParams,
+            json: true
+          }
+          request(recently_played)
+          .then(tokenInfo => {
+              console.log('token info: ' + tokenInfo)
+              User.findOne({ _id: req.user._id}, function(err, user) {
+            if(err) {
+                console.log(err)
+                res.send(err)
+            }
+            else {
+                user.access_token = tokenInfo.access_token
+                console.log('new time: ' + new Date(new Date().getTime() + tokenInfo.expires_in * 1000).getTime())
+                user.expire_time = new Date(new Date().getTime() + tokenInfo.expires_in * 1000).getTime()
+                user.save()
+                req.logOut();
+                req.login(user, (err) => {console.log(err)});
+                res.send(req.user);
+            }
+          })})
+
+    }
+    else{
+        res.send({});
+    }
+    });
+
 
 router.get("/suggestion", function(req, res) {
     connect.ensureLoggedIn();
-    console.log(req.query.receiver)
     Suggestion.find( {receiver_id: req.query.receiver}, null,
          {sort: {time_sent: -1}, limit: Number(req.query.limit)}, (err, items) => {
              if (err) {
@@ -84,8 +118,6 @@ router.post('/suggestion', function(req, res) {
         time_sent: req.body.time
     })
     User.findOne({_id: req.body.receiver}, (err, receiverProfile) => {
-        console.log("yo")
-        console.log(receiverProfile)
         if (!receiverProfile) {
             res.send({status: 'fail'});
         }
@@ -175,8 +207,6 @@ router.get('/friend', function(req, res) {
         if(err) {
             console.log(err)
         }
-        console.log("random: "+ req.query.random)
-        console.log("comment: "+song.comments[req.query.random])
       res.send(song.comments[req.query.random]);
     });
   });
@@ -192,7 +222,6 @@ router.get('/friend', function(req, res) {
                 res.send(null)
             }
             else {
-                console.log("song comments: "+song.comments)
                 res.send(song.comments);
             }
         });

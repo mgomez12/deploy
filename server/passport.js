@@ -17,8 +17,9 @@ passport.use(
          if (err) return done(err);
     
          if (!user) {
+          const now = new Date()
            const user = new User({
-             name: profile.displayName,
+             name: profile.displayName, 
              _id: profile.id,
              image: (profile.photos.length >0 ? profile.photos[0] : ''),
              descrip: '',
@@ -27,7 +28,7 @@ passport.use(
              friends: 0,
              spotify_followers: 0,
              access_token: accessToken,
-             expire_time: expires_in,
+             expire_time: new Date(now.getSeconds() + expires_in).getTime(),
              refresh_token: refreshToken,
              top_songs: {},
              top_artists: {},
@@ -56,6 +57,10 @@ passport.use(
            });
          } else {
            user.name = profile.displayName,
+           console.log('expires in ' + expires_in)
+           user.expire_time = new Date(new Date().getTime() + expires_in * 1000).getTime()
+           console.log(new Date())
+           console.log(user.expire_time)
            user.image = (profile.photos.length >0 ? profile.photos[0] : '')
            user.access_token = accessToken;
            user.refresh_token = refreshToken;

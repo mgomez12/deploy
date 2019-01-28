@@ -34,10 +34,8 @@ class DashCard extends Component {
 
     render() {
         if (!this.state.gotFriendInfo) {
-            console.log('no friend info')
             return <Loader active size='large'/>
         }
-        console.log('got friend info')
         return (
             <Card style={{width:"150px", height:'300px'}}>
                 <Image src={this.state.friendInfo.image !== '' ? this.state.friendInfo.image : default_profile}/>

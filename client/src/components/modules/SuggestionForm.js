@@ -34,7 +34,6 @@ class SuggestionForm extends Component {
   handleResultSelect = (e, { result }) => {
       
       this.setState({ value: result.title })
-      console.log(result)
       this.submitSuggestion(result);
       this.resetComponent();
   }
@@ -54,10 +53,7 @@ class SuggestionForm extends Component {
     const obj = this;
     var query = value.replace(/ /g,"%20")
     var artistHeader = [['Authorization', 'Bearer ' + this.props.userInfo.access_token]];
-    console.log('token: ' + this.props.userInfo.access_token)
     get('https://api.spotify.com/v1/search?q=' + query + '&type=track&market=US&limit=5', null, function(searchData) {
-
-        console.log('search data in get: ' + searchData.tracks.items[0].name)
         const compiled = searchData.tracks.items.map( track => {
             return(
                 {
@@ -69,7 +65,6 @@ class SuggestionForm extends Component {
                 }
             );
         });
-        console.log(compiled)
         obj.setState({
             isLoading: false,
             results: compiled
@@ -77,7 +72,6 @@ class SuggestionForm extends Component {
     }, null, artistHeader);
   }
     checkboxChange(event, data) {
-        console.log(data)
         if (data.checked == null) {
             return
         }
@@ -89,7 +83,6 @@ class SuggestionForm extends Component {
 
     submitSuggestion(result) {
         const input = result.key
-        console.log("input: "+input)
         this.setState({
             value: '',
             submitted: true,
@@ -97,11 +90,8 @@ class SuggestionForm extends Component {
         })
         const date = new Date()
         if (!this.props.isTrack) {
-            console.log('submitted' + this.props.userInfo._id + input)
             post('/api/suggestion', {receiver: input, sender: (this.state.anonymous? 'anonymous' : this.props.userInfo._id), track: this.props.track, uri: result.uri, time:date},
             (response) => {
-                console.log("in post")
-                console.log(response);
                 if (response.status =='success') {
                     this.setState({
                         response: true
@@ -114,11 +104,8 @@ class SuggestionForm extends Component {
             })
         }
         else {
-        console.log('submitted' + this.props.userInfo._id + this.props.receiverId + input)
         post('/api/suggestion', {receiver: this.props.receiverId, sender: (this.state.anonymous? 'anonymous' : this.props.userInfo._id), track: input, uri: result.uri, time:date},
         (response) => {
-            console.log("in post")
-            console.log(response);
             if (response.status =='success') {
                 this.setState({
                     response: true
@@ -136,7 +123,6 @@ class SuggestionForm extends Component {
         const { isLoading, value, results } = this.state
 
         if (this.state.submitted) {
-            console.log(this.state.response)
             if (this.state.response == null) {
                 banner=<Message compact ><Loader active size='medium'/></Message>
             }

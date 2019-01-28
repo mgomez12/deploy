@@ -54,11 +54,9 @@ class ListenSimilarites extends Component {
         if(intersect_related_artists.length>5) {
             intersect_related_artists=intersect_related_artists.splice(0,5)
         }
-        console.log(intersect_related_artists)
         Promise.all(intersect_artists.map(artistId => {
             return get2('https://api.spotify.com/v1/artists/' + artistId, null, header);
         })).then( artists => {
-            console.log(artists)
             this.setState({
                 genresInCommon: intersect_genres,
                 artistsInCommon: artists,
@@ -69,7 +67,6 @@ class ListenSimilarites extends Component {
         Promise.all(intersect_songs.map(songId => {
             return get2('https://api.spotify.com/v1/tracks/' + songId, null, header);
         })).then( songs => {
-            console.log(songs)
             this.setState({
             songsInCommon: songs
         })})

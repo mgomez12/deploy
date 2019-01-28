@@ -44,7 +44,6 @@ class PlaybackBar extends Component {
           player.connect();
           player.addListener('ready', ({ device_id }) => {
               this.device_id = device_id;
-              console.log('Connected with Device ID', device_id)
               this.player = player;
             this.componentDidUpdate()})
       }
@@ -78,7 +77,6 @@ class PlaybackBar extends Component {
                   'uris': [this.props.track]
               })}).then(() => {
             this.player.getCurrentState().then(info => {
-                console.log('info: ' + info + ', updated: ' + this.updated)
             obj.setState({
                 playing: true,
                 maxTime: this.props.maxTime,

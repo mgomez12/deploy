@@ -41,7 +41,6 @@ class Song extends Component {
   renderSongData() {
     const obj = this;
     var artistHeader = [['Authorization', 'Bearer ' + this.props.userInfo.access_token]];
-    console.log('token: ' + this.props.userInfo.access_token)
     get('https://api.spotify.com/v1/tracks/' + this.props.match.params.songid, null, function(songData) {
         obj.setState({
             songInfo: songData
@@ -59,9 +58,7 @@ render() {
         artist =this.state.songInfo.artists[0].name;
         artistid=this.state.songInfo.artists[0].id;
         songId = this.state.songInfo.id
-        console.log(songId)
         userId = this.props.userInfo._id
-        console.log(userId)
 
 
     }

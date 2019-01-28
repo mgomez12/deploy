@@ -21,9 +21,7 @@ class FriendForm extends Component {
     }
     areFriends() {
         get('/api/friend', {_id: this.props.userId},(friendObj) => {
-            console.log(friendObj)  
             if(friendObj.friends.includes(this.props.receiverId)) {
-                console.log("are friends")
                 this.setState({
                     added: 'friends'
                 })
@@ -43,7 +41,6 @@ class FriendForm extends Component {
 
     addFriend() {
         if (this.state.added === 'waiting') {
-            console.log('is waiting, changing to friends')
         this.setState({
             added: 'friends'
         }) }
@@ -55,7 +52,6 @@ class FriendForm extends Component {
                 sender: this.props.userId}),
             headers: { "Content-Type": "application/json" }})
         .then((res) => {
-            console.log('friend added');
             get('/api/updateUser', {}, response => {console.log(response)});
         })
     }

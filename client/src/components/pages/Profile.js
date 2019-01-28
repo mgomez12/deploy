@@ -20,8 +20,6 @@ class Profile extends Component {
     }
 
     componentDidMount() {
-        console.log("hi")
-        console.log(this.props.match.params.user)
         // if (this.props.match.params.user !== "me") {
             this.getProfile(this.props.match.params.user); 
         // }
@@ -40,7 +38,6 @@ class Profile extends Component {
     }
 
     getProfile = (id) => {
-        console.log("hi")
         fetch('/api/user?_id=' + id).then(res => res.json())
         .then((profile) => {
             this.setState({
