@@ -191,13 +191,13 @@ router.post('/friend', function(req, res) {
             if (friendObj.sent_request_to.includes(req.body.sender)){
                 User.findOne({_id: req.body.sender}, 'name', (err, user) => {
                     senderName = user.name
-                message = {sender: req.body.sender, type: 'friend'}
-                friendObj.friends.push(req.body.sender)
+                message = {sender: req.body.sender, name:senderName, type: 'friend'}
                 User.findOne({_id: req.body.receiver}, (err, user) => {
                     user.friends +=1;
                     user.notifications.push(message)
                     user.save()
                 })})
+                friendObj.friends.push(req.body.sender)
                 index = friendObj.sent_request_to.indexOf(req.body.sender);
                 friendObj.sent_request_to.splice(index, 1);
             }
