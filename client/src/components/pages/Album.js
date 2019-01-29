@@ -95,7 +95,7 @@ render() {
                     <Segment color="gray">
                     <Item.Content>
                         <a href={"/song/" + track.id} id="songdisplay2">{track.name}</a>
-                        <p className="rightaligntext" id="songdisplay2">{timeString}.</p>
+                        <p className="rightaligntext" id="songdisplay2">{timeString}</p>
                     </Item.Content>
                     </Segment>
                     </Item>)
