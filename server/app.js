@@ -10,6 +10,7 @@ const socketio = require('socket.io');
 const request = require('request-promise');
 const User = require('./models/user')
 const MongoStore = require('connect-mongo')(session);
+const compression = require('compression');
 
 const app = express();
 const publicPath = path.resolve(__dirname, '..', 'client/dist');
@@ -240,6 +241,7 @@ app.use(function(err, req, res, next) {
  })};
 });
 
+app.use(compression());
 
 // port config
 
