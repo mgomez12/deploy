@@ -159,72 +159,72 @@ class Profile extends Component {
             artistimage_list=this.loadFavArtistsImagesList()
             songimage_list=this.loadFavSongsCards()
             
-            //<Segment raised> My fav song rn: {fav_song_rn.name}</Segment>
+            return (
+                <div className='page'>
+                    <Grid style={{padding:"10px"}}>
+                        <Grid.Row columns={2} verticalAlign='middle'>  
+                            <Grid.Column width='5' className='center-parent'>
+                                <Image circular className= 'center-parent' size='small' src={image}/>
+                                <Header as='h2'>{name}</Header>
+                                <Header as="h5">Spotify Followers: {spotify_follower}</Header>
+                            </Grid.Column >
+                            <Grid.Column width='10'>
+                                <div className='center-parent'>
+                                {this.loadSuggestionBox()}
+                                </div>
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row columns={3}>
+                            <Grid.Column>
+                                <div className='center-parent'>
+                                    {this.loadFriendBox()}
+                                </div>
+                            </Grid.Column>
+                            <Grid.Column width='10'>
+                                <div className='center-parent'>
+                                <Header as='h4'>About:</Header>
+                                {this.loadDescriptionBox()}
+                                </div>
+                            </Grid.Column> 
+                        </Grid.Row>
+                    </Grid>
+                    <Container>
+                    <Header as="h2">
+                            Top Songs: 
+                    </Header>
+                    <Card.Group itemsPerRow={5}>
+                        {songimage_list}
+                    </Card.Group>    
+                    <Header as="h2">
+                                    Top Artists: 
+                    </Header>
+                    <Coverflow
+                        width={960}
+                        height={480}
+                        displayQuantityOfSide={2}
+                        navigation={false}
+                        enableHeading={false}
+                    >
+                    <div
+                     onClick={() => fn()}
+                     onKeyDown={() => fn()}
+                     role="menuitem"
+                     tabIndex="0"
+                    >
+                    </div>
+                    {artistimage_list}
+                    </Coverflow>
+                    </Container> 
+                </div>
+            ) 
         }
-        if (this.state.isRedirecting) {
+        else {
             return (
                 <Loader active size='massive'>Loading<Image size='tiny' centered src={confused_llama}/></Loader>
             )
         }
         
-        return (
-            <div className='page'>
-                <Grid style={{padding:"10px"}}>
-                    <Grid.Row columns={2} verticalAlign='middle'>  
-                        <Grid.Column width='5' className='center-parent'>
-                            <Image circular className= 'center-parent' size='small' src={image}/>
-                            <Header as='h2'>{name}</Header>
-                            <Header as="h5">Spotify Followers: {spotify_follower}</Header>
-                        </Grid.Column >
-                        <Grid.Column width='10'>
-                            <div className='center-parent'>
-                            {this.loadSuggestionBox()}
-                            </div>
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row columns={3}>
-                        <Grid.Column>
-                            <div className='center-parent'>
-                                {this.loadFriendBox()}
-                            </div>
-                        </Grid.Column>
-                        <Grid.Column width='10'>
-                            <div className='center-parent'>
-                            <Header as='h4'>About:</Header>
-                            {this.loadDescriptionBox()}
-                            </div>
-                        </Grid.Column> 
-                    </Grid.Row>
-                </Grid>
-                <Container>
-                <Header as="h2">
-                        Top Songs: 
-                </Header>
-                <Card.Group itemsPerRow={5}>
-                    {songimage_list}
-                </Card.Group>    
-                <Header as="h2">
-                                Top Artists: 
-                </Header>
-                <Coverflow
-                    width={960}
-                    height={480}
-                    displayQuantityOfSide={2}
-                    navigation={false}
-                    enableHeading={false}
-                >
-                <div
-                 onClick={() => fn()}
-                 onKeyDown={() => fn()}
-                 role="menuitem"
-                 tabIndex="0"
-                >
-                </div>
-                {artistimage_list}
-                </Coverflow>
-                </Container> 
-            </div>
-        ) 
+
     }
     
 }
