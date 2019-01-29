@@ -57,7 +57,7 @@ class NavBar extends Component{
             return <Message key={this.id}>
             <a href={'/u/profile/' + notification.sender}>{notification.name + ' '}</a>
             suggested the song
-            <a href={'/song/' + notification.track}>{notification.name}</a>
+            <a href={'/song/' + notification.track}>{notification.title}</a>
             !
             </Message>
         }
