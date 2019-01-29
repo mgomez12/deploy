@@ -95,7 +95,7 @@ class SongComment extends Component {
                             <Comment.Metadata>
                                 <div>Posted Today</div>
                             </Comment.Metadata>
-                            <Comment.Text>No comments to this song! Post one!<br/></Comment.Text>
+                            <Comment.Text>No comments to this song. Post one!<br/></Comment.Text>
                         </Comment.Content>
                     </Comment>
                 </Comment.Group>
