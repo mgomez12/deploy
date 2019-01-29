@@ -64,10 +64,10 @@ class AddComment extends Component {
                 banner=<Message compact ><Loader active size='medium'/></Message>
             }
             else if (this.state.response) {
-                banner=<Message compact positive><Message.Header>Submitted!<Image size='mini' src={happy_llama}/></Message.Header></Message>
+                banner=<Message compact positive><Message.Header>Submitted!<Image centered size='mini' src={happy_llama}/></Message.Header></Message>
             }
             else {
-                banner=<Message compact negative><Message.Header>Failed!<Image size='mini' src={sad_llama}/></Message.Header></Message>
+                banner=<Message compact negative><Message.Header>Failed!<Image centered size='mini' src={sad_llama}/></Message.Header></Message>
             }
         }
         else {
