@@ -38,12 +38,10 @@ class PlaybackBar extends Component {
 
       componentWillUnmount() {
         clearInterval(this.interval);
-        document.removeEventListener("keydown", this.onKeyPressed.bind(this));
         this.pause();
       }
 
       componentDidMount() {
-        document.addEventListener("keydown", this.onKeyPressed.bind(this))
       }
 
     componentDidUpdate() {
@@ -175,16 +173,6 @@ class PlaybackBar extends Component {
 
     
 }
-    onKeyPressed(e) {
-        if(e.code=="Space") {
-            if(this.state.playing) {
-                this.pause();
-            }
-            else {
-                this.play();
-            }
-        }
-    }
 
     render() {
         
@@ -207,8 +195,7 @@ class PlaybackBar extends Component {
             timeString = minutes + ':' + seconds;
         }
         return(
-            <div onKeyDown={this.onKeyPressed}
-            tabIndex="0">
+            <div>
         <React.Fragment>
             {this.props.premium ? '' : 
             this.state.audio}
