@@ -90,7 +90,7 @@ class PlaybackBar extends Component {
                 update: false,
                 audio: <audio autoPlay src={this.props.track} ref={(audioTag) => {this.audio = audioTag}}/>
             }) 
-            this.interval = setInterval(() => this.setState({ time: this.audio.currentTime}), 1000);
+            this.interval = setInterval(() => this.setState({ time: this.audio.currentTime}), 250);
         }
         
         else if (this.state.update && this.props.premium && this.player !== null) {
@@ -112,7 +112,7 @@ class PlaybackBar extends Component {
             })
         })})
             this.interval = setInterval(() => 
-            this.player.getCurrentState().then(info => {this.setState({ time: info.position})}), 1000);
+            this.player.getCurrentState().then(info => {this.setState({ time: info.position})}), 250);
         }
     }
 
@@ -147,7 +147,7 @@ class PlaybackBar extends Component {
         if (this.props.premium) {
             this.player.seek(this.state.seekValue);
             this.interval = setInterval(() => 
-            this.player.getCurrentState().then(info => {this.setState({ time: info.position})}), 1000);this.setState({
+            this.player.getCurrentState().then(info => {this.setState({ time: info.position})}), 250);this.setState({
                 time: this.state.seekValue,
                 seekValue: null
             })
@@ -158,7 +158,7 @@ class PlaybackBar extends Component {
             time: this.state.seekValue,
             seekValue: null
         }) 
-        this.interval = setInterval(() => this.setState({ time: this.audio.currentTime}), 1000);}
+        this.interval = setInterval(() => this.setState({ time: this.audio.currentTime}), 250);}
     }
     onSeekChange(e) {
        
