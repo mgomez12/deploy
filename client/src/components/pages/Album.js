@@ -68,6 +68,7 @@ render() {
     }
 
     return(
+    <section>
         <div className='page'>
     <Container>
         <Container className="center-text" id="album-image" padding="100px">
@@ -100,7 +101,8 @@ render() {
            })}
            </Segment.Group>
            </Item.Group>
-    </Container></div>)
+    </Container></div>
+    </section>)
 }
 }
 
