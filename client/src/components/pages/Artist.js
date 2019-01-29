@@ -27,6 +27,7 @@ class Artist extends Component {
         if (this.props.token && !this.gotArtistInfo) {
             this.renderArtistData();}
         if(this.state.artistInfo!=null) {
+            console.log(this.state.artistInfo)
             if (this.props.match.params.artistid!=this.state.artistInfo.id) {
                 this.renderArtistData();
             }
@@ -36,8 +37,9 @@ class Artist extends Component {
     }
     componentDidUpdate() {
         if (this.props.token && !this.gotArtistInfo) {
-        this.renderArtistData();}
-        if(this.state.artistInfo!=null) {
+            this.renderArtistData();
+        }
+        if(this.state.artistInfo!=null && this.gotArtistInfo) {
             if (this.props.match.params.artistid!=this.state.artistInfo.id) {
                 this.renderArtistData();
             }
@@ -53,6 +55,8 @@ class Artist extends Component {
             obj.setState({
                 artistInfo: artistData
             })
+            this.gotArtistInfo=true
+
         } )
         .then(() => {
             return get2('https://api.spotify.com/v1/artists/' + this.props.match.params.artistid + "/top-tracks", {country:"US"}, artistHeader);
@@ -174,16 +178,16 @@ render() {
         for(let i  = 0; i < this.state.artisttoptracks.tracks.length; i++) {
            toptracks.push(this.state.artisttoptracks.tracks[i]);
         }
-        for(let i  = 0; i < this.state.artistalbums.items.length; i++) {
-           albums.push(this.state.artistalbums.items[i]);
-        }
-        for(let i  = 0; i < this.state.artistsingles.items.length; i++) {
-            singles.push(this.state.artistsingles.items[i]);
-         }
+        // for(let i  = 0; i < this.state.artistalbums.items.length; i++) {
+        //    albums.push(this.state.artistalbums.items[i]);
+        // }
+        // for(let i  = 0; i < this.state.artistsingles.items.length; i++) {
+        //     singles.push(this.state.artistsingles.items[i]);
+        //  }
 
-        for(let i  = 0; i < this.state.relatedartists.artists.length; i++) {
-           related.push(this.state.relatedartists.artists[i]);
-        }
+        // for(let i  = 0; i < this.state.relatedartists.artists.length; i++) {
+        //    related.push(this.state.relatedartists.artists[i]);
+        // }
         artistimage_list=this.loadRelatedArtistsImagesList()
         albumimage_list=this.loadFavAlbumsCards()
         singleimage_list=this.loadFavSinglesCards()
