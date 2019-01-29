@@ -178,7 +178,7 @@ class Profile extends Component {
                         </Grid.Column>
                         <Grid.Column width='10'>
                             <div className='center-parent'>
-                            <Header as='h4'>About!</Header>
+                            <Header as='h4'>About:</Header>
                             {this.loadDescriptionBox()}
                             </div>
                         </Grid.Column> 
