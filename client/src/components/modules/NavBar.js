@@ -68,7 +68,7 @@ class NavBar extends Component{
         if (this.props.userInfo.access_token !== null) {
             idString = this.props.userInfo._id
             length = this.props.userInfo.notifications.length
-            notifications = (this.props.userInfo.notifications.length <= 10 ? this.props.userInfo.notifications : this.props.userInfo.notifications.slice(length - 10, length))
+            notifications = (this.props.userInfo.notifications.length <= 10 ? this.props.userInfo.notifications : this.props.userInfo.notifications.slice(length - 10, length)).reverse()
         }
         return(
         <Menu fixed='top' color='teal' inverted>
