@@ -203,6 +203,43 @@ router.post('/friend', function(req, res) {
     });
 })
 
+router.post('/friend_remove', function(req, res) {
+    connect.ensureLoggedIn();
+    Friend.findOne({_id: req.body.sender}, (err, friendObj) => {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            var index = friendObj.friends.indexOf(req.body.receiver);
+            if (index > -1) {
+                friendObj.friends.splice(index, 1);
+            }
+            User.findOne({_id: req.body.sender}, (err, user) => {
+                user.friends -=1;
+                user.save()
+            })
+            friendObj.save()
+        }
+    })
+    res.send({})
+    Friend.findOne({_id: req.body.receiver}, (err, friendObj) => {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            var index = friendObj.friends.indexOf(req.body.sender);
+            if (index > -1) {
+                friendObj.friends.splice(index, 1);
+            }
+            User.findOne({_id: req.body.receiver}, (err, user) => {
+                user.friends -=1;
+                user.save()
+            })
+            friendObj.save()
+        }
+    });
+})
+
 
 router.get('/friend', function(req, res) {
     Friend.findOne({ _id: req.query._id }, function(err, user) {

@@ -13,6 +13,8 @@ class FriendForm extends Component {
         };
 
         this.addFriend = this.addFriend.bind(this)
+        this.removeFriend = this.removeFriend.bind(this)
+
 
     }
     componentDidMount() {
@@ -55,6 +57,19 @@ class FriendForm extends Component {
             get('/api/updateUser', {}, response => {console.log(response)});
         })
     }
+
+    removeFriend() {
+        this.setState({added: null})
+        fetch('/api/friend_remove', {method: 'POST',
+            body: JSON.stringify({
+                receiver: this.props.receiverId,
+                sender: this.props.userId}),
+            headers: { "Content-Type": "application/json" }})
+        .then((res) => {
+            get('/api/updateUser', {}, response => {console.log(response)});
+        })
+    }
+
     render() {
         let message, header = '';
         status = this.state.added;
@@ -65,7 +80,12 @@ class FriendForm extends Component {
         else {
             header = <Header as='h4'>Follow user!</Header>
             if (status == 'friends') {
-                message = <Message compact positive><Message.Header>Friend</Message.Header></Message>
+                message = <div><Message compact positive><Message.Header>Friend</Message.Header></Message>
+                <Button
+                color='teal'
+                content='UnFriend'
+                onClick={this.removeFriend}
+                /></div>
             }
             else if (status == 'sent') {
                 message = <Message compact warning><Message.Header>Friend request sent!</Message.Header></Message>

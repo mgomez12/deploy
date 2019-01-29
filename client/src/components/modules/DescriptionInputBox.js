@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import "../../public/css/styles.css"
-import { Message, Input, Loader, Form, TextArea, Button } from 'semantic-ui-react';
+import { Grid, Image, Message, Input, Loader, Form, TextArea, Button } from 'semantic-ui-react';
+import sad_llama from "../../public/assets/sad_llama.png";
 import { post } from "./api"
 
 class DescriptionInputForm extends Component {
@@ -82,10 +83,13 @@ class DescriptionInputForm extends Component {
             banner=''
         }
         if (this.props.userId==this.props.personId){
-            if (this.props.userProfile.descrip=="" || this.state.edit){
+            if (this.state.edit){
                 console.log("HESFJLKSEJF"+ this.props.userProfile.descrip)
                 return(
                     <React.Fragment>
+                    <Grid celled>
+                        <Grid.Row>
+                            <Grid.Column>
                     <div style={{display:'inline-block'}}>
                         <Form.Field
                             control={TextArea}
@@ -95,10 +99,11 @@ class DescriptionInputForm extends Component {
                             onChange={this.handleChange}
                         />
                         <Form.Field control={Button} onClick={this.submitDescription}>Confirm</Form.Field>
-                        <Form.Field control={Button} onClick={this.cancel}>Cancel</Form.Field>
-
-                        
+                        <Form.Field control={Button} onClick={this.cancel}>Cancel</Form.Field>     
                     </div>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
                     </React.Fragment>
                 )
             }
@@ -106,7 +111,13 @@ class DescriptionInputForm extends Component {
                 console.log("HESFJLKSEJF"+ this.props.userProfile.descrip)
                 return(
                     <div>
-                        <p>{this.state.description}</p>
+                        <Grid celled>
+                            <Grid.Row>
+                                <Grid.Column>
+                                    <p>{this.props.personProfile.descrip=="" ? <i>{"Enter a Custom Description!"}<Image centered size="mini" src={sad_llama}/> </i>:this.props.personProfile.descrip}</p>
+                                </Grid.Column>
+                            </Grid.Row>
+                        </Grid>
                         <Button onClick={this.editDescription}>Edit Description</Button>
                         {banner}
                     </div>
@@ -122,7 +133,13 @@ class DescriptionInputForm extends Component {
             }
             else{
                 return(
-                    <div><p>{this.props.personProfile.descrip}</p></div>
+                    <Grid celled>
+                        <Grid.Row>
+                            <Grid.Column>
+                                <p>{this.props.personProfile.descrip=="" ? <i>{this.props.personProfile.name + " has not entered a description yet" }<Image centered size="mini" src={sad_llama}/> </i>:this.props.personProfile.descrip}</p>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
                 )
             }   
         }
