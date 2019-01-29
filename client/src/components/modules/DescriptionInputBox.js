@@ -114,7 +114,7 @@ class DescriptionInputForm extends Component {
                         <Grid celled>
                             <Grid.Row>
                                 <Grid.Column>
-                                    <p>{this.props.personProfile.descrip=="" ? <i>{"Enter a Custom Description!"}<Image centered size="mini" src={sad_llama}/> </i>:this.props.personProfile.descrip}</p>
+                                    <p>{this.props.personProfile.descrip=="" ? <i>{"Enter a Custom Description!"}<Image centered size="mini" src={sad_llama}/> </i>:this.state.description}</p>
                                 </Grid.Column>
                             </Grid.Row>
                         </Grid>
