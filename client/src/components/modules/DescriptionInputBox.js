@@ -87,23 +87,18 @@ class DescriptionInputForm extends Component {
                 console.log("HESFJLKSEJF"+ this.props.userProfile.descrip)
                 return(
                     <React.Fragment>
-                    <Grid celled>
-                        <Grid.Row>
-                            <Grid.Column>
-                    <div style={{display:'inline-block'}}>
+
                         <Form.Field
                             control={TextArea}
+                            autoHeight
+                            style={{width:"100%", height:"100%"}}
                             action={{ color: 'teal', content: 'submit', onClick: this.submitDescription}}
                             placeholder="Type in your bio!"
                             value={this.state.input}
                             onChange={this.handleChange}
                         />
-                        <Form.Field control={Button} onClick={this.submitDescription}>Confirm</Form.Field>
-                        <Form.Field control={Button} onClick={this.cancel}>Cancel</Form.Field>     
-                    </div>
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
+                    <Button onClick={this.submitDescription} content="Confirm"/>
+                    <Button onClick={this.cancel} content="Cancel"/> 
                     </React.Fragment>
                 )
             }
@@ -114,7 +109,7 @@ class DescriptionInputForm extends Component {
                         <Grid celled>
                             <Grid.Row>
                                 <Grid.Column>
-                                    <p>{this.props.personProfile.descrip=="" ? <i>{"Enter a Custom Description!"}<Image centered size="mini" src={sad_llama}/> </i>:this.props.personProfile.descrip}</p>
+                                    <p>{this.props.personProfile.descrip=="" ? <i>{"Enter a Custom Description!"}<Image centered size="mini" src={sad_llama}/> </i>:this.state.description}</p>
                                 </Grid.Column>
                             </Grid.Row>
                         </Grid>
