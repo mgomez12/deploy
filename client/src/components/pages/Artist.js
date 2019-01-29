@@ -239,7 +239,7 @@ render() {
         </Card.Group>
         <section>
         <Header as="h2">
-                        Singles: 
+                        Singles and EPs: 
         </Header>
         </section>
         <Card.Group itemsPerRow={5}>
