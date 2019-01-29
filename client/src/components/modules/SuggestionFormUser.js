@@ -110,7 +110,7 @@ class SuggestionFormUser extends Component {
         })
         const date = new Date()
         if (!this.props.isTrack) {
-            post('/api/suggestion', {receiver: input, sender: (this.state.anonymous? 'anonymous' : this.props.userInfo._id), track: this.props.track.id, uri: result.uri, time:date},
+            post('/api/suggestion', {receiver: input, sender: (this.state.anonymous? 'anonymous' : this.props.userInfo._id), track: this.props.track.id, uri: result.uri, name: this.props.track.name, time:date},
             (response) => {
                 if (response.status =='success') {
                     this.setState({

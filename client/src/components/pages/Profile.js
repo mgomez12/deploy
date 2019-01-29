@@ -53,7 +53,7 @@ class Profile extends Component {
 
     loadSuggestionBox() {
         if(this.gotProfileInfo) {
-            return (<SuggestionForm userId={this.props.viewerInfo._id} receiverId={this.state.userInfo._id} isTrack={true}/>);
+            return (<SuggestionForm userInfo={this.props.viewerInfo} receiverId={this.state.userInfo._id} isTrack={true}/>);
         }
         else {
             <Loader active inline size='tiny'>Loading<Image size='tiny' centered src={confused_llama}/></Loader>

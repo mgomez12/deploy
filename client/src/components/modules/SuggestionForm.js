@@ -101,7 +101,7 @@ class SuggestionForm extends Component {
             })
         }
         else {
-        post('/api/suggestion', {receiver: this.props.receiverId, sender: (this.state.anonymous? 'anonymous' : this.props.userInfo._id), track: input, uri: result.uri, time:date},
+        post('/api/suggestion', {receiver: this.props.receiverId, sender: (this.state.anonymous? 'anonymous' : this.props.userInfo._id), track: input, name:result.title, uri: result.uri, time:date},
         (response) => {
             if (response.status =='success') {
                 this.setState({
