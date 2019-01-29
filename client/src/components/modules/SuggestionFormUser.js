@@ -110,7 +110,7 @@ class SuggestionFormUser extends Component {
         })
         const date = new Date()
         if (!this.props.isTrack) {
-            post('/api/suggestion', {receiver: input, sender: (this.state.anonymous? 'anonymous' : this.props.userInfo._id), track: this.props.track.id, uri: result.uri, time:date},
+            post('/api/suggestion', {receiver: input, sender: (this.state.anonymous? 'anonymous' : this.props.userInfo._id), track: this.props.track.id, uri: result.uri, name: this.props.track.name, time:date},
             (response) => {
                 if (response.status =='success') {
                     this.setState({
@@ -147,10 +147,10 @@ class SuggestionFormUser extends Component {
                 banner=<Message compact ><Loader active size='medium'/></Message>
             }
             else if (this.state.response) {
-                banner=<Message compact positive><Message.Header>Submitted!<Message.Content><Image size='mini' centered src={happy_llama}/></Message.Content></Message.Header></Message>
+                banner=<Message compact positive><Message.Header>Submitted!<Message.Content></Message.Content></Message.Header></Message>
             }
             else {
-                banner=<Message compact negative><Message.Header>Failed!<Message.Content><Image size='mini' centered src={sad_llama}/></Message.Content></Message.Header></Message>
+                banner=<Message compact negative><Message.Header>Failed!<Message.Content></Message.Content></Message.Header></Message>
             }
         }
         else {

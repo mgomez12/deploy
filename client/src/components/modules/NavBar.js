@@ -47,10 +47,18 @@ class NavBar extends Component{
             sent you a friend request
             </Message>
         }
-        else {
+        else if (notification.type == 'friend') {
             return <Message key={this.id}>
             <a href={'/u/profile/' + notification.sender}>{notification.name + ' '}</a>
             confirmed your friend request
+            </Message>
+        }
+        else {
+            return <Message key={this.id}>
+            <a href={'/u/profile/' + notification.sender}>{notification.name + ' '}</a>
+            suggested the song
+            <a href={'/song/' + notification.url}>{notification.title}</a>
+            !
             </Message>
         }
     }

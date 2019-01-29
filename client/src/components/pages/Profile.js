@@ -59,7 +59,7 @@ class Profile extends Component {
             else {
                 return (<div>
                         <Header as='h4'>Suggest a song!</Header>
-                        <SuggestionForm userInfo={this.props.viewerInfo} userId={this.props.viewerInfo._id} receiverId={this.state.userInfo._id} isTrack={true}/>
+                        <SuggestionForm userInfo={this.props.viewerInfo} receiverId={this.state.userInfo._id} isTrack={true}/>
                     </div>);
             }
         }

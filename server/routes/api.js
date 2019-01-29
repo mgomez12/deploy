@@ -128,11 +128,14 @@ router.post('/suggestion', function(req, res) {
         track_id: req.body.track,
         time_sent: req.body.time
     })
+    console.log('name ' + req.body.name)
+    
     User.findOne({_id: req.body.receiver}, (err, receiverProfile) => {
         if (!receiverProfile) {
             res.send({status: 'fail'});
         }
         else {
+            let rec = receiverProfile
             const suggestion_length = receiverProfile.suggestions_received.length;
             if(suggestion_length > 50) {
                 receiverProfile.suggestions_received = receiverProfile.suggestions_received.slice(suggestion_length-49,suggestion_length)
@@ -141,10 +144,27 @@ router.post('/suggestion', function(req, res) {
             else {
                 receiverProfile.suggestions_received.push(req.body.uri)
             }
-            receiverProfile.save();
+            res.send({status: 'success'});
+            let senderName;
+            if (req.body.sender == 'anonymous') {
+                senderName = 'Someone secret'
+                message = {sender: req.body.sender, title: req.body.name, url: req.body.track, name: senderName, type: 'suggestion'}
+                rec.notifications.push(message)
+                rec.save();
+                global.io.emit('notification_' + req.body.receiver, message)
+            }
+            else {
+                User.findOne({_id: req.body.sender}, 'name', (err, user) => {
+                    senderName = user.name
+                    message = {sender: req.body.sender, title: req.body.name, url: req.body.track, name: senderName, type: 'suggestion'}
+                    rec.notifications.push(message)
+                    rec.save();
+                    global.io.emit('notification_' + req.body.receiver, message)
+                })
+            }
 
         newSuggestion.save();
-        res.send({status: 'success'});}
+        }
     });
 })
 
@@ -196,6 +216,7 @@ router.post('/friend', function(req, res) {
                     user.friends +=1;
                     user.notifications.push(message)
                     user.save()
+                    global.io.emit('notification_' + req.body.receiver, message)
                 })})
                 friendObj.friends.push(req.body.sender)
                 index = friendObj.sent_request_to.indexOf(req.body.sender);
@@ -211,11 +232,11 @@ router.post('/friend', function(req, res) {
                         user.notifications.push(message);
                         user.unread_notifications = true;
                         user.save()
+                        global.io.emit('notification_' + req.body.receiver, message)
                     })})
                     friendObj.received_request_from.push(req.body.sender)
             }
         friendObj.save()
-        global.io.emit('notification_' + req.body.receiver, message)
         }
     });
 })
