@@ -68,7 +68,7 @@ class NavBar extends Component{
         if (this.props.userInfo.access_token !== null) {
             idString = this.props.userInfo._id
             length = this.props.userInfo.notifications.length
-            notifications = (this.props.userInfo.notifications.length <= 10 ? this.props.userInfo.notifications : this.props.userInfo.notifications.slice(length - 10, length)).reverse()
+            notifications = (this.props.userInfo.notifications.length <= 10 ? this.props.userInfo.notifications : this.props.userInfo.notifications.slice(length - 10, length))
         }
         return(
         <Menu fixed='top' color='teal' inverted>
@@ -87,7 +87,7 @@ class NavBar extends Component{
             <Menu.Menu position="right">
                 <Dropdown item icon={this.state.icon} onClick ={this.readNotification}>
                     <Dropdown.Menu>
-                        {notifications.map(this.stringNotification)}
+                        {notifications.slice(0).reverse().map(this.stringNotification)}
                     </Dropdown.Menu>
                 </Dropdown>
             </Menu.Menu>
