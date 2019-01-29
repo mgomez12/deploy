@@ -156,7 +156,7 @@ class SuggestionFormUser extends Component {
         }
         return(
             <React.Fragment>
-            <div style={{display:'inline-block'}}>
+            <div style={{display:'inline-block', padding:'8px'}}>
             <Search
                     loading={isLoading}
                     placeholder='Find a user..'
@@ -167,6 +167,7 @@ class SuggestionFormUser extends Component {
                 />
             {banner}
             </div>
+            <br/>
             <Checkbox toggle label='Submit anonymously' onClick={this.checkboxChange}/>
             </React.Fragment>
         )

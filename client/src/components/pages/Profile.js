@@ -80,7 +80,9 @@ class Profile extends Component {
 
     loadFavArtistsImagesList() {
         if(this.state.userInfo!=null) {
+            console.log(this.state.userInfo)
             return(
+                
                 this.state.userInfo.top_artists.map( artist => {
                 return(
                     <a href={"/artist/" + artist.id}><img src={artist.images[0].url} alt={artist.name} style={{ display: 'block', width: '100%' }}/></a>

@@ -31,15 +31,15 @@ class Main extends Component {
             <Container>
                 <NavBar history={this.props.history} userInfo={this.props.userInfo}/>
             </Container>
-                <Container style={{padding: '5em'}}>
-                    <Grid columns='2' stackable style={{height:'80vh'}}>
-                        <Grid.Column>
-                                <SuggestionBox userInfo={this.props.userInfo}/>
-                        </Grid.Column>
-                        <Grid.Column>
-                                {console.log(contextRef)}
+                <Container style={{paddingTop: '2em', paddingBottom:'2em'}}>
+                    <Grid columns='2' stackable style={{margin: '0px', height:'80vh', width:'100%'}}>
+                        <Grid.Column width='6'>
                                 <WeeklyPlaylist userInfo={this.props.userInfo} history={this.props.history}/>
                                 <SearchBarUser history={this.props.history}/>
+                                <SuggestionBox userInfo={this.props.userInfo}/>
+                        </Grid.Column>
+                        <Grid.Column width='10'>
+                                {console.log(contextRef)}
                                 <Dash userInfo={this.props.userInfo} friendCount ={this.props.userInfo.friends}/>
                         </Grid.Column>
                     </Grid>

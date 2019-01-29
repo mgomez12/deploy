@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "../../public/css/styles.css";
-import { Segment, Loader, Button, Header, Card } from "semantic-ui-react";
+import { Segment,  Header, Card } from "semantic-ui-react";
 import { Link} from 'react-router-dom';
 import DashCard from "../modules/DashCard"
 
@@ -34,12 +34,12 @@ class Dash extends Component {
 
     render() {
         return (
-            <div>
+            <Segment style={{height: '100%', overflow:'scroll'}}>
                 {this.props.userInfo.friends == 0 ? <Header as='h3' style={{color:'gray'}}>You currently don't have any friends. Follow friends to see their cards!</Header>:
-                <Card.Group itemsPerRow="5">
+                <Card.Group>
                     {this.loadCards()}
                 </Card.Group>}
-            </div>
+            </Segment>
         )
     }
 }

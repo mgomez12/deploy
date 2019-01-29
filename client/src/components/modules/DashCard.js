@@ -48,7 +48,7 @@ class DashCard extends Component {
         console.log('got friend info')
         var href = "/u/profile/" + this.state.friendInfo._id;
         return (
-            <div>
+            <div style={{marginLeft:'auto', marginRight:'auto', paddingBottom:'8px'}}>
                 <Card
                     link
                     color="teal"
