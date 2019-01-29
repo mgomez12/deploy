@@ -208,11 +208,10 @@ app.get(
               return related_artists.indexOf(item) >= index;
             });
           })})
-      .then(() => profile.save())
+      .then(() => profile.save(() => {res.redirect('/');}))
    })
 
 
-   res.redirect('/');
  });
 
  app.get('/logout', function(req, res) {
