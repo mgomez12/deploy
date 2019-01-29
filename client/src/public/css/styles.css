@@ -120,7 +120,7 @@ section {
     outline: none;
     opacity: 0.7;
     -webkit-transition: .2s;
-    transition: opacity .2s;
+    transition: opacity .2s; 
 }
 .slider::-webkit-slider-thumb {
     -webkit-appearance: none;
@@ -149,4 +149,7 @@ section {
 
   .rightaligntext{
     text-align:right;
+  }
+  .leftaligntext{
+    text-align:left;
   }
