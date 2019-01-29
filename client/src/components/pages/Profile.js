@@ -3,6 +3,7 @@ import "../../public/css/styles.css"
 import { Loader, Header, Grid, Segment, Image, Container, Card, Form, TextArea } from 'semantic-ui-react';
 import default_profile from "../../public/assets/default_profile.png";
 import circle_llama from "../../public/assets/circle_llama.png";
+import confused_llama from "../../public/assets/confused_llama.png";
 import SuggestionForm from '../modules/SuggestionForm';
 import FriendForm from '../modules/FriendForm';
 import Coverflow from 'react-coverflow';
@@ -22,9 +23,9 @@ class Profile extends Component {
     }
 
     componentDidMount() {
-        // if (this.props.match.params.user !== "me") {
+        if (this.props.match.params.user !== "me") {
             this.getProfile(this.props.match.params.user); 
-        // }
+        }
     }
 
     componentDidUpdate() {
@@ -55,7 +56,8 @@ class Profile extends Component {
             return (<SuggestionForm userId={this.props.viewerInfo._id} receiverId={this.state.userInfo._id} isTrack={true}/>);
         }
         else {
-            <Loader active inline />
+            <Loader active inline size='tiny'>Loading<Image size='tiny' centered src={confused_llama}/></Loader>
+
         }
     }
 
@@ -65,7 +67,8 @@ class Profile extends Component {
             <DescriptionInputForm userId={this.props.viewerInfo._id} personId={this.state.userInfo._id} userProfile={this.props.viewerInfo} personProfile={this.state.userInfo}/>);
         }
         else {
-            <Loader active inline />
+            <Loader active inline size='tiny'>Loading<Image size='tiny' centered src={confused_llama}/></Loader>
+
         }
     }
     
@@ -75,7 +78,7 @@ class Profile extends Component {
             return (<FriendForm userId={this.props.viewerInfo._id} receiverId={this.state.userInfo._id} />);
         }
         else {
-            <Loader active inline />
+            <Loader active inline size='tiny'>Loading<Image size='tiny' centered src={confused_llama}/></Loader>
         }
     }
 
@@ -93,7 +96,7 @@ class Profile extends Component {
         }
         else {
             <Segment>
-                <Loader/>
+                <Loader active size='tiny'>Loading<Image size='tiny' centered src={confused_llama}/></Loader>
             </Segment>
         }
     }
@@ -111,7 +114,7 @@ class Profile extends Component {
         }
         else {
             <Segment>
-                <Loader/>
+                <Loader active size='tiny'>Loading<Image size='tiny' centered src={confused_llama}/></Loader>
             </Segment>
         }
     }
@@ -128,7 +131,7 @@ class Profile extends Component {
         }
         else {
             <Segment>
-                <Loader/>
+                <Loader active size='tiny'>Loading<Image size='tiny' centered src={confused_llama}/></Loader>
             </Segment>
         }
     }
@@ -153,7 +156,7 @@ class Profile extends Component {
         }
         if (this.state.isRedirecting) {
             return (
-                <Loader size='massive'></Loader>
+                <Loader active size='massive'>Loading<Image size='tiny' centered src={confused_llama}/></Loader>
             )
         }
         

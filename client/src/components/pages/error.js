@@ -20,12 +20,11 @@ class ErrorPage extends Component {
     render() {
         return (
             <div>
-        <div className="center-screen" id="center-text">
+        <div className="center-screen">
             <Header size="huge">
                 <p>Error: Page Not Found</p>
-                <Image size='massive' src={confused_llama}/>
+                <Image size='massive' src={confused_llama} href='/'/>
             </Header>
-            <Button size='mini' href='/'>Back to Home</Button>
         </div>
         </div>
         )
