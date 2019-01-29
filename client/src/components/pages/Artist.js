@@ -214,29 +214,33 @@ render() {
                         {"Top Songs"}
                     </Header>
                     </section>
-                    <Item.Group>
-                        <Segment.Group>
+                    <Card.Group itemsPerRow={5}>
                     {toptracks.map( track => {
                         const minutes = Math.floor(track.duration_ms / 60000);
                         let seconds = Math.floor(track.duration_ms % 60);
                         if (seconds < 10) {seconds = '0' + seconds}
                         timeString = minutes + ':' + seconds;
                         return(
-                            <Item href={"/song/" + track.id}>
-                            <Segment color="gray">
-                            <Item.Content>
-                                <a href={"/song/" + track.id} id="songdisplay2">{track.name}</a>
-                                <p className="rightaligntext" id="songdisplay2">{timeString}</p>
-                            </Item.Content>
-                            </Segment>
-                            </Item>)
+                            <Card color="teal"><a href={"/song/" + track.id} id="songdisplay2">
+                            <Card.Content>
+                            <div className="thicker">
+                            <Card.Header className="songheader">
+                                {track.name}
+                            </Card.Header>
+                            <Card.Meta>
+                                <p className="timestamp" id="songdisplay2">{timeString}</p>
+                            </Card.Meta>
+                            </div>
+                            </Card.Content>
+                            </a>
+                            </Card>
+                            )
                     })}
-                    </Segment.Group>
-                    </Item.Group>
+                    </Card.Group>
                     </div>
                     <section>
                     <Header as="h2">
-                                    Full-Length Albums: 
+                                    Full-Length Albums 
                     </Header>
                     </section>
                     <Card.Group itemsPerRow={5}>
@@ -244,7 +248,7 @@ render() {
                     </Card.Group>
                     <section>
                     <Header as="h2">
-                                    Singles and EPs: 
+                                    Singles and EPs 
                     </Header>
                     </section>
                     <Card.Group itemsPerRow={5}>
@@ -252,7 +256,7 @@ render() {
                     </Card.Group>
                     <section>
                     <Header as="h2">
-                                Related Artists: 
+                                Related Artists 
                     </Header>
                     </section>
                     <Coverflow
