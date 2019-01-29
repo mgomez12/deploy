@@ -42,6 +42,7 @@ section {
     display: table;
     margin: 0;
     max-width: none;
+    padding: 5% 0%;
 }
 
 .mediumtitle{
