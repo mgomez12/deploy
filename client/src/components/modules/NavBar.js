@@ -55,7 +55,7 @@ class NavBar extends Component{
         }
         else {
             return <Message key={this.id}>
-            <a href={'/u/profile/' + notification.sender}>{notification.name + ' '}</a>
+            {(notification.sender == 'anonymous') ? notification.name + ' ': <a href={'/u/profile/' + notification.sender}>{notification.name + ' '}</a>}
             suggested the song
             <a href={'/song/' + notification.url}>{' ' + notification.title}</a>
             !
