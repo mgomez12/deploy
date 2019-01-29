@@ -23,7 +23,9 @@ class SuggestionEntry extends Component {
 
     componentDidMount() {
         const obj=this;
-        if (this.props.sug.sender_id === 'anonymous') {
+        console.log(obj.props.sug.sender_id)
+        console.log("Hey")
+        if (obj.props.sug.sender_id === 'anonymous') {
             obj.setState({
                 senderInfo: {
                     image: confused_llama
@@ -35,9 +37,8 @@ class SuggestionEntry extends Component {
             obj.setState({
                 senderInfo: user
             })
-        
-        })
-    }
+            })
+        }
         const token_header = [['Authorization', 'Bearer ' + this.props.userInfo.access_token]];
         get('https://api.spotify.com/v1/tracks/' + this.props.sug.track_id, null, function(songData) {
             obj.setState({

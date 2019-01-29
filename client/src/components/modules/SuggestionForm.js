@@ -12,10 +12,7 @@ class SuggestionForm extends Component {
             isLoading: false,
             results: [],
             value: '',
-            source: [{
-                title: "Jeffrey Chen",
-                image: "https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=234005436790515&height=200&width=200&ext=1550675248&hash=AeQ2vzL0Qc9aF3s7"
-            }],
+            source: [{}],
             input: '',
             submitted: false,
             response: null,

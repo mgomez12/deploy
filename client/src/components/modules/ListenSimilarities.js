@@ -255,7 +255,7 @@ class ListenSimilarites extends Component {
             <Accordion fluid styled>
                 <Accordion.Title active={activeIndex === 0} index={0} onClick={this.handleClick}>
                 <Icon name='dropdown' />
-                You and {this.props.cardUserInfo.name} both recently listened to...
+                You and {this.props.cardUserInfo.name} both recently listened to these artists...
                 </Accordion.Title>
                 <Accordion.Content active={activeIndex === 0}>
                     {this.loadArtists()}
@@ -263,7 +263,7 @@ class ListenSimilarites extends Component {
         
                 <Accordion.Title active={activeIndex === 1} index={1} onClick={this.handleClick}>
                 <Icon name='dropdown' />
-                and...
+                and these songs...
                 </Accordion.Title>
                 <Accordion.Content active={activeIndex === 1}>
                     {this.loadSongs()}
@@ -279,7 +279,7 @@ class ListenSimilarites extends Component {
 
                 <Accordion.Title active={activeIndex === 3} index={3} onClick={this.handleClick}>
                 <Icon name='dropdown' />
-                Related artists you both may like
+                Related artists you may both like
                 </Accordion.Title>
                 <Accordion.Content active={activeIndex === 3}>
                     {this.loadRelatedArtists()}
@@ -287,7 +287,7 @@ class ListenSimilarites extends Component {
 
                 <Accordion.Title active={activeIndex === 4} index={4} onClick={this.handleClick}>
                 <Icon name='dropdown' />
-                Recommendations
+                Tracks you may both like
                 </Accordion.Title>
                 <Accordion.Content active={activeIndex === 4}>
                     {this.loadRecommendations()}

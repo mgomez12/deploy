@@ -22,10 +22,7 @@ class Main extends Component {
         }
     }
 
-    handleContextRef = contextRef => this.setState({ contextRef })
-
     render() {
-        const { contextRef } = this.state
         if (this.props.userInfo.access_token == null) {
             return (
                 <Loader active size='massive'>Loading<Image size='tiny' centered src={confused_llama}/></Loader>
