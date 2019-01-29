@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import "../../public/css/styles.css"
-import { Item, Segment, Header, Image, Container, Card } from 'semantic-ui-react';
+import { Loader, Item, Segment, Header, Image, Container, Card } from 'semantic-ui-react';
 import {get, get2} from "../modules/api";
 import Coverflow from 'react-coverflow';
+import confused_llama from "../../public/assets/confused_llama.png";
+
 
 class Artist extends Component {
     constructor(props) {
@@ -185,91 +187,98 @@ render() {
         artistimage_list=this.loadRelatedArtistsImagesList()
         albumimage_list=this.loadFavAlbumsCards()
         singleimage_list=this.loadFavSinglesCards()
-    }
 
-    return(
-        <div className='page'>
-        <Container>
-        <section>
-        <div>
-        <section>
-        <Container>
-            {image}    
-        </Container>
-        </section>
-        </div>
-        <div>
-        <Header size= "huge">
-            {artist}
-        </Header>
-        </div>
-        <div>
-        <section>
-        <Header as="h2">
-            {"Top Songs"}
-        </Header>
-        </section>
-        <Item.Group>
-            <Segment.Group>
-        {toptracks.map( track => {
-            const minutes = Math.floor(track.duration_ms / 60000);
-            let seconds = Math.floor(track.duration_ms % 60);
-            if (seconds < 10) {seconds = '0' + seconds}
-            timeString = minutes + ':' + seconds;
-            return(
-                <Item href={"/song/" + track.id}>
-                <Segment color="gray">
-                <Item.Content>
-                    <a href={"/song/" + track.id} id="songdisplay2">{track.name}</a>
-                    <p className="rightaligntext" id="songdisplay2">{timeString}</p>
-                </Item.Content>
-                </Segment>
-                </Item>)
-        })}
-           </Segment.Group>
-           </Item.Group>
-        </div>
-        <section>
-        <Header as="h2">
-                        Full-Length Albums: 
-        </Header>
-        </section>
-        <Card.Group itemsPerRow={5}>
-            {albumimage_list}
-        </Card.Group>
-        <section>
-        <Header as="h2">
-                        Singles and EPs: 
-        </Header>
-        </section>
-        <Card.Group itemsPerRow={5}>
-            {singleimage_list}
-        </Card.Group>
-        <section>
-        <Header as="h2">
-                    Related Artists: 
-        </Header>
-        </section>
-        <Coverflow
-            width={960}
-            height={480}
-            displayQuantityOfSide={2}
-            navigation={false}
-            enableHeading={false}
-        >
-        <div
-        onClick={() => fn()}
-        onKeyDown={() => fn()}
-        role="menuitem"
-        tabIndex="0"
-        >
-        </div>
-        {artistimage_list}
-        </Coverflow>
-        </section>
-        </Container>
-        </div>)
+        return(
+            <div className='page'>
+                <Container>
+                    <section>
+                    <div>
+                    <section>
+                    <Container>
+                        {image}    
+                    </Container>
+                    </section>
+                    </div>
+                    <div>
+                    <Header size= "huge">
+                        {artist}
+                    </Header>
+                    </div>
+                    <div>
+                    <section>
+                    <Header as="h2">
+                        {"Top Songs"}
+                    </Header>
+                    </section>
+                    <Item.Group>
+                        <Segment.Group>
+                    {toptracks.map( track => {
+                        const minutes = Math.floor(track.duration_ms / 60000);
+                        let seconds = Math.floor(track.duration_ms % 60);
+                        if (seconds < 10) {seconds = '0' + seconds}
+                        timeString = minutes + ':' + seconds;
+                        return(
+                            <Item href={"/song/" + track.id}>
+                            <Segment color="gray">
+                            <Item.Content>
+                                <a href={"/song/" + track.id} id="songdisplay2">{track.name}</a>
+                                <p className="rightaligntext" id="songdisplay2">{timeString}</p>
+                            </Item.Content>
+                            </Segment>
+                            </Item>)
+                    })}
+                    </Segment.Group>
+                    </Item.Group>
+                    </div>
+                    <section>
+                    <Header as="h2">
+                                    Full-Length Albums: 
+                    </Header>
+                    </section>
+                    <Card.Group itemsPerRow={5}>
+                        {albumimage_list}
+                    </Card.Group>
+                    <section>
+                    <Header as="h2">
+                                    Singles and EPs: 
+                    </Header>
+                    </section>
+                    <Card.Group itemsPerRow={5}>
+                        {singleimage_list}
+                    </Card.Group>
+                    <section>
+                    <Header as="h2">
+                                Related Artists: 
+                    </Header>
+                    </section>
+                    <Coverflow
+                        width={960}
+                        height={480}
+                        displayQuantityOfSide={2}
+                        navigation={false}
+                        enableHeading={false}
+                    >
+                    <div
+                    onClick={() => fn()}
+                    onKeyDown={() => fn()}
+                    role="menuitem"
+                    tabIndex="0"
+                    >
+                    </div>
+                    {artistimage_list}
+                    </Coverflow>
+                    </section>
+                </Container>
+            </div>)
+        }
+        else {
+            return (
+                <Loader active size='massive'>Loading<Image size='tiny' centered src={confused_llama}/></Loader>
+            )
+        }
+
+
     }
-    }
+}
 
 export default Artist;
