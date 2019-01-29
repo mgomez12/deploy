@@ -143,13 +143,29 @@ section {
   #songdisplay{
       color: #000000;
   }
-  #songdisplay2{
+  #songdisplay1{
+    /* color: #468CD3; */
+    color: #00B5AD;
+}
+#songdisplay2{
     color: #468CD3;
 }
 
-  .rightaligntext{
-    text-align:right;
-  }
-  .leftaligntext{
-    text-align:left;
-  }
+
+.songheader{
+    font-size: 130%;
+    text-align: center;
+}
+
+.timestamp{
+    font-size: 80%;
+    text-align:center;
+}
+
+.thicker{
+    padding: 15%;
+}
+
+.rightaligntext{
+    text-align: right;
+}
