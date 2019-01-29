@@ -110,7 +110,6 @@ class ListenSimilarites extends Component {
                 return get2('https://api.spotify.com/v1/recommendations?seed_artists=' + artist_string + "&seed_tracks="+ song_string, null, header);
             }
         }).then( tracks => {
-            console.log(tracks)
             this.setState({
                 recommendations: tracks
             })
@@ -219,9 +218,6 @@ class ListenSimilarites extends Component {
     }
 
     loadRecommendations() {
-        console.log("break")
-        console.log(this.state.recommendations)
-        console.log("break")
         if (this.state.recommendations.length!={} && this.state.recommendations.length!=[]) {
             return this.state.recommendations.tracks.map( track => {
                 return(

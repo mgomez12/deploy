@@ -28,7 +28,6 @@ router.get('/allusers', function(req, res) {
         if(err) {
             console.log(err)
         }
-        console.log('getting all users: ' + users)
         res.send(users);
     });
     User.find()

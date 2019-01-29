@@ -14,7 +14,7 @@ class SuggestionBox extends Component {
     }
 
     componentDidMount() {
-        get('/api/suggestion', {receiver: this.props.userInfo._id, limit:20}, (suggestionArray) => {
+        get('/api/suggestion', {receiver: this.props.userInfo._id, limit:10}, (suggestionArray) => {
             this.setState({
                 suggestions: suggestionArray
             })

@@ -22,10 +22,7 @@ class Main extends Component {
         }
     }
 
-    handleContextRef = contextRef => this.setState({ contextRef })
-
     render() {
-        const { contextRef } = this.state
         if (this.props.userInfo.access_token == null) {
             return (
                 <Loader active size='massive'>Loading<Image size='tiny' centered src={confused_llama}/></Loader>
@@ -44,7 +41,6 @@ class Main extends Component {
                                 <SuggestionBox userInfo={this.props.userInfo}/>
                         </Grid.Column>
                         <Grid.Column width='10'>
-                                {console.log(contextRef)}
                                 <Dash userInfo={this.props.userInfo} friendCount ={this.props.userInfo.friends}/>
                         </Grid.Column>
                     </Grid>
