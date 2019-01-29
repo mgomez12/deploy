@@ -40,6 +40,7 @@ class PlaybackBar extends Component {
       componentWillUnmount() {
         clearInterval(this.interval);
         document.removeEventListener("keydown", this.onKeyPressed.bind(this));
+        this.pause();
       }
 
       componentDidMount() {
