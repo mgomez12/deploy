@@ -212,9 +212,9 @@ router.post('/friend', function(req, res) {
                         user.notifications.push(message);
                         user.unread_notifications = true;
                         user.save()
-                    })
+                    })})
                     friendObj.received_request_from.push(req.body.sender)
-            })}
+            }
         friendObj.save()
         global.io.emit('notification_' + req.body.receiver, message)
         }
