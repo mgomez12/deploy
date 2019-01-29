@@ -217,8 +217,6 @@ render() {
                         if (seconds < 10) {seconds = '0' + seconds}
                         timeString = minutes + ':' + seconds;
                         return(
-                            // <Item href={"/song/" + track.id}>
-                            // <Item color="gray">
                             <Card color="teal"><a href={"/song/" + track.id} id="songdisplay2">
                             <Card.Content>
                             <div className="thicker">
@@ -232,8 +230,6 @@ render() {
                             </Card.Content>
                             </a>
                             </Card>
-                            // </Item>
-                            // </Item>
                             )
                     })}
                     </Card.Group>
