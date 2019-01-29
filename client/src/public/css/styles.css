@@ -138,3 +138,14 @@ section {
     background: #00B5AD;
     cursor: pointer;
   }
+
+  #songdisplay{
+      color: #000000;
+  }
+  #songdisplay2{
+    color: #468CD3;
+}
+
+  .rightaligntext{
+    text-align:right;
+  }
