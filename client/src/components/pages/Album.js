@@ -27,8 +27,6 @@ class Album extends Component {
         if (this.props.token && !this.gotAlbumInfo) {
         this.renderAlbumData();}
         if(this.state.albumInfo!=null) {
-            console.log(this.state.albumInfo.id)
-            console.log(this.props.match.params.albumid)
             if (this.props.match.params.albumid!=this.state.albumInfo.id) {
                 this.renderAlbumData();
             }

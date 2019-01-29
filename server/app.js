@@ -244,10 +244,7 @@ app.use(function(err, req, res, next) {
 // port config
 
 global.io.on('connection', function (socket) {
-  console.log('client connected');
   socket.on('notification_read', id => {
-    console.log('setting false');
-    console.log('id = ' + id)
     User.findOne({_id: id}, (err, user) => {
       if (user) {
         user.unread_notifications = false;

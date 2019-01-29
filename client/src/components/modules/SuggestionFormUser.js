@@ -103,8 +103,6 @@ class SuggestionFormUser extends Component {
             })
             return 
         }
-        console.log("input: "+result.key)
-        console.log(result)
         this.setState({
             value: '',
             submitted: true,

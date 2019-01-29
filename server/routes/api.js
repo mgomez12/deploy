@@ -36,10 +36,7 @@ router.get('/allusers', function(req, res) {
 
 router.get('/refresh', function(req, res) {
     const currentTime = new Date()
-    console.log('expire time: ' + req.user.expire_time)
-    console.log('time diff = ' + (currentTime.getTime()-req.user.expire_time))
     if(req.isAuthenticated() && currentTime.getTime() < req.user.expire_time) {
-        console.log('only updating user')
         User.findOne({ _id: req.user._id}, function(err, user) {
             if(err) {
                 console.log(err)
@@ -74,7 +71,6 @@ router.get('/refresh', function(req, res) {
           }
           request(recently_played)
           .then(tokenInfo => {
-              console.log('token info: ' + tokenInfo)
               User.findOne({ _id: req.user._id}, function(err, user) {
             if(err) {
                 console.log(err)
@@ -82,7 +78,6 @@ router.get('/refresh', function(req, res) {
             }
             else {
                 user.access_token = tokenInfo.access_token
-                console.log('new time: ' + new Date(new Date().getTime() + tokenInfo.expires_in * 1000).getTime())
                 user.expire_time = new Date(new Date().getTime() + tokenInfo.expires_in * 1000).getTime()
                 user.save()
                 req.logOut();

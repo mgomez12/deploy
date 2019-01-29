@@ -84,7 +84,6 @@ class Profile extends Component {
 
     loadFavArtistsImagesList() {
         if(this.state.userInfo!=null) {
-            console.log(this.state.userInfo)
             return(
                 
                 this.state.userInfo.top_artists.map( artist => {

@@ -25,7 +25,6 @@ class NavBar extends Component{
             if (this.interval) {
                 clearInterval(this.interval)
             }
-            console.log('setting interval')
             this.interval = setInterval(() => {this.flashNotification()}, 1000)
         }
         this.update = true;

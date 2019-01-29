@@ -44,7 +44,6 @@ class Main extends Component {
                                 <SuggestionBox userInfo={this.props.userInfo}/>
                         </Grid.Column>
                         <Grid.Column width='10'>
-                                {console.log(contextRef)}
                                 <Dash userInfo={this.props.userInfo} friendCount ={this.props.userInfo.friends}/>
                         </Grid.Column>
                     </Grid>

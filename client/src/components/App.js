@@ -29,14 +29,12 @@ class App extends React.Component {
     }
 
     componentDidMount () {
-        console.log('mounting');
         this.getUser();
     }
 
     componentDidUpdate() {
         if (this.state.startSocket && this.state.updated) {
             this.socket.on('notification_' + this.state.userInfo._id, notification => {
-                console.log('got notification');
                 this.setState({
                     message: notification
                 })
@@ -80,7 +78,6 @@ class App extends React.Component {
     .then(res => res.json())
     .then(
         userObj => {
-            console.log('userobj: ' + userObj)
             if (userObj._id !== undefined) {
                 this.setState({
                     userInfo: userObj,
