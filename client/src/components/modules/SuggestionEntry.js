@@ -31,7 +31,7 @@ class SuggestionEntry extends Component {
             })
         }
         else {
-        get('/api/user', {_id: this.props.sug.sender_id}, user => {
+        get('/api/user', {_id: this.props.sug.sender_id, fields:'name image'}, user => {
             obj.setState({
                 senderInfo: user
             })

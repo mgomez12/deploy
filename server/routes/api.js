@@ -14,12 +14,26 @@ const router = express.Router();
 
 
 router.get('/user', function(req, res) {
-    User.findOne({ _id: req.query._id }, function(err, user) {
-        if(err) {
-            console.log(err)
-        }
-      res.send(user);
-    });
+    if (req.query.fields) {
+        const fields = req.query.fields
+        console.log('fields:' + fields)
+        User.findOne({ _id: req.query._id },fields, function(err, user) {
+            if(err) {
+                console.log(err)
+            }
+            console.log('user: ' + user)
+          res.send(user);
+        });
+    }
+    else {
+        User.findOne({ _id: req.query._id }, function(err, user) {
+            if(err) {
+                console.log(err)
+            }
+          res.send(user);
+        });
+    }
+    
   });
 
 
