@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import { Search } from 'semantic-ui-react'
 import {get, get2} from "./api";
 import default_profile from  '../../public/assets/default_profile.png'
+import circle_llama from "../../public/assets/circle_llama.png";
 
 
 
@@ -62,7 +63,7 @@ class SearchBarSpotify extends Component {
                     {
                         key: track.id,
                         title: track.name,
-                        image: (track.album.images.length > 0 ? track.album.images[0].url : default_profile),
+                        image: (track.album.images.length > 0 ? track.album.images[0].url : circle_llama),
                         description: track.album.artists[0].name,
                         type: 'song',
                         uri: track.uri
@@ -74,7 +75,7 @@ class SearchBarSpotify extends Component {
                     {
                         key: album.id,
                         title: album.name,
-                        image: (album.images.length > 0 ? album.images[0].url : default_profile) ,
+                        image: (album.images.length > 0 ? album.images[0].url : circle_llama) ,
                         description: album.artists[0].name,
                         type: 'album',
                         uri: album.uri
@@ -86,7 +87,7 @@ class SearchBarSpotify extends Component {
                     {
                         key: artist.id,
                         title: artist.name,
-                        image: (artist.images.length > 0 ? artist.images[0].url : default_profile),
+                        image: (artist.images.length > 0 ? artist.images[0].url : circle_llama),
                         description: artist.genres[0],
                         type: 'artist',
                         uri: artist.uri

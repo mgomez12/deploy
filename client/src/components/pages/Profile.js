@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import "../../public/css/styles.css"
 import { Loader, Header, Grid, Segment, Image, Container, Card, Form, TextArea } from 'semantic-ui-react';
 import default_profile from "../../public/assets/default_profile.png";
+import circle_llama from "../../public/assets/circle_llama.png";
 import SuggestionForm from '../modules/SuggestionForm';
 import FriendForm from '../modules/FriendForm';
 import Coverflow from 'react-coverflow';
@@ -140,7 +141,7 @@ class Profile extends Component {
 
         if (this.gotProfileInfo) {
             name = (this.state.userInfo.name)
-            image = (this.state.userInfo.image !== '' ? this.state.userInfo.image : default_profile)
+            image = (this.state.userInfo.image !== '' ? this.state.userInfo.image : circle_llama)
             description = this.state.userInfo.descrip;
 
             spotify_follower = this.state.userInfo.spotify_followers;

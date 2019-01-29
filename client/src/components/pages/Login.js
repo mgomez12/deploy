@@ -1,8 +1,11 @@
 import React, { Component } from "react";
 import "../../public/css/styles.css";
-import { Button, Header } from "semantic-ui-react";
+import { Image, Button, Header } from "semantic-ui-react";
 import { Link} from 'react-router-dom';
 import introVid from '../../public/assets/goodguy.mp4';
+import basic_llama from "../../public/assets/basic_llama.png";
+
+
 
 class Login extends Component {
 	constructor(props) {
@@ -24,7 +27,8 @@ class Login extends Component {
         </video>
         <div className="center-screen" id="center-text">
             <Header size="huge" id="color-white">
-                <i>groove</i>
+                <i>groove </i>
+                <Image size='mini' src={basic_llama}/>
             </Header>
             <Button size='mini' href='/auth/spotify'>Login with Spotify</Button>
         </div>

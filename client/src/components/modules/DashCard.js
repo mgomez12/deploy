@@ -3,6 +3,7 @@ import "../../public/css/styles.css";
 import { Icon, Image, Loader, Card} from "semantic-ui-react";
 import { Link} from 'react-router-dom';
 import default_profile from "../../public/assets/default_profile.png";
+import circle_llama from "../../public/assets/circle_llama.png";
 import ListenSimilarites from "../modules/ListenSimilarities"
 
 class DashCard extends Component {
@@ -54,7 +55,7 @@ class DashCard extends Component {
                     color="teal"
                     raised>
                         <Image 
-                            src={this.state.friendInfo.image !== '' ? this.state.friendInfo.image : default_profile}
+                            src={this.state.friendInfo.image !== '' ? this.state.friendInfo.image : circle_llama}
                             href={href}
                         />
                         <Card.Content>

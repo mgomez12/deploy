@@ -101,7 +101,6 @@ class DescriptionInputForm extends Component {
                     </div>
                     </React.Fragment>
                 )
-                console.log("HESFJLKSEJF"+ this.props.userProfile.descrip)
             }
             else {
                 console.log("HESFJLKSEJF"+ this.props.userProfile.descrip)

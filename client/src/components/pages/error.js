@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import "../../public/css/styles.css";
 import { Link} from 'react-router-dom';
-import {Header, Button} from 'semantic-ui-react';
+import {Image, Header, Button} from 'semantic-ui-react';
+import confused_llama from "../../public/assets/confused_llama.png";
+
 
 class ErrorPage extends Component {
 	constructor(props) {
@@ -21,6 +23,7 @@ class ErrorPage extends Component {
         <div className="center-screen" id="center-text">
             <Header size="huge">
                 <p>Error: Page Not Found</p>
+                <Image size='massive' src={confused_llama}/>
             </Header>
             <Button size='mini' href='/'>Back to Home</Button>
         </div>

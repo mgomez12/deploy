@@ -4,6 +4,11 @@ import {Link} from "react-router-dom"
 import { Loader, Feed, Image } from 'semantic-ui-react';
 import { get } from "./api"
 import default_profile from "../../public/assets/default_profile.png";
+import circle_llama from "../../public/assets/circle_llama.png";
+import confused_llama from "../../public/assets/confused_llama.png";
+import confused from "../../public/assets/confused.png";
+
+
 
 class SuggestionEntry extends Component {
     constructor(props) {
@@ -21,7 +26,7 @@ class SuggestionEntry extends Component {
         if (this.props.sug.sender_id === 'anonymous') {
             obj.setState({
                 senderInfo: {
-                    image: ''
+                    image: confused_llama
                 }
             })
         }
@@ -56,7 +61,7 @@ class SuggestionEntry extends Component {
         }
         return(<Feed.Event >
             <Feed.Label>
-                <Image size='mini' circular src={this.state.senderInfo.image == '' ? default_profile : this.state.senderInfo.image}/>
+                <Image size='mini' circular src={this.state.senderInfo.image == '' ? circle_llama : this.state.senderInfo.image}/>
             </Feed.Label>
             <Feed.Content>
                 <Feed.Summary >

@@ -3,6 +3,8 @@ import React, { Component } from 'react'
 import { Search } from 'semantic-ui-react'
 import {get} from "./api";
 import default_profile from "../../public/assets/default_profile.png";
+import circle_llama from "../../public/assets/circle_llama.png";
+
 
 
 class SearchBarUser extends Component {
@@ -34,7 +36,7 @@ class SearchBarUser extends Component {
             source: users.map( user => {
                 var userImage = user.image;
                 if(user.image=="") {
-                    userImage= default_profile;
+                    userImage= circle_llama;
                 }
                 return(
                     {
@@ -63,10 +65,10 @@ class SearchBarUser extends Component {
 
       const re = new RegExp(_.escapeRegExp(this.state.value), 'i')
       const isMatch = result => re.test(result.title)
-
+    
       this.setState({
         isLoading: false,
-        results: _.filter(this.state.source, isMatch),
+        results: _.filter(this.state.source, isMatch).slice(0,5),
       })
     }, 300)
   }
