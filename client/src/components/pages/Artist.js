@@ -105,6 +105,23 @@ class Artist extends Component {
         }
     }
 
+    loadRelatedArtistsImagesList() {
+        if (this.state.artistInfo && this.state.relatedartists) {
+            return(
+                this.state.relatedartists.artists.map( artist => {
+                return(
+                    <a href={"/artist/" + artist.id}><img src={artist.images[0].url} alt={artist.name} style={{ display: 'block', width: '100%' }}/></a>
+                );
+                })
+            );
+        }
+        else {
+            <Segment>
+                <Loader/>
+            </Segment>
+        }
+    }
+
 
     
 render() {
