@@ -148,7 +148,7 @@ router.post('/suggestion', function(req, res) {
             let senderName;
             if (req.body.sender == 'anonymous') {
                 senderName = 'Someone secret'
-                message = {sender: req.body.sender, title: req.body.name, name: senderName, type: 'suggestion'}
+                message = {sender: req.body.sender, title: req.body.name, url: req.body.track, name: senderName, type: 'suggestion'}
                 rec.notifications.push(message)
                 rec.save();
                 global.io.emit('notification_' + req.body.receiver, message)
@@ -156,7 +156,7 @@ router.post('/suggestion', function(req, res) {
             else {
                 User.findOne({_id: req.body.sender}, 'name', (err, user) => {
                     senderName = user.name
-                    message = {sender: req.body.sender, title: req.body.name, name: senderName, type: 'suggestion'}
+                    message = {sender: req.body.sender, title: req.body.name, url: req.body.track, name: senderName, type: 'suggestion'}
                     rec.notifications.push(message)
                     rec.save();
                     global.io.emit('notification_' + req.body.receiver, message)
