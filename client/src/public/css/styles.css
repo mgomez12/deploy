@@ -150,3 +150,6 @@ section {
   .rightaligntext{
     text-align:right;
   }
+  .leftaligntext{
+    text-align:left;
+  }

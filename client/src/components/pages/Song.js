@@ -66,6 +66,7 @@ render() {
 
     return(
         <div className='page' style={{'paddingBottom':'45px'}}>
+    <section>
     <div style={{'textAlign': 'center', paddingBottom: '10px', paddingTop: '8px'}}>
         <Container className="center-text" id="song-image">
             {image}
@@ -92,6 +93,7 @@ render() {
                  premium={this.props.userInfo.premium} 
                  track={this.state.songInfo == null ? '' : (this.props.userInfo.premium ? this.state.songInfo.uri : this.state.songInfo.preview_url)}/>
     </div>
+    </section>
     </div>)
 }
 }
