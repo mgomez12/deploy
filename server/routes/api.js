@@ -12,6 +12,7 @@ const SongComment = require('../models/songcomment');
 
 const router = express.Router();
 
+
 router.get('/user', function(req, res) {
     User.findOne({ _id: req.query._id }, function(err, user) {
         if(err) {
@@ -28,7 +29,6 @@ router.get('/allusers', function(req, res) {
         if(err) {
             console.log(err)
         }
-        console.log('getting all users: ' + users)
         res.send(users);
     });
     User.find()
@@ -202,9 +202,11 @@ router.post('/friend', function(req, res) {
                 friendObj.sent_request_to.splice(index, 1);
             }
             else if (!friendObj.received_request_from.includes(req.body.sender)) {
+                console.log('setting true');
                 message = {sender: req.body.sender, type: 'sent'}
                 User.findOne({_id: req.body.receiver}, (err, user) => {
-                    user.notifications.push(message)
+                    user.notifications.push(message);
+                    user.unread_notifications = true;
                     user.save()
                 })
                 friendObj.received_request_from.push(req.body.sender)
