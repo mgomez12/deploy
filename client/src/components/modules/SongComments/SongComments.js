@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import _ from 'lodash'
 import "../../../public/css/styles.css"
 import default_profile from "../../../public/assets/default_profile.png";
+import circle_llama from "../../../public/assets/circle_llama.png";
 import professional_llama from "../../../public/assets/professional_llama.png";
 import { Comment, Icon, Message, Button } from 'semantic-ui-react';
 import { get } from "../api"
@@ -102,7 +103,7 @@ class SongComment extends Component {
         }
         if(this.state.initialized) {
             name = this.state.currentProfile.name;
-            image = (this.state.currentProfile.image !== '' ? this.state.currentProfile.image : default_profile);
+            image = (this.state.currentProfile.image !== '' ? this.state.currentProfile.image : circle_llama);
             content = this.state.currentComment.content;
             var date = new Date(this.state.currentComment.time.toString());
             time = date.toDateString();

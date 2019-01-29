@@ -145,21 +145,9 @@ router.post('/description', function(req, res) {
         userInfo.save()
         console.log(userInfo.descrip)
     })
-    console.log("HELOOOOO"+ req.body.userProfile.descrip)
     res.send({status: 'success'});
-    // }
-    // });
-})
 
-// router.post('/editdescription', function(req, res) {
-//     connect.ensureLoggedIn();
-//     User.findOne({_id: req.body.user_id}, (err, userProfile) => {
-//         userProfile.descrip=""
-//         userProfile.save()
-//     })
-//     console.log(req.body.user_id.descrip)
-//     res.send({status: 'success'});
-// })
+})
 
 router.post('/friend', function(req, res) {
     connect.ensureLoggedIn();
@@ -213,6 +201,43 @@ router.post('/friend', function(req, res) {
             }
         friendObj.save()
         global.io.emit('notification_' + req.body.receiver, message)
+        }
+    });
+})
+
+router.post('/friend_remove', function(req, res) {
+    connect.ensureLoggedIn();
+    Friend.findOne({_id: req.body.sender}, (err, friendObj) => {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            var index = friendObj.friends.indexOf(req.body.receiver);
+            if (index > -1) {
+                friendObj.friends.splice(index, 1);
+            }
+            User.findOne({_id: req.body.sender}, (err, user) => {
+                user.friends -=1;
+                user.save()
+            })
+            friendObj.save()
+        }
+    })
+    res.send({})
+    Friend.findOne({_id: req.body.receiver}, (err, friendObj) => {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            var index = friendObj.friends.indexOf(req.body.sender);
+            if (index > -1) {
+                friendObj.friends.splice(index, 1);
+            }
+            User.findOne({_id: req.body.receiver}, (err, user) => {
+                user.friends -=1;
+                user.save()
+            })
+            friendObj.save()
         }
     });
 })

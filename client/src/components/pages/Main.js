@@ -4,9 +4,11 @@ import {withRouter} from "react-router-dom";
 import NavBar from "../modules/NavBar"
 import SuggestionBox from "../modules/SuggestionBox"
 import Dash from "../modules/Dash"
-import { Sticky, Visibility, Loader, Container, Grid} from "semantic-ui-react";
+import { Image, Sticky, Visibility, Loader, Container, Grid} from "semantic-ui-react";
 import SearchBarUser from '../modules/SearchBarUser';
 import WeeklyPlaylist from '../modules/WeeklyPlaylist';
+import confused_llama from "../../public/assets/confused_llama.png";
+
 
 class Main extends Component {
 	constructor(props) {
@@ -25,7 +27,10 @@ class Main extends Component {
     render() {
         const { contextRef } = this.state
         if (this.props.userInfo.access_token == null) {
-            return <Loader active size='massive'/>
+            return (
+                <Loader active size='massive'>Loading<Image size='tiny' centered src={confused_llama}/></Loader>
+
+            )
         }
         return(<div className='page' >
             <Container>

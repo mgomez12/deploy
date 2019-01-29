@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import _ from 'lodash'
 import "../../../public/css/styles.css"
 import default_profile from "../../../public/assets/default_profile.png";
-import { Input, Loader, Comment, Icon, Message, Button } from 'semantic-ui-react';
+import happy_llama from "../../../public/assets/happy_llama.png";
+import sad_llama from "../../../public/assets/sad_llama.png";
+import { Image, Input, Loader, Comment, Icon, Message, Button } from 'semantic-ui-react';
 import { get, post } from "../api"
 
 class AddComment extends Component {
@@ -62,10 +64,10 @@ class AddComment extends Component {
                 banner=<Message compact ><Loader active size='medium'/></Message>
             }
             else if (this.state.response) {
-                banner=<Message compact positive><Message.Header>Submitted!</Message.Header></Message>
+                banner=<Message compact positive><Message.Header>Submitted!<Image centered size='mini' src={happy_llama}/></Message.Header></Message>
             }
             else {
-                banner=<Message compact negative><Message.Header>Failed!</Message.Header></Message>
+                banner=<Message compact negative><Message.Header>Failed!<Image centered size='mini' src={sad_llama}/></Message.Header></Message>
             }
         }
         else {
