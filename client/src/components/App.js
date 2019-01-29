@@ -67,12 +67,23 @@ class App extends React.Component {
             </Switch>
             <TransitionablePortal onClose={() => {this.setState({message: ''})}} open={ this.state.message === '' ? false : true}>
                 <Segment color='teal' style={{left:'80%', position:'fixed', top:'80%', zIndex:'1000'}}>
-                {this.state.message.sender + (this.state.message.type == 'sent' ? ' sent you a friend request' : ' confirmed your friend request')}
+                {this.stringNotification(this.state.message)}
                 </Segment></TransitionablePortal>
         </div>
         );
   }
 
+  stringNotification(notification) {
+    if (notification.type == 'sent') {
+        return notification.name + ' sent you a friend request'
+    }
+    else if (notification.type == 'friend') {
+        return notification.name + ' confirmed your friend request'
+    }
+    else {
+        return notification.name + ' suggested the song ' + notification.title
+    }
+  }
   getUser = () => {
     fetch('/api/refresh')
     .then(res => res.json())

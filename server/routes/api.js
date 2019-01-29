@@ -150,6 +150,7 @@ router.post('/suggestion', function(req, res) {
                 senderName = 'Someone secret'
                 message = {sender: req.body.sender, title: req.body.name, url: req.body.track, name: senderName, type: 'suggestion'}
                 rec.notifications.push(message)
+                rec.unread_notifications = true;
                 rec.save();
                 global.io.emit('notification_' + req.body.receiver, message)
             }
@@ -158,6 +159,7 @@ router.post('/suggestion', function(req, res) {
                     senderName = user.name
                     message = {sender: req.body.sender, title: req.body.name, url: req.body.track, name: senderName, type: 'suggestion'}
                     rec.notifications.push(message)
+                    rec.unread_notifications = true;
                     rec.save();
                     global.io.emit('notification_' + req.body.receiver, message)
                 })

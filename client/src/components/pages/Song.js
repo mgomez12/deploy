@@ -83,8 +83,8 @@ render() {
         </div>
     </div>
     <div>
-        {this.gotSongInfo ?<SongComment songId={this.props.match.params.songid}/>: <Loader active inline />}
-        {this.gotSongInfo ?<AddComment songId={this.props.match.params.songid} userId={this.props.userInfo._id}/> : <Loader active inline />}
+        {this.gotSongInfo ?<SongComment songId={this.props.match.params.songid}/>: ''}
+        {this.gotSongInfo ?<AddComment songId={this.props.match.params.songid} userId={this.props.userInfo._id}/> : '' }
     </div>
     <div>
     <PlaybackBar token={this.props.userInfo.access_token} 

@@ -120,6 +120,8 @@ class ListenSimilarites extends Component {
         })
     }
 
+
+    // COPIED CODE https://github.com/coolaj86/knuth-shuffle
     shuffle(array) {
         var currentIndex = array.length, temporaryValue, randomIndex;
       
