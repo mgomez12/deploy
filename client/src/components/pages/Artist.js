@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import "../../public/css/styles.css"
 import { Segment, Header, Image, Container } from 'semantic-ui-react';
-import {get} from "../modules/api";
+import {get, get2} from "../modules/api";
 
 class Artist extends Component {
     constructor(props) {
@@ -20,7 +20,15 @@ class Artist extends Component {
 
     }
     componentDidMount() {
-        this.renderArtistData();
+        if (this.props.token && !this.gotArtistInfo) {
+            this.renderArtistData();}
+        if(this.state.artistInfo!=null) {
+            if (this.props.match.params.artistid!=this.state.artistInfo.id) {
+                this.renderArtistData();
+            }
+        }
+        console.log("hello")
+        console.log(this.state.artistInfo)
     }
     componentDidUpdate() {
         if (this.props.token && !this.gotArtistInfo) {
@@ -33,36 +41,41 @@ class Artist extends Component {
     }
 
   
-  renderArtistData() {
-    const obj = this;
-    var artistHeader = [['Authorization', 'Bearer ' + this.props.token]];
-    get('https://api.spotify.com/v1/artists/' + this.props.match.params.artistid, {}, function(artistData) {
-
-        obj.setState({
-            artistInfo: artistData
+    renderArtistData() {
+        const obj = this;
+        var artistHeader = [['Authorization', 'Bearer ' + this.props.token]];
+        get2('https://api.spotify.com/v1/artists/' + this.props.match.params.artistid, null, artistHeader)
+        .then(artistData => {
+            obj.setState({
+                artistInfo: artistData
+            })
+        } )
+        .then(() => {
+            return get2('https://api.spotify.com/v1/artists/' + this.props.match.params.artistid + "/top-tracks", {country:"US"}, artistHeader);
         })
-    }, null, artistHeader);
-
-    get('https://api.spotify.com/v1/artists/' + this.props.match.params.artistid + "/top-tracks", {country:"US"}, function(artistData) {
-
-        obj.setState({
-            artisttoptracks: artistData
+        .then( artistData => {
+            obj.setState({
+                artisttoptracks: artistData
+            })
         })
-    }, null, artistHeader);
-
-    get('https://api.spotify.com/v1/artists/' + this.props.match.params.artistid + "/albums", {country:"US", include_groups:"album"}, function(artistData) {
-
-        obj.setState({
-            artistalbums: artistData
+        .then(()=> {
+            return get2('https://api.spotify.com/v1/artists/' + this.props.match.params.artistid + "/albums", {country:"US", include_groups:"album"}, artistHeader);
         })
-    }, null, artistHeader);
-    get('https://api.spotify.com/v1/artists/' + this.props.match.params.artistid + "/related-artists", {}, function(artistData) {
-
-    obj.setState({
-        relatedartists: artistData
-    })
-    }, null, artistHeader);
-    this.gotArtistInfo=true
+        .then( artistData => {
+            obj.setState({
+                artistalbums: artistData
+            })
+        })
+        .then(()=> {
+            return get2('https://api.spotify.com/v1/artists/' + this.props.match.params.artistid + "/related-artists", null, artistHeader);
+        })
+        .then( artistData => {
+            obj.setState({
+                relatedartists: artistData
+            })
+            this.gotArtistInfo=true
+            this.render();
+        })
     }
 
 
