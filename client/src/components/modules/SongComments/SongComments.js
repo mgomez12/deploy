@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import _ from 'lodash'
 import "../../../public/css/styles.css"
-import default_profile from "../../../public/assets/default_profile.png";
 import circle_llama from "../../../public/assets/circle_llama.png";
 import professional_llama from "../../../public/assets/professional_llama.png";
-import { Comment, Icon, Message, Button } from 'semantic-ui-react';
-import { get } from "../api"
+import { Comment} from 'semantic-ui-react';
 
 class SongComment extends Component {
     constructor(props) {
@@ -110,11 +108,12 @@ class SongComment extends Component {
                     <Comment.Avatar as='a' src={image} />
                     <Comment.Content>
                         <Comment.Author as='a'>{name}</Comment.Author>
-                        <br/>
-                        <Comment.Metadata>
-                            <div>Posted {time}</div>
+                        <Comment.Metadata >
+                            <div >Posted {time}</div>
                         </Comment.Metadata>
-                        <Comment.Text>{content}</Comment.Text>
+                        <br/>
+                        <Comment.Content>
+                        {content}</Comment.Content>
                     </Comment.Content>
                 </Comment>
             </Comment.Group>

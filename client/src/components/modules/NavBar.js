@@ -79,8 +79,6 @@ class NavBar extends Component{
                 <Image size='mini' src={basic_llama}/>
              </Menu.Item>
             <Menu.Item name='profile' href={'/u/profile/' + idString}/>
-            <Menu.Item name='songs' href='/song/2ZWlPOoWh0626oTaHrnl2a'/>
-            <Menu.Item name='albums' href='/album/3mH6qwIy9crq0I9YQbOuDf'/>
             <Menu.Item>
               <SearchBarSpotify history={this.props.history} userInfo={this.props.userInfo}/>
             </Menu.Item>
