@@ -8,14 +8,16 @@ class DescriptionInputForm extends Component {
         super(props);
 
         this.state = {
-            input: '',
+            input: this.props.userProfile.descrip,
             submitted: false,
             response: null,
             edit: false,
+            description: this.props.userProfile.descrip
         };
         this.handleChange = this.handleChange.bind(this)
         this.submitDescription = this.submitDescription.bind(this)
         this.editDescription = this.editDescription.bind(this)
+        this.cancel = this.cancel.bind(this)
 
     }
 
@@ -34,12 +36,11 @@ class DescriptionInputForm extends Component {
     submitDescription() {
         const input = this.state.input
         this.setState({
-            input: '',
             submitted: false,
             response: null,
             edit: false,
+            description: input
         })
-        // if (!this.props.isTrack) {
         console.log('submitted' + this.props.userId + input)
         post('/api/description', {user_id: this.props.userId, bio:input},
         (response) => {  
@@ -54,6 +55,12 @@ class DescriptionInputForm extends Component {
             this.setState({
                 response: false
             })
+        })
+    }
+
+    cancel() {
+        this.setState({
+            edit: false
         })
     }
 
@@ -80,15 +87,17 @@ class DescriptionInputForm extends Component {
                 return(
                     <React.Fragment>
                     <div style={{display:'inline-block'}}>
-                    <Form.Field
-                        control={TextArea}
-                        action={{ color: 'teal', content: 'submit', onClick: this.submitDescription}}
-                        placeholder="Type in your bio!"
-                        value={this.state.input}
-                        onChange={this.handleChange}
-                    />
-                    <Form.Field control={Button} onClick={this.submitDescription}>Submit</Form.Field>
-                    {banner}
+                        <Form.Field
+                            control={TextArea}
+                            action={{ color: 'teal', content: 'submit', onClick: this.submitDescription}}
+                            placeholder="Type in your bio!"
+                            value={this.state.input}
+                            onChange={this.handleChange}
+                        />
+                        <Form.Field control={Button} onClick={this.submitDescription}>Confirm</Form.Field>
+                        <Form.Field control={Button} onClick={this.cancel}>Cancel</Form.Field>
+
+                        
                     </div>
                     </React.Fragment>
                 )
@@ -98,8 +107,9 @@ class DescriptionInputForm extends Component {
                 console.log("HESFJLKSEJF"+ this.props.userProfile.descrip)
                 return(
                     <div>
-                        <p>{this.props.userProfile.descrip}</p>
+                        <p>{this.state.description}</p>
                         <Button onClick={this.editDescription}>Edit Description</Button>
+                        {banner}
                     </div>
                 )
             }

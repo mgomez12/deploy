@@ -154,7 +154,7 @@ class ListenSimilarites extends Component {
         else {
             return(
                 <div>
-                    No artist in common :(
+                    No artists in common :(
                 </div>
             )
         }

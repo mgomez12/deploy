@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import _ from 'lodash'
 import "../../../public/css/styles.css"
 import default_profile from "../../../public/assets/default_profile.png";
+import professional_llama from "../../../public/assets/professional_llama.png";
 import { Comment, Icon, Message, Button } from 'semantic-ui-react';
 import { get } from "../api"
 
@@ -86,7 +87,7 @@ class SongComment extends Component {
             return(
                 <Comment.Group>
                     <Comment>
-                        <Comment.Avatar as='a' src={default_profile} />
+                        <Comment.Avatar as='a' src={professional_llama} />
                         <Comment.Content>
                             <Comment.Author as='a'>Groove Team</Comment.Author>
                             <br/>
