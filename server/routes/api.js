@@ -145,21 +145,9 @@ router.post('/description', function(req, res) {
         userInfo.save()
         console.log(userInfo.descrip)
     })
-    console.log("HELOOOOO"+ req.body.userProfile.descrip)
     res.send({status: 'success'});
-    // }
-    // });
-})
 
-// router.post('/editdescription', function(req, res) {
-//     connect.ensureLoggedIn();
-//     User.findOne({_id: req.body.user_id}, (err, userProfile) => {
-//         userProfile.descrip=""
-//         userProfile.save()
-//     })
-//     console.log(req.body.user_id.descrip)
-//     res.send({status: 'success'});
-// })
+})
 
 router.post('/friend', function(req, res) {
     connect.ensureLoggedIn();
