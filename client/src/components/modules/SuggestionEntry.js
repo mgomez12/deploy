@@ -26,7 +26,7 @@ class SuggestionEntry extends Component {
         if (this.props.sug.sender_id === 'anonymous') {
             obj.setState({
                 senderInfo: {
-                    image: ''
+                    image: confused_llama
                 }
             })
         }
@@ -61,7 +61,7 @@ class SuggestionEntry extends Component {
         }
         return(<Feed.Event >
             <Feed.Label>
-                <Image size='mini' circular src={this.state.senderInfo.image == '' ? '' : this.state.senderInfo.image}/>
+                <Image size='mini' circular src={this.state.senderInfo.image == '' ? circle_llama : this.state.senderInfo.image}/>
             </Feed.Label>
             <Feed.Content>
                 <Feed.Summary >

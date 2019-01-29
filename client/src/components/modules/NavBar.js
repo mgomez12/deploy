@@ -9,7 +9,7 @@ import basic_llama from "../../public/assets/basic_llama.png";
 class NavBar extends Component{
     constructor(props) {
         super(props);
-        this.socket = io();
+       // this.socket = io();
         this.id = 0;
         this.state = {
             icon: 'bell'
@@ -17,7 +17,7 @@ class NavBar extends Component{
         this.update = true;
         this.readNotification = this.readNotification.bind(this)
         this.stringNotification = this.stringNotification.bind(this)
-        this.socket.on('connect', () => {})
+        //this.socket.on('connect', () => {})
     }
 
     componentDidUpdate() {
@@ -25,13 +25,13 @@ class NavBar extends Component{
             if (this.interval) {
                 clearInterval(this.interval)
             }
-            this.interval = setInterval(() => {this.flashNotification()}, 1000)
+            //this.interval = setInterval(() => {this.flashNotification()}, 1000)
         }
         this.update = true;
     }
     readNotification() {
         clearInterval(this.interval)
-        this.socket.emit('notification_read', this.props.userInfo._id)
+        //this.socket.emit('notification_read', this.props.userInfo._id)
     }
 
     flashNotification() {
