@@ -68,7 +68,7 @@ class App extends React.Component {
             <Route exact path="/artist/:artistid" render = {(props) => <Artist {...props} userInfo ={userInfo} token ={userInfo.access_token} />}/>
             </Switch>
             <TransitionablePortal onClose={() => {this.setState({message: ''})}} open={ this.state.message === '' ? false : true}>
-                <Segment style={{left:'80%', position:'fixed', top:'80%', zIndex:'1000'}}>
+                <Segment inverted color='blue' style={{left:'80%', position:'fixed', top:'80%', zIndex:'1000'}}>
                 {this.state.message.sender + (this.state.message.type == 'sent' ? ' sent you a friend request' : ' confirmed your friend request')}
                 </Segment></TransitionablePortal>
         </div>
