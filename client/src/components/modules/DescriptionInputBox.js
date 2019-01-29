@@ -35,26 +35,36 @@ class DescriptionInputForm extends Component {
     }
 
     submitDescription() {
-        const input = this.state.input
-        this.setState({
-            submitted: false,
-            response: null,
-            edit: false,
-            description: input
-        })
-        post('/api/description', {user_id: this.props.userId, bio:input},
-        (response) => {  
-            if (response.status =='success') {
-                this.setState({
-                    response: true,
-                    edit: false
-                })
-                return
-            }
+        if(this.state.input.length > 250)
+        {
             this.setState({
-                response: false
+                response: false,
+                submitted: true,
+                edit: false
             })
-        })
+        }
+        else {
+            const input = this.state.input
+            this.setState({
+                submitted: true,
+                response: null,
+                edit: false,
+                description: input
+            })
+            post('/api/description', {user_id: this.props.userId, bio:input},
+            (response) => {  
+                if (response.status =='success') {
+                    this.setState({
+                        response: true,
+                        edit: false
+                    })
+                    return
+                }
+                this.setState({
+                    response: false
+                })
+            })
+        }
     }
 
     cancel() {

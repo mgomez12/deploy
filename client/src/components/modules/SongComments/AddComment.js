@@ -38,25 +38,35 @@ class AddComment extends Component {
 
     submitComment() {
         const input = this.state.input;
-        this.setState({
-            input: '',
-            submitted: true,
-            response: null
-        })
-        const date = new Date()
-        post('/api/song_info_comment?id='+ this.props.songId, {comment: { userId: this.props.userId, content: input, loves: 0, time:date}},
-        (response) => {
-            if (response.status =='success') {
-                this.setState({
-                    response: true
-                })
-                return
-            }
+        if(input.length > 100) {
             this.setState({
+                input: '',
+                submitted: true,
                 response: false
             })
-        })
+        }
+        else {
+            this.setState({
+                input: '',
+                submitted: true,
+                response: null
+            })
+            const date = new Date()
+            post('/api/song_info_comment?id='+ this.props.songId, {comment: { userId: this.props.userId, content: input, loves: 0, time:date}},
+            (response) => {
+                if (response.status =='success') {
+                    this.setState({
+                        response: true
+                    })
+                    return
+                }
+                this.setState({
+                    response: false
+                })
+            })
+        }
     }
+
     render() {
         let banner;
         if (this.state.submitted) {
@@ -64,10 +74,10 @@ class AddComment extends Component {
                 banner=<Message compact ><Loader active size='medium'/></Message>
             }
             else if (this.state.response) {
-                banner=<Message compact positive><Message.Header>Submitted!<Image centered size='mini' src={happy_llama}/></Message.Header></Message>
+                banner=<Message compact positive><Message.Header>Submitted!</Message.Header></Message>
             }
             else {
-                banner=<Message compact negative><Message.Header>Failed!<Image centered size='mini' src={sad_llama}/></Message.Header></Message>
+                banner=<Message compact negative><Message.Header>Failed!</Message.Header></Message>
             }
         }
         else {
