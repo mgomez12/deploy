@@ -55,12 +55,7 @@ class SongComment extends Component {
             const length = comments.length;
             const randomNumber = _.random(0,length-1);
             fetch('/api/song_info?id=' + id + "&random=" + randomNumber).then(res => res.json())
-            .then((comment) => {
-                this.setState({
-                    currentComment: comment
-                })
-                return comment
-            }).then( (comment) => {
+            .then( (comment) => {
                 this.displayRandomComment(comment)})
         }
     }
@@ -72,6 +67,7 @@ class SongComment extends Component {
             .then(res => res.json())
             .then((profile) => {
                 this.setState({
+                    currentComment: comment,
                     currentProfile: profile
                 })
             }).then( () => {

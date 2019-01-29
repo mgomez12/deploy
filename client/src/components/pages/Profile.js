@@ -53,7 +53,15 @@ class Profile extends Component {
 
     loadSuggestionBox() {
         if(this.gotProfileInfo) {
-            return (<SuggestionForm userInfo={this.props.viewerInfo} receiverId={this.state.userInfo._id} isTrack={true}/>);
+            if(this.props.match.params.user==this.props.viewerInfo._id) {
+                return <div></div>
+            }
+            else {
+                return (<div>
+                        <Header as='h4'>Suggest a song!</Header>
+                        <SuggestionForm userInfo={this.props.viewerInfo} receiverId={this.state.userInfo._id} isTrack={true}/>
+                    </div>);
+            }
         }
         else {
             <Loader active inline size='tiny'>Loading<Image size='tiny' centered src={confused_llama}/></Loader>
@@ -170,7 +178,6 @@ class Profile extends Component {
                         </Grid.Column >
                         <Grid.Column width='10'>
                             <div className='center-parent'>
-                            <Header as='h4'>Suggest a song!</Header>
                             {this.loadSuggestionBox()}
                             </div>
                         </Grid.Column>
