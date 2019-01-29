@@ -8,6 +8,7 @@ import SongComment from "../modules/SongComments/SongComments"
 import PlaybackBar from "../modules/PlaybackBar"
 
 
+
 class Song extends Component {
     constructor(props) {
         super(props);
@@ -86,7 +87,6 @@ render() {
     </Grid.Column>
     <Grid.Column>
         <Grid.Row style={{height:'50%'}}>
-    <Header as='h4'>Suggest this song to someone!</Header>
     {this.gotSongInfo ?<SuggestionFormUser userInfo={this.props.userInfo} track={this.state.songInfo} isTrack={false}/>
             : <Loader active inline />}
             </Grid.Row>

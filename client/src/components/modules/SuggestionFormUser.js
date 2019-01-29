@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import React, { Component } from 'react';
 import "../../public/css/styles.css"
-import { Image, Search, Message, Input, Loader, Checkbox } from 'semantic-ui-react';
+import { Header, Image, Search, Message, Input, Loader, Checkbox } from 'semantic-ui-react';
 import { post, get } from "./api"
 import default_profile from "../../public/assets/default_profile.png";
 import happy_llama from "../../public/assets/happy_llama.png";
@@ -158,6 +158,8 @@ class SuggestionFormUser extends Component {
         }
         return(
             <React.Fragment>
+                    <Header as='h4'>Suggest this song to someone!</Header>
+
             <div style={{display:'inline-block', padding:'8px'}}>
             <Search
                     loading={isLoading}
