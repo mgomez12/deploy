@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import "../../public/css/styles.css"
-import { Header, Image, Container, Loader, Menu } from 'semantic-ui-react';
+import { Header, Image, Container, Loader, Grid } from 'semantic-ui-react';
 import {get} from "../modules/api";
 import SuggestionFormUser from "../modules/SuggestionFormUser"
 import AddComment from "../modules/SongComments/AddComment"
@@ -67,26 +67,35 @@ render() {
     return(
         <div className='page' style={{'paddingBottom':'45px'}}>
     <section>
+    <Grid columns='2' style={{width:'100%'}}>
+        <Grid.Column>
     <div style={{'textAlign': 'center', paddingBottom: '10px', paddingTop: '8px'}}>
         <Container className="center-text" id="song-image">
             {image}
         </Container>
         <div>
+            
             <Header size='large'>
                 {name}
             </Header>
             <Header size='medium'>
             <a href={"/artist/" + artistid}>{artist}</a>
             </Header>
-            <Header as='h4'>Suggest this song to someone!</Header>
-            {this.gotSongInfo ?<SuggestionFormUser userInfo={this.props.userInfo} track={this.state.songInfo} isTrack={false}/>
-            : <Loader active inline />}
         </div>
     </div>
-    <div>
+    </Grid.Column>
+    <Grid.Column>
+        <Grid.Row style={{height:'50%'}}>
+    <Header as='h4'>Suggest this song to someone!</Header>
+    {this.gotSongInfo ?<SuggestionFormUser userInfo={this.props.userInfo} track={this.state.songInfo} isTrack={false}/>
+            : <Loader active inline />}
+            </Grid.Row>
+        <Grid.Row>
         {this.gotSongInfo ?<SongComment songId={this.props.match.params.songid}/>: ''}
         {this.gotSongInfo ?<AddComment songId={this.props.match.params.songid} userId={this.props.userInfo._id}/> : '' }
-    </div>
+        </Grid.Row>
+    </Grid.Column>
+    </Grid>
     <div>
     <PlaybackBar token={this.props.userInfo.access_token} 
                  maxTime={this.state.songInfo == null ? 1 : this.state.songInfo.duration_ms}
