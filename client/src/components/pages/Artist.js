@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import "../../public/css/styles.css"
-import { Segment, Header, Image, Container, Card } from 'semantic-ui-react';
+import { Item, Segment, Header, Image, Container, Card } from 'semantic-ui-react';
 import {get, get2} from "../modules/api";
 import Coverflow from 'react-coverflow';
 
@@ -158,13 +158,14 @@ class Artist extends Component {
     
 render() {
     let image, artist = '';
-    let toptracks=[]
-    let albums=[]
-    let related=[]
-    let singles=[]
-    let artistimage_list=[]
-    let albumimage_list=[]
-    let singleimage_list=[]
+    let toptracks=[];
+    let albums=[];
+    let related=[];
+    let singles=[];
+    let artistimage_list=[];
+    let albumimage_list=[];
+    let singleimage_list=[];
+    let timeString= '0:00';
     if (this.state.artistInfo && this.state.artisttoptracks && this.state.artistalbums && this.state.relatedartists) {
         image = <Image size="medium" centered rounded src={this.state.artistInfo.images[0].url}/>
         artist = this.state.artistInfo.name;
@@ -189,134 +190,84 @@ render() {
     return(
         <div className='page'>
         <Container>
-
+        <section>
+        <div>
         <section>
         <Container>
             {image}    
         </Container>
         </section>
-        <section>
-        <Container>
-        <Header size= "large">
-                {artist}
+        </div>
+        <div>
+        <Header size= "huge">
+            {artist}
         </Header>
-        </Container>
-        </section>
-        <div>
-        <section className="mediumtitle">
-            <Header size='large'>
-                {"Top Songs"}
-            </Header>
-        </section>
-        <section className="artistlist">
-           {toptracks.map( track => {
-               return(
-               <Segment>
-                    <a href={"/song/" + track.id}>{track.name}</a>
-               </Segment>)
-            })}
-        </section>
         </div>
-
-
-        {/* <section className="mediumtitle">
-        <div>
-            <Container>
-                <Header size='large'>
-                    {"Albums"}
-                </Header>
-            </Container>
-        </div>
-        </section>
-        <section className="artistlist">
-        <div>
-            <Header size="medium">
-                {"Full-Length Albums"}
-            </Header>
-            {albums.map( album => {
-                return(
-                <Segment floated="left">
-                    <a href={"/album/" + album.id}>{album.name}</a>
-                </Segment>)
-         })}
-        </div>
-        <section>
-        <div>
-            <Header size="medium">
-                {"Singles"}
-            </Header>
-            {singles.map( single => {
-                return(
-                <Segment floated="left">
-                    <a href={"/album/" + single.id}>{single.name}</a>
-                </Segment>)
-         })}
-        </div> 
-        </section>
-        </section>
-        <section className="mediumtitle">
-                <Header size='large'>
-                    {"Related Artists"}
-                </Header>
-        </section> */}
         <div>
         <section>
-        <div>
-        <Container>
+        <Header as="h2">
+            {"Top Songs"}
+        </Header>
+        </section>
+        <Item.Group>
+            <Segment.Group>
+        {toptracks.map( track => {
+            const minutes = Math.floor(track.duration_ms / 60000);
+            let seconds = Math.floor(track.duration_ms % 60);
+            if (seconds < 10) {seconds = '0' + seconds}
+            timeString = minutes + ':' + seconds;
+            return(
+                <Item href={"/song/" + track.id}>
+                <Segment color="gray">
+                <Item.Content>
+                    <a href={"/song/" + track.id} id="songdisplay2">{track.name}</a>
+                    <p className="rightaligntext" id="songdisplay2">{timeString}</p>
+                </Item.Content>
+                </Segment>
+                </Item>)
+        })}
+           </Segment.Group>
+           </Item.Group>
+        </div>
+        <section>
         <Header as="h2">
                         Full-Length Albums: 
         </Header>
-        </Container>
-        </div>
+        </section>
         <Card.Group itemsPerRow={5}>
             {albumimage_list}
         </Card.Group>
-        </section>
-        </div>
         <section>
-        <div>
-        <Container>
         <Header as="h2">
-                        Singles: 
+                        Singles and EPs: 
         </Header>
-        </Container>
-        </div>
+        </section>
         <Card.Group itemsPerRow={5}>
             {singleimage_list}
         </Card.Group>
+        <section>
+        <Header as="h2">
+                    Related Artists: 
+        </Header>
         </section>
-            {/* <section className="artistlist">
-            <div>
-            {related.map( person => {
-                   return(
-                <Segment floated="left">
-                        <a href={"/artist/" + person.id}>{person.name}</a>
-                </Segment>)
-                })}
-            </div>
-            </section> */}
-            <Container>
-            <Header as="h2">
-                        Related Artists: 
-            </Header>
-            </Container>
-            <Coverflow
-                    width={960}
-                    height={480}
-                    displayQuantityOfSide={2}
-                    navigation={false}
-                    enableHeading={false}
-                >
-                <div
-                 onClick={() => fn()}
-                 onKeyDown={() => fn()}
-                 role="menuitem"
-                 tabIndex="0"
-                >
-                </div>
-                {artistimage_list}
-                </Coverflow>
-            </Container>
+        <Coverflow
+            width={960}
+            height={480}
+            displayQuantityOfSide={2}
+            navigation={false}
+            enableHeading={false}
+        >
+        <div
+        onClick={() => fn()}
+        onKeyDown={() => fn()}
+        role="menuitem"
+        tabIndex="0"
+        >
+        </div>
+        {artistimage_list}
+        </Coverflow>
+        </section>
+        </Container>
         </div>)
     }
     }
