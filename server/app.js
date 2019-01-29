@@ -10,6 +10,7 @@ const socketio = require('socket.io');
 const request = require('request-promise');
 const User = require('./models/user')
 const MongoStore = require('connect-mongo')(session);
+const compression = require('compression');
 
 const app = express();
 const publicPath = path.resolve(__dirname, '..', 'client/dist');
@@ -240,12 +241,22 @@ app.use(function(err, req, res, next) {
  })};
 });
 
+app.use(compression());
 
 // port config
 
 global.io.on('connection', function (socket) {
-  //console.log('client connected');
+  socket.on('notification_read', id => {
+    User.findOne({_id: id}, (err, user) => {
+      if (user) {
+        user.unread_notifications = false;
+        user.save() }
+      else (console.log('user not found'))
+    })
+  })
 });
+
+
 
 server.listen(process.env.PORT || port, function() {
  console.log('Server running on port: ' + port);

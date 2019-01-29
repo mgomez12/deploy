@@ -11,6 +11,7 @@ const UserModelSchema = new mongoose.Schema ({
  notifications       : Array,
  fav_song_rn         : String,
  spotify_followers   : Number,
+ unread_notifications: Boolean,
  access_token        : String,
  expire_time         : Number,
  refresh_token       : String,

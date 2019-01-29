@@ -10,15 +10,31 @@ const Suggestion = require('../models/suggestion');
 const Friend = require('../models/friends');
 const SongComment = require('../models/songcomment');
 
+
 const router = express.Router();
 
+
 router.get('/user', function(req, res) {
-    User.findOne({ _id: req.query._id }, function(err, user) {
-        if(err) {
-            console.log(err)
-        }
-      res.send(user);
-    });
+    if (req.query.fields) {
+        const fields = req.query.fields
+        console.log('fields:' + fields)
+        User.findOne({ _id: req.query._id },fields, function(err, user) {
+            if(err) {
+                console.log(err)
+            }
+            console.log('user: ' + user)
+          res.send(user);
+        });
+    }
+    else {
+        User.findOne({ _id: req.query._id }, function(err, user) {
+            if(err) {
+                console.log(err)
+            }
+          res.send(user);
+        });
+    }
+    
   });
 
 
@@ -35,10 +51,7 @@ router.get('/allusers', function(req, res) {
 
 router.get('/refresh', function(req, res) {
     const currentTime = new Date()
-    console.log('expire time: ' + req.user.expire_time)
-    console.log('time diff = ' + (currentTime.getTime()-req.user.expire_time))
     if(req.isAuthenticated() && currentTime.getTime() < req.user.expire_time) {
-        console.log('only updating user')
         User.findOne({ _id: req.user._id}, function(err, user) {
             if(err) {
                 console.log(err)
@@ -73,7 +86,6 @@ router.get('/refresh', function(req, res) {
           }
           request(recently_played)
           .then(tokenInfo => {
-              console.log('token info: ' + tokenInfo)
               User.findOne({ _id: req.user._id}, function(err, user) {
             if(err) {
                 console.log(err)
@@ -81,7 +93,6 @@ router.get('/refresh', function(req, res) {
             }
             else {
                 user.access_token = tokenInfo.access_token
-                console.log('new time: ' + new Date(new Date().getTime() + tokenInfo.expires_in * 1000).getTime())
                 user.expire_time = new Date(new Date().getTime() + tokenInfo.expires_in * 1000).getTime()
                 user.save()
                 req.logOut();
@@ -189,13 +200,18 @@ router.post('/friend', function(req, res) {
                 friendObj.sent_request_to.splice(index, 1);
             }
             else if (!friendObj.received_request_from.includes(req.body.sender)) {
-                message = {sender: req.body.sender, type: 'sent'}
-                User.findOne({_id: req.body.receiver}, (err, user) => {
-                    user.notifications.push(message)
-                    user.save()
-                })
-                friendObj.received_request_from.push(req.body.sender)
-            }
+                console.log('setting true');
+                let senderName;
+                User.findOne({_id: req.body.sender}, 'name', (err, user) => {
+                    senderName = user.name
+                    message = {sender: req.body.sender, name: senderName, type: 'sent'}
+                    User.findOne({_id: req.body.receiver}, (err, user) => {
+                        user.notifications.push(message);
+                        user.unread_notifications = true;
+                        user.save()
+                    })
+                    friendObj.received_request_from.push(req.body.sender)
+            })}
         friendObj.save()
         global.io.emit('notification_' + req.body.receiver, message)
         }

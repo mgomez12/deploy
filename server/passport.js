@@ -26,6 +26,7 @@ passport.use(
              fav_song_rn: "",
              notifications: [],
              friends: 0,
+             unread_notifications: false,
              spotify_followers: 0,
              access_token: accessToken,
              expire_time: new Date(now.getSeconds() + expires_in).getTime(),

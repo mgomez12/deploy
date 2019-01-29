@@ -29,14 +29,12 @@ class App extends React.Component {
     }
 
     componentDidMount () {
-        console.log('mounting');
         this.getUser();
     }
 
     componentDidUpdate() {
         if (this.state.startSocket && this.state.updated) {
             this.socket.on('notification_' + this.state.userInfo._id, notification => {
-                console.log('got notification');
                 this.setState({
                     message: notification
                 })
@@ -68,7 +66,7 @@ class App extends React.Component {
             <Route exact path="/artist/:artistid" render = {(props) => <Artist {...props} userInfo ={userInfo} token ={userInfo.access_token} />}/>
             </Switch>
             <TransitionablePortal onClose={() => {this.setState({message: ''})}} open={ this.state.message === '' ? false : true}>
-                <Segment inverted color='blue' style={{left:'80%', position:'fixed', top:'80%', zIndex:'1000'}}>
+                <Segment color='teal' style={{left:'80%', position:'fixed', top:'80%', zIndex:'1000'}}>
                 {this.state.message.sender + (this.state.message.type == 'sent' ? ' sent you a friend request' : ' confirmed your friend request')}
                 </Segment></TransitionablePortal>
         </div>
@@ -80,7 +78,6 @@ class App extends React.Component {
     .then(res => res.json())
     .then(
         userObj => {
-            console.log('userobj: ' + userObj)
             if (userObj._id !== undefined) {
                 this.setState({
                     userInfo: userObj,

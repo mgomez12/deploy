@@ -33,11 +33,10 @@ class SuggestionEntry extends Component {
             })
         }
         else {
-            console.log("count")
-            get('/api/user', {_id: this.props.sug.sender_id}, user => {
-                obj.setState({
-                    senderInfo: user
-                })
+        get('/api/user', {_id: this.props.sug.sender_id, fields:'name image'}, user => {
+            obj.setState({
+                senderInfo: user
+            })
             })
         }
         const token_header = [['Authorization', 'Bearer ' + this.props.userInfo.access_token]];

@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "webpack-dev-server --config ./webpack.config.js --mode development --port 5000",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server/app.js",
+    "start": "node server/app.js",
     "heroku-postbuild": "webpack -p --config ./webpack.config.js --progress"
   },
   "repository": {
@@ -21,6 +21,7 @@
   "homepage": "https://github.com/Glabred/groove#readme",
   "dependencies": {
     "body-parser": "^1.18.3",
+    "compression": "^1.7.3",
     "connect-ensure-login": "^0.1.1",
     "connect-mongo": "^2.0.3",
     "dotenv": "^6.2.0",

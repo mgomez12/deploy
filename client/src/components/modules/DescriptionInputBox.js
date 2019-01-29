@@ -42,10 +42,8 @@ class DescriptionInputForm extends Component {
             edit: false,
             description: input
         })
-        console.log('submitted' + this.props.userId + input)
         post('/api/description', {user_id: this.props.userId, bio:input},
         (response) => {  
-            console.log(response);
             if (response.status =='success') {
                 this.setState({
                     response: true,
@@ -68,7 +66,6 @@ class DescriptionInputForm extends Component {
     render() {
         let banner;
         if (this.state.submitted) {
-            console.log(this.state.response)
             if (this.state.response == null) {
                 banner=<Message compact ><Loader active size='medium'/></Message>
             }
@@ -84,7 +81,6 @@ class DescriptionInputForm extends Component {
         }
         if (this.props.userId==this.props.personId){
             if (this.state.edit){
-                console.log("HESFJLKSEJF"+ this.props.userProfile.descrip)
                 return(
                     <React.Fragment>
 
@@ -103,7 +99,6 @@ class DescriptionInputForm extends Component {
                 )
             }
             else {
-                console.log("HESFJLKSEJF"+ this.props.userProfile.descrip)
                 return(
                     <div>
                         <Grid celled>

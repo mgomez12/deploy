@@ -49,7 +49,6 @@ class DashCard extends Component {
                     <Loader active size='large'>Loading<Image size='tiny' centered src={confused_llama}/></Loader>
             )
         }
-        console.log('got friend info')
         var href = "/u/profile/" + this.state.friendInfo._id;
         return (
             <div style={{marginLeft:'auto', marginRight:'auto', paddingBottom:'8px'}}>
