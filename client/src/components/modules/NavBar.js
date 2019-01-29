@@ -43,13 +43,13 @@ class NavBar extends Component{
         this.id +=1;
         if (notification.type == 'sent') {
             return <Message key={this.id}>
-            <a href={'/u/profile/' + notification.sender}>{notification.sender + ' '}</a>
+            <a href={'/u/profile/' + notification.sender}>{notification.name + ' '}</a>
             sent you a friend request
             </Message>
         }
         else {
             return <Message key={this.id}>
-            <a href={'/u/profile/' + notification.sender}>{notification.sender + ' '}</a>
+            <a href={'/u/profile/' + notification.sender}>{notification.name + ' '}</a>
             confirmed your friend request
             </Message>
         }
@@ -59,7 +59,8 @@ class NavBar extends Component{
         let notifications = []
         if (this.props.userInfo.access_token !== null) {
             idString = this.props.userInfo._id
-            notifications = this.props.userInfo.notifications
+            length = this.props.userInfo.notifications.length
+            notifications = this.props.userInfo.notifications.slice(length - 10, length)
         }
         return(
         <Menu fixed='top' color='teal' inverted>

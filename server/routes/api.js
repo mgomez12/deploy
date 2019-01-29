@@ -201,14 +201,17 @@ router.post('/friend', function(req, res) {
             }
             else if (!friendObj.received_request_from.includes(req.body.sender)) {
                 console.log('setting true');
-                message = {sender: req.body.sender, type: 'sent'}
-                User.findOne({_id: req.body.receiver}, (err, user) => {
-                    user.notifications.push(message);
-                    user.unread_notifications = true;
-                    user.save()
-                })
-                friendObj.received_request_from.push(req.body.sender)
-            }
+                let senderName;
+                User.findOne({_id: req.body.sender}, 'name', (err, user) => {
+                    senderName = user.name
+                    message = {sender: req.body.sender, name: senderName, type: 'sent'}
+                    User.findOne({_id: req.body.receiver}, (err, user) => {
+                        user.notifications.push(message);
+                        user.unread_notifications = true;
+                        user.save()
+                    })
+                    friendObj.received_request_from.push(req.body.sender)
+            })}
         friendObj.save()
         global.io.emit('notification_' + req.body.receiver, message)
         }
